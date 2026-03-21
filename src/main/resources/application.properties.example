@@ -1,0 +1,23 @@
+server.port=8081
+spring.application.name=NetPoint
+
+
+# Replace 'my_website_db' with the name you just typed in pgAdmin
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/net_point_spring
+
+spring.datasource.username=postgres
+
+
+
+# Use the password you set when you installed PostgreSQL
+
+spring.datasource.password=Replace_Me
+
+
+
+# This helps Spring Boot create tables automatically based on your Java code
+
+spring.jpa.hibernate.ddl-auto=update
+
+spring.datasource.driver-class-name=org.postgresql.Driver
