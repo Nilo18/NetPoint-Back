@@ -1,23 +1,20 @@
 server.port=8081
 spring.application.name=NetPoint
 
+# 1. THE URL: Using the Sydney Region Pooler
+# I added ?prepareThreshold=0 which is REQUIRED for port 6543
+spring.datasource.url=jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0
 
-# Replace 'my_website_db' with the name you just typed in pgAdmin
+# 2. THE USERNAME: This is exactly what the dashboard gave you
+spring.datasource.username=postgres.sdgucpokmnuxoyhjsazi
 
-spring.datasource.url=jdbc:postgresql://localhost:5432/net_point_spring
+# 3. THE PASSWORD: Your database password
+spring.datasource.password=REPLACE_ME
 
-spring.datasource.username=postgres
-
-
-
-# Use the password you set when you installed PostgreSQL
-
-spring.datasource.password=Replace_Me
-
-
-
-# This helps Spring Boot create tables automatically based on your Java code
-
-spring.jpa.hibernate.ddl-auto=update
-
+# 4. ESSENTIAL DRIVER SETTINGS
 spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# 5. CONNECTION TIMEOUT
+spring.datasource.hikari.connection-timeout=30000

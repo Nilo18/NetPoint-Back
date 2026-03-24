@@ -1,12 +1,23 @@
 package com.netpoint.main.models;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Entity
+@Table(name = "users") // Maps this class to the 'users' table in Supabase
+@NoArgsConstructor    // Required by Hibernate
+@AllArgsConstructor   // Useful for creating users in your code
 public class User {
-    private final int companyId; // Which company the user belongs to
-    private final int id;
-    private final String name;
-    private final String email;
-    private final String password;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increments the ID
+    private int id;
+
+    private int companyId;
+    private String name;
+    private String email;
+    private String password;
 }
