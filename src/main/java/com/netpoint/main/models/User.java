@@ -1,22 +1,27 @@
 package com.netpoint.main.models;
 
-import jakarta.persistence.*; // This imports @Entity, @Id, etc.
-import lombok.Getter;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-// Getter/Setter–ები ამ ორი ანოტაციით შევცვალე, შენც ესენი გამოიყენე ხოლმე, ან @Data
-@Getter
-@Setter
-// default constructor ამით შევცვალე, შენც ეს გამოიყენე ხოლმე
-@NoArgsConstructor
+@Data
 @Entity
-@Table(name = "users")
+@Table(name = "users") // Maps this class to the 'users' table in Supabase
+@NoArgsConstructor    // Required by Hibernate
+@AllArgsConstructor   // Useful for creating users in your code
 public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increments the ID
+    private Integer id;
+//    @NotNull
+    private int companyId;
+//    @NotNull
     private String name;
+//    @NotNull
     private String email;
-    // companyId ია დასამატებელი რო ყველა იუზერი შესაბამის კომპანიასთან დაკავშირდეს
+//    @NotNull
+    private String password;
 }
