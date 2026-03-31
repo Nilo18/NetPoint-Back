@@ -1,8 +1,8 @@
 package com.netpoint.main.controllers;
 
+import com.netpoint.main.dto.requests.CompanyRegistrationRequest;
+import com.netpoint.main.dto.responses.CompanySignupResponse;
 import com.netpoint.main.dto.requests.LoginRequest;
-import com.netpoint.main.models.Company;
-import com.netpoint.main.models.User;
 import com.netpoint.main.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -27,9 +27,8 @@ public class AuthController {
     }
 
     @PostMapping(path="/signup")
-    public ResponseEntity<Company> signup(@Valid @RequestBody Company company) {
-        Company created = this.authService.signup(company);
+    public ResponseEntity<CompanySignupResponse> signup(@Valid @RequestBody CompanyRegistrationRequest company) {
+        CompanySignupResponse created = this.authService.signup(company);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
-//        return this.authService.signup(company);
     }
 }
