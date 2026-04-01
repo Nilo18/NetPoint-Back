@@ -1,6 +1,8 @@
 package com.netpoint.main.services;
 
 import com.netpoint.main.dto.requests.CompanyRegistrationRequest;
+import com.netpoint.main.dto.requests.VerifyOtpRequest;
+import com.netpoint.main.dto.responses.AuthResponse;
 import com.netpoint.main.dto.responses.CompanySignupResponse;
 import com.netpoint.main.dto.requests.LoginRequest;
 import com.netpoint.main.exceptions.EmailAlreadyExistsException;
@@ -16,15 +18,18 @@ import org.springframework.stereotype.Service;
 @Service
 @Log
 @AllArgsConstructor
-@Data
 public class AuthService {
     private UserRepository userRepository;
     private CompanyRepository companyRepository;
     private BCryptPasswordEncoder passwordEncoder;
 
-    public String login(LoginRequest request) {
+    public AuthResponse login(LoginRequest request) {
         log.info("Generating token for: " + request + "...");
-        return "token";
+        return new AuthResponse("authenticated", "token");
+    }
+    public AuthResponse verifyOtp(VerifyOtpRequest request) {
+        // logic comes later, placeholder for now
+        return new AuthResponse("authenticated", "token");
     }
 
     public CompanySignupResponse signup(CompanyRegistrationRequest company) {
