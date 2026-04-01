@@ -1,4 +1,4 @@
-﻿package com.netpoint.main.dto.responses;
+package com.netpoint.main.dto.responses;
 
 public class AuthResponse {
     private String status;

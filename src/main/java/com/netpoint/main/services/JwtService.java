@@ -1,4 +1,4 @@
-﻿package com.netpoint.main.services;
+package com.netpoint.main.services;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

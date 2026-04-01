@@ -1,4 +1,4 @@
-﻿package com.netpoint.main.exceptions;
+package com.netpoint.main.exceptions;
 
 
 

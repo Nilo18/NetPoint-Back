@@ -1,4 +1,4 @@
-﻿package com.netpoint.main.services;
+package com.netpoint.main.services;
 
 import com.netpoint.main.exceptions.OtpExpiredException;
 import com.netpoint.main.exceptions.OtpNotFoundException;

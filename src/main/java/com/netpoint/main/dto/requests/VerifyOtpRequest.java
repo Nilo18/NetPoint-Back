@@ -1,4 +1,4 @@
-﻿package com.netpoint.main.dto.requests;
+package com.netpoint.main.dto.requests;
 
 import jakarta.validation.constraints.NotBlank;
 
