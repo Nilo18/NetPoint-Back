@@ -1,19 +1,18 @@
 package com.netpoint.main.filters;
 
 import com.netpoint.main.services.JwtService;
-import java.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import java.util.ArrayList;
 
-
+import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -27,39 +26,39 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        // 1. read the header
+
+        // 1. Read the header
         String authHeader = request.getHeader("Authorization");
 
-
-
-// 2
-// . if missing or doesn't start with Bearer, skip
+        // 2. If missing or doesn't start with Bearer, move to the next filter
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
-            return;  // stop here, don't continue
+            return;
         }
 
-// 3. strip "Bearer " to get raw token
+        // 3. Strip "Bearer " to get the raw token
         String token = authHeader.substring(7);
 
-// 4. validate the token
-        if (jwtService.isTokenValid(token)) {
+        // 4. Validate the token and ensure the user isn't already authenticated
+        if (jwtService.isTokenValid(token) && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            // 5. extract the userId
+            // 5. Extract userId and Role from the JWT
             String userId = jwtService.extractUserId(token);
+            String role = jwtService.extractRole(token);
 
-            // 6. build the authentication object
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(userId, null, new ArrayList<>());
+            // 6. Map the role string (e.g., "ADMIN") to a GrantedAuthority
+            // This is critical because your SecurityConfig uses .hasAnyAuthority()
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    userId,
+                    null,
+                    List.of(new SimpleGrantedAuthority(role))
+            );
 
-            // 7. set it in the security context
+            // 7. Set it in the security context
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
-// 8. always continue the chain
+        // 8. Always continue the chain
         filterChain.doFilter(request, response);
-
     }
 }
-
-

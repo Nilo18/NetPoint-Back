@@ -74,10 +74,15 @@ public class AuthService {
         if (this.companyRepository.existsByEmail(company.email())) {
             throw new EmailAlreadyExistsException(company.email());
         }
+
         Company newCompany = new Company(
-                null, company.name(), company.email(), company.industry())
-        ;
-        newCompany.setPassword(passwordEncoder.encode(company.password()));
+                null,
+                company.name(),
+                company.email(),
+                passwordEncoder.encode(company.password()),
+                company.industry()
+        );
+
         Company savedCompany = this.companyRepository.save(newCompany);
         return new CompanySignupResponse(
                 savedCompany.getId(), savedCompany.getName(),

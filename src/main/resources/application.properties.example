@@ -7,7 +7,7 @@ spring.datasource.url=jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com
 spring.datasource.username=postgres.sdgucpokmnuxoyhjsazi
 
 
-spring.datasource.password=replace_me
+spring.datasource.password=REPLACE_ME
 
 
 spring.datasource.driver-class-name=org.postgresql.Driver
@@ -15,14 +15,21 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 
 
-spring.datasource.hikari.connection-timeout=30000
 
 
 
-jwt.secret=aVeryLongSecureKeyThatIsAtLeast256Bits
+
+jwt.secret=9a4f2c8d3b7e1f5a6g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d
 jwt.expiration=3600000 
 
 
-twilio.account.sid=YOUR_ACCOUNT_SID
-twilio.auth.token=YOUR_AUTH_TOKEN
-twilio.phone.number=+15186552901
+twilio.account.sid=REPLACE_ME
+twilio.auth.token=REPLACE_ME
+twilio.phone.number=REPLACE_ME
+
+
+
+spring.datasource.hikari.max-lifetime=600000
+spring.datasource.hikari.idle-timeout=300000
+spring.datasource.hikari.connection-timeout=30000
+spring.datasource.hikari.validation-timeout=5000

@@ -32,6 +32,25 @@ public class JwtService {
                 .signWith(getSigningKey())
                 .compact();
     }
+    // Add this to JwtService.java
+    public String extractRole(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("role", String.class);
+    }
+
+    // Optional: A more generic way to get any claim
+    public <T> T extractClaim(String token, java.util.function.Function<io.jsonwebtoken.Claims, T> claimsResolver) {
+        final io.jsonwebtoken.Claims claims = Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        return claimsResolver.apply(claims);
+    }
 
 
     public String extractUserId(String token) {
