@@ -1,6 +1,7 @@
 package com.netpoint.main.controllers;
 
 import com.netpoint.main.dto.requests.CompanyRegistrationRequest;
+import com.netpoint.main.dto.requests.VerifyOtpRequest;
 import com.netpoint.main.dto.responses.CompanySignupResponse;
 import com.netpoint.main.dto.requests.LoginRequest;
 import com.netpoint.main.services.AuthService;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.netpoint.main.dto.responses.AuthResponse;
 @RestController
 @RequestMapping(path="/auth")
 public class AuthController {
@@ -20,10 +21,14 @@ public class AuthController {
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
+    @PostMapping(path="/verify-2fa")
+    public ResponseEntity<AuthResponse> verifyOtp(@Valid @RequestBody VerifyOtpRequest request) {
+        return ResponseEntity.ok(this.authService.verifyOtp(request));
+    }
 
     @PostMapping(path="/login")
-    public String login(@Valid @RequestBody LoginRequest request) {
-        return this.authService.login(request);
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(this.authService.login(request));
     }
 
     @PostMapping(path="/signup")

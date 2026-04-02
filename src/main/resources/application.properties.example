@@ -1,20 +1,35 @@
 server.port=8081
 spring.application.name=NetPoint
 
-# 1. THE URL: Using the Sydney Region Pooler
-# I added ?prepareThreshold=0 which is REQUIRED for port 6543
+
 spring.datasource.url=jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0
 
-# 2. THE USERNAME: This is exactly what the dashboard gave you
 spring.datasource.username=postgres.sdgucpokmnuxoyhjsazi
 
-# 3. THE PASSWORD: Your database password
+
 spring.datasource.password=REPLACE_ME
 
-# 4. ESSENTIAL DRIVER SETTINGS
+
 spring.datasource.driver-class-name=org.postgresql.Driver
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 
-# 5. CONNECTION TIMEOUT
+
+
+
+
+
+jwt.secret=9a4f2c8d3b7e1f5a6g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d
+jwt.expiration=3600000 
+
+
+twilio.account.sid=REPLACE_ME
+twilio.auth.token=REPLACE_ME
+twilio.phone.number=REPLACE_ME
+
+
+
+spring.datasource.hikari.max-lifetime=600000
+spring.datasource.hikari.idle-timeout=300000
 spring.datasource.hikari.connection-timeout=30000
+spring.datasource.hikari.validation-timeout=5000

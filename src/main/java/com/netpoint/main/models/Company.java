@@ -3,27 +3,33 @@ package com.netpoint.main.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @Entity
+@NoArgsConstructor  // CRITICAL: Hibernate needs this to create the object
+@AllArgsConstructor // Useful for your own code
 @Table(name = "companies")
 public class Company {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Integer id;
+    private Integer id; // Removed 'final'
+
     @NotBlank
-    private final String name;
+    private String name; // Removed 'final'
+
     @NotBlank
     @Email
-    private final String email;
+    private String email; // Removed 'final'
+
     @NotBlank
     @Size(min = 8)
     private String password;
+
     @NotBlank
-    private final String industry;
+    private String industry; // Removed 'final'
 }

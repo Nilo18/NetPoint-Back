@@ -14,6 +14,5 @@ public class LoginRequest {
     @NotBlank
     @Size(min = 8)
     private String password;
-    @NotBlank
-    private String role;
+
 }
