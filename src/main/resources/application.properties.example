@@ -19,7 +19,7 @@ spring.jpa.show-sql=true
 
 
 
-jwt.secret=9a4f2c8d3b7e1f5a6g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d
+jwt.secret=REPLACE_ME
 jwt.expiration=3600000 
 
 

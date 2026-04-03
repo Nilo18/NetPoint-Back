@@ -32,36 +32,32 @@ public class AuthService {
     private final SmsService smsService;
     private final AuthenticationManager authenticationManager;
 
-
-
-
     public AuthResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
         if(user.getRole().equals("CASHIER")){
             String jwt = jwtService.generateToken(user.getId().toString(), user.getRole());
             return new AuthResponse("authenticated", jwt);
-        }else if (user.getRole().equals("ADMIN") || user.getRole().equals("OWNER")){
+        } else if (user.getRole().equals("ADMIN") || user.getRole().equals("OWNER")){
             String otp = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
             String tempToken = otpStore.save(user.getId().toString(), user.getPhoneNumber(), otp);
             smsService.sendOtp(user.getPhoneNumber(), otp);
             return new AuthResponse("2fa_required", tempToken);
-
         }
 
         throw new RuntimeException("Invalid role");
     }
     public AuthResponse verifyOtp(VerifyOtpRequest request) {
-            OtpEntry entry = otpStore.get(request.getTempToken());
-        if (!entry.getOtpCode().equals(request.getOtpCode())) {
-            otpStore.invalidate(request.getTempToken());
+            OtpEntry entry = otpStore.get(request.tempToken());
+        if (!entry.getOtpCode().equals(request.otpCode())) {
+            otpStore.invalidate(request.tempToken());
             throw new RuntimeException("Invalid OTP");
         }
-        otpStore.invalidate(request.getTempToken());
+        otpStore.invalidate(request.tempToken());
         User user = userRepository.findById(Integer.parseInt(entry.getUserId()))
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -89,7 +85,4 @@ public class AuthService {
                 savedCompany.getEmail(), savedCompany.getIndustry()
         );
     }
-
-
-
 }

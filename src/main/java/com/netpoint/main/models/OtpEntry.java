@@ -1,7 +1,10 @@
 package com.netpoint.main.models;
 
+import lombok.Data;
+
 import java.time.Instant;
 
+@Data
 public class OtpEntry {
     private final String userId;
     private final String phoneNumber;
@@ -20,10 +23,6 @@ public class OtpEntry {
     public boolean isExpired() {
         return Instant.now().isAfter(expiresAt);
     }
-    public String getUserId() { return userId; }
-    public String getPhoneNumber() { return phoneNumber; }
-    public String getOtpCode() { return otpCode; }
-    public Instant getExpiresAt() { return expiresAt; }
-    public int getAttempts() { return attempts; }
+
     public void incrementAttempts() { this.attempts++; }
 }
