@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 
-
+// მთელ ავტენტიპიკაციის ლოგიკას ეს უმკლავდება - საიტზე შესვლა, 2ფა და რეგისტრაციაც
 @Service
 @Log
 @AllArgsConstructor
@@ -32,35 +32,47 @@ public class AuthService {
     private final SmsService smsService;
     private final AuthenticationManager authenticationManager;
 
+    // პირველი ნაბიჯია რა საიტზე შესვლის, ქეშიერზე ამოწმებს პაროლს/ლოგინს და თუ სწორია გამოყოფს JWT-ს
+    //ადმინზე/მფლობელზე ჯერ ამოწმებს ლოგინ/პაროლს, ქმნის ოტპს, გზავნის ოტპს და აბრუნებს დროებით ტოკენს(tempToken)
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
+        //ამოწმებს პაროლს იმ ბკრიფტ ჰაშთან
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
+        //ქეშიერები პირდაპირ იღებენ ჯვტს და არანაირი 2ფა
         if(user.getRole().equals("CASHIER")){
             String jwt = jwtService.generateToken(user.getId().toString(), user.getRole());
             return new AuthResponse("authenticated", jwt);
-        } else if (user.getRole().equals("ADMIN") || user.getRole().equals("OWNER")){
+        }//2ფას ლოგიკა უკვე ადმინისთვის და მფლობელისთვის
+        else if (user.getRole().equals("ADMIN") || user.getRole().equals("OWNER")){
+            //ქმნის რაღაც უსაფრთხო 6 ციფრა კოდს რაც მესიჯად მიდის ტელეზე(ოტპ)
             String otp = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
+            //5 წუთის მანძილზე მეხსიერებაში ინახავს მაგ ოტპს და აბრუნებს ტემპტოკენს
             String tempToken = otpStore.save(user.getId().toString(), user.getPhoneNumber(), otp);
+            //ტვილიოთი აგზავნის ოტპს
             smsService.sendOtp(user.getPhoneNumber(), otp);
+            // აბრუნებს ტემპტოკენს რაც გჭირდება 2ფასთვის
             return new AuthResponse("2fa_required", tempToken);
         }
-
+        // ეს არის, მაგრამ აქამდე წესით არ მოვა არასდროს
         throw new RuntimeException("Invalid role");
     }
+    //უკვე მეორე ნაბიჯია, ვერიფიკაციას უკეთებს ოტპს და გასცემს ჯვტს თუ წარმატებულად დამთავრდა
     public AuthResponse verifyOtp(VerifyOtpRequest request) {
             OtpEntry entry = otpStore.get(request.tempToken());
+      //თუ ოტპ არასწორია იმწამსვე უარყოფს და შლის
         if (!entry.getOtpCode().equals(request.otpCode())) {
             otpStore.invalidate(request.tempToken());
             throw new RuntimeException("Invalid OTP");
         }
+        // ოტპ ვალიდურია და მაინც ინვალიდაციას უკეთებსბ
         otpStore.invalidate(request.tempToken());
+        //იუზერს იძახებს რო მისი როლი გაიგოს
         User user = userRepository.findById(Integer.parseInt(entry.getUserId()))
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
+        //ჯვტს გადასცემს იუზერს სწორი როლით
         String jwt = jwtService.generateToken(entry.getUserId(), user.getRole());
         return new AuthResponse("authenticated", jwt);
 
