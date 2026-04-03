@@ -23,7 +23,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
 
-
+    // jwt-ს ჰქმნის მომხმარებლისთვის, რაშიც შედის მისი აიდი და როლი
     public String generateToken(String userId, String role) {
         return Jwts.builder()
                 .subject(userId)
@@ -32,7 +32,7 @@ public class JwtService {
                 .signWith(getSigningKey())
                 .compact();
     }
-    // Add this to JwtService.java
+
     public String extractRole(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())
@@ -42,7 +42,7 @@ public class JwtService {
                 .get("role", String.class);
     }
 
-    // Optional: A more generic way to get any claim
+//ტოკენიდან პოულობს მომხმარებლის როლს
     public <T> T extractClaim(String token, java.util.function.Function<io.jsonwebtoken.Claims, T> claimsResolver) {
         final io.jsonwebtoken.Claims claims = Jwts.parser()
                 .verifyWith(getSigningKey())
@@ -52,7 +52,7 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-
+//ტოკენიდან პოულობს მომხმარებლის აიდის
     public String extractUserId(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())
@@ -62,7 +62,7 @@ public class JwtService {
                 .getSubject();
     }
 
-
+//ამოწმებს ტოკენი ხო ვალიდურია და ვადა ხომ აქვს კიდევ
     public boolean isTokenValid(String token) {
         try {
             extractUserId(token);

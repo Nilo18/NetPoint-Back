@@ -8,21 +8,21 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "users") // Maps this class to the 'users' table in Supabase
-@NoArgsConstructor    // Required by Hibernate
-@AllArgsConstructor   // Useful for creating users in your code
+@Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increments the ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-//    @NotNull
+
     private int companyId;
-//    @NotNull
+
     private String name;
-//    @NotNull
+
     private String email;
-//    @NotNull
+
     private String password;
 
     private String role;

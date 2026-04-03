@@ -7,6 +7,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+//ეს გამოიყენება რო ტვილიოს გამოყენებით გავგზავნოთ უკვე პირად ნომერზე 2ფა
 @Service
 public class SmsService {
 
@@ -19,11 +20,12 @@ public class SmsService {
 
     @PostConstruct
     public void init() {
-
+//ტვილიოს სერვერით აუთენტიკაცია შენი ექაუნთის რაღაცებით
             Twilio.init(accountSid, authToken);
 
     }
 
+    //პროსტა ტექტს გზავნის ნომერზე
     public void sendOtp(String toPhoneNumber, String otpCode) {
         Message.creator(
                 new PhoneNumber(toPhoneNumber),

@@ -11,12 +11,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class InMemoryOtpStore implements OtpStore {
 
+    // ეს იმისთვისაა როცა ბევრი ერთდროულად ცდილობს საიტზე შესვლას
     private final ConcurrentHashMap<String, OtpEntry> store = new ConcurrentHashMap<>();
     private static final int MAX_ATTEMPTS = 3;
 
     @Override
     public String save(String userId, String phoneNumber, String otpCode) {
+        //ეს აგენერირებს იმ ტემპტოკენს რასაც ვიყენებთ მერე 2ფა-სთვის
         String tempToken = UUID.randomUUID().toString();
+        //ინიახავს იუზერ ინფოს და ტემპ ტოკენს აბრუნებს
         store.put(tempToken, new OtpEntry(userId, phoneNumber, otpCode));
         return tempToken;
     }
@@ -24,12 +27,13 @@ public class InMemoryOtpStore implements OtpStore {
     @Override
     public OtpEntry get(String tempToken) {
         OtpEntry entry = store.get(tempToken);
-
+        //თუ ტოკენი არაა მაშინ ამთავრებს
         if (entry == null) {
             throw new OtpNotFoundException("Invalid or expired token");
         }
+        //ამოწმებს რომ ჯერ ვადა არ აქვს გასული
         if (entry.isExpired()) {
-            store.remove(tempToken);              // clean up expired entries
+            store.remove(tempToken);
             throw new OtpExpiredException("OTP has expired");
         }
 
@@ -38,6 +42,7 @@ public class InMemoryOtpStore implements OtpStore {
 
     @Override
     public void invalidate(String tempToken) {
+        //საიტზე შესვლის მერე შლის ამ ტოკენს
         store.remove(tempToken);
     }
 }

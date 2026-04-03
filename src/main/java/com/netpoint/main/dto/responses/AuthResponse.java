@@ -1,6 +1,10 @@
 package com.netpoint.main.dto.responses;
 
 public class AuthResponse {
+
+    // DTO აბრუნებს ორივე /auth/login და /auth/verify-2fa
+// status: "authenticated" (JWT გაცემულია) ან "2fa_required" (OTP გამოიგზავნება ესემესით)
+// token გაძლევს: JWT თ ავტეტიკირებული, tempToken თუ 2fa_required ანუ 2ფაქტორ თ უნდა
     private String status;
     private String token;
 

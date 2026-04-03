@@ -3,8 +3,12 @@ package com.netpoint.main.dto.requests;
 import jakarta.validation.constraints.NotBlank;
 
 public class VerifyOtpRequest {
+
+    // როცა საიტზე შედიხარ admin/owner საიტით ვერიფიკაციის დროებითი ტოკენია
     @NotBlank
     private String tempToken;
+
+    // ეს ის კოდია რაც ტელეზე მოდის
     @NotBlank
     private String otpCode;
 

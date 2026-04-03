@@ -20,12 +20,13 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
+    //ეს მოკლედ ყველა მოთხოვნას აჩერებსავით, რომ ტოკენის ვალიდურობა შეამოწმოს
     private final JwtAuthFilter jwtAuthFilter;
 
     public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
     }
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -37,6 +38,7 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
+    //ეს არის იმენა ბელადი ფილტრი რა, ანუ ყველა HTTP უსაფრთხოების წესებს აქ უკეთებს DEFINE-ს
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -69,6 +71,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // ეს აკონტროლებს რა ჰედერები/მეთოდები/ორიჯინებია დაშვებული(ანუ cookies, HTTP methodebi, angularis motxovnebs da mageebs)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

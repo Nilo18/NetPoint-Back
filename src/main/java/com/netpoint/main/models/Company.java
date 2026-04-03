@@ -10,26 +10,26 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@NoArgsConstructor  // CRITICAL: Hibernate needs this to create the object
+@NoArgsConstructor  // obieqtis shesaqmnelad schirdeba hibernates
 @AllArgsConstructor // Useful for your own code
 @Table(name = "companies")
 public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id; // Removed 'final'
+    private Integer id; // aq finalebit gqonda eseni, maagram movashore tore ver vaketebdi
 
     @NotBlank
-    private String name; // Removed 'final'
+    private String name;
 
     @NotBlank
     @Email
-    private String email; // Removed 'final'
+    private String email;
 
     @NotBlank
     @Size(min = 8)
     private String password;
 
     @NotBlank
-    private String industry; // Removed 'final'
+    private String industry;
 }
