@@ -11,6 +11,7 @@ import com.netpoint.main.models.OtpEntry;
 import com.netpoint.main.models.User;
 import com.netpoint.main.repositories.CompanyRepository;
 import com.netpoint.main.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,12 +39,16 @@ public class AuthService {
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         //ამოწმებს პაროლს იმ ბკრიფტ ჰაშთან
+        log.info("The request password is: " + request.password() +
+                " The User password is: " + user.getPassword());
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
         //ქეშიერები პირდაპირ იღებენ ჯვტს და არანაირი 2ფა
         if(user.getRole().equals("CASHIER")){
-            String jwt = jwtService.generateToken(user.getId().toString(), user.getRole());
+            String jwt = jwtService.generateToken(
+                    user.getId().toString(), user.getEmail(), user.getName(), user.getRole()
+            );
             return new AuthResponse("authenticated", jwt);
         }//2ფას ლოგიკა უკვე ადმინისთვის და მფლობელისთვის
         else if (user.getRole().equals("ADMIN") || user.getRole().equals("OWNER")){
@@ -73,11 +78,14 @@ public class AuthService {
         User user = userRepository.findById(Integer.parseInt(entry.getUserId()))
                 .orElseThrow(() -> new RuntimeException("User not found"));
         //ჯვტს გადასცემს იუზერს სწორი როლით
-        String jwt = jwtService.generateToken(entry.getUserId(), user.getRole());
+        String jwt = jwtService.generateToken(
+                entry.getUserId(), user.getEmail(), user.getName(), user.getRole()
+        );
         return new AuthResponse("authenticated", jwt);
 
     }
 
+    @Transactional
     public CompanySignupResponse signup(CompanyRegistrationRequest company) {
         if (this.companyRepository.existsByEmail(company.email())) {
             throw new EmailAlreadyExistsException(company.email());
@@ -92,9 +100,23 @@ public class AuthService {
         );
 
         Company savedCompany = this.companyRepository.save(newCompany);
-        return new CompanySignupResponse(
-                savedCompany.getId(), savedCompany.getName(),
-                savedCompany.getEmail(), savedCompany.getIndustry()
+
+        User user = new User(
+                null,
+                savedCompany.getId(),
+                company.owner_name(),
+                company.owner_email(),
+                passwordEncoder.encode(company.owner_password()),
+                company.role(),
+                company.phone_number()
         );
+
+        User savedUser = this.userRepository.save(user);
+
+        String accessToken = this.jwtService.generateToken(
+                savedUser.getId().toString(), savedUser.getName(), savedCompany.getEmail(), savedUser.getRole()
+        );
+
+        return new CompanySignupResponse(200, accessToken);
     }
 }
