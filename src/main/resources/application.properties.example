@@ -14,6 +14,9 @@ spring.datasource.driver-class-name=org.postgresql.Driver
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 
+logging.level.com.netpoint.main=DEBUG
+logging.pattern.console=%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+logging.file.name=logs/myapp.log
 
 
 
