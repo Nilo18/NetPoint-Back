@@ -1,0 +1,242 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(160deg, #f0f2ff 0%, #f7f8ff 40%, #eef0fb 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #1a1d2e;
+}
+
+header {
+  padding: 28px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 44px;
+  height: 44px;
+  background: #5b5bd6;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.logo-name {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1a1d2e;
+  letter-spacing: -0.3px;
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px 0;
+  text-align: center;
+}
+
+.number-block {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 36px;
+  user-select: none;
+}
+
+.big-number {
+  font-size: clamp(140px, 22vw, 200px);
+  font-weight: 800;
+  letter-spacing: -8px;
+  color: rgba(91, 91, 214, 0.13);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.big-number .zero-slot {
+  width: clamp(120px, 18vw, 170px);
+  height: clamp(120px, 18vw, 170px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.zero-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: clamp(16px, 2.5vw, 24px) solid rgba(91, 91, 214, 0.13);
+}
+
+.search-icon-wrap {
+  width: clamp(64px, 9vw, 90px);
+  height: clamp(64px, 9vw, 90px);
+  border-radius: 50%;
+  border: clamp(6px, 1vw, 8px) solid rgba(91, 91, 214, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.search-icon-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: -18%;
+  right: -12%;
+  width: 36%;
+  height: clamp(4px, 0.8vw, 7px);
+  background: rgba(91, 91, 214, 0.45);
+  border-radius: 4px;
+  transform: rotate(45deg);
+  transform-origin: left center;
+}
+
+.hero h1 {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 800;
+  color: #1a1d2e;
+  letter-spacing: -0.5px;
+  margin-bottom: 16px;
+}
+
+.hero p {
+  font-size: 1rem;
+  color: #6b7280;
+  max-width: 420px;
+  line-height: 1.65;
+  margin-bottom: 40px;
+}
+
+.btn-group {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 26px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: #5b5bd6;
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 18px rgba(91, 91, 214, 0.35);
+}
+
+.btn-primary:hover {
+  background: #4e4ec7;
+  box-shadow: 0 6px 24px rgba(91, 91, 214, 0.45);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #1a1d2e;
+  border: 1.5px solid #d1d5db;
+}
+
+.btn-secondary:hover {
+  border-color: #9ca3af;
+  background: rgba(255,255,255,0.6);
+}
+
+.btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+footer {
+  width: 100%;
+  padding: 32px 24px 28px;
+  text-align: center;
+}
+
+.footer-divider {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto 24px;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.footer-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  font-size: 0.875rem;
+  color: #5b5bd6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+
+.footer-links a:hover {
+  opacity: 0.75;
+}
+
+.footer-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #6b7280;
+  display: inline-block;
+}

@@ -1,12 +1,14 @@
 package com.netpoint.main.config;
 
 import com.netpoint.main.filters.JwtAuthFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -14,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+//import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.List;
 
@@ -52,21 +55,26 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-
+//                .securityMatcher(AntPathRequestMatcher.antMatcher("/**"))
                 // 4. Set up Authorization Rules
                 .authorizeHttpRequests(auth -> auth
                         // Allow login and registration without a token
                         .requestMatchers("/auth/**").permitAll()
-
+                        .requestMatchers("/error", "/error/**").permitAll()
+                        .requestMatchers("/css/**", "/images/**", "/*.html").permitAll()
                         // Use hasAnyAuthority because your DB stores "ADMIN" instead of "ROLE_ADMIN"
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "OWNER")
 
                         // Everything else requires a valid JWT
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
 
                 // 5. Add your JWT Filter before the standard Username/Password filter
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) ->
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                );
 
         return http.build();
     }
@@ -83,5 +91,11 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring()
+                .requestMatchers("/error", "/error/**", "/css/**", "/images/**", "/*.html");
     }
 }
