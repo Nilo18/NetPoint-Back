@@ -23,8 +23,9 @@ public class JwtService {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
 
+    // name, email, role
     // jwt-ს ჰქმნის მომხმარებლისთვის, რაშიც შედის მისი აიდი და როლი
-    public String generateToken(String userId, String role) {
+    public String generateToken(String userId, String name, String email, String role) {
         return Jwts.builder()
                 .subject(userId)
                 .claim("role", role)
