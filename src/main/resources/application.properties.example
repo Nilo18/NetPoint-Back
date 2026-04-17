@@ -23,12 +23,13 @@ logging.file.name=logs/myapp.log
 
 
 jwt.secret=REPLACE_ME
-jwt.expiration=3600000 
+jwt.expiration=3600000
 
 
 twilio.account.sid=REPLACE_ME
 twilio.auth.token=REPLACE_ME
 twilio.phone.number=REPLACE_ME
+
 
 
 
