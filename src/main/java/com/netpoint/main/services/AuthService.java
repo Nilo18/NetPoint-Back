@@ -6,6 +6,9 @@ import com.netpoint.main.dto.responses.AuthResponse;
 import com.netpoint.main.dto.responses.CompanySignupResponse;
 import com.netpoint.main.dto.requests.LoginRequest;
 import com.netpoint.main.exceptions.EmailAlreadyExistsException;
+import com.netpoint.main.exceptions.InvalidPasswordException;
+import com.netpoint.main.exceptions.InvalidRoleException;
+import com.netpoint.main.exceptions.UserNotFoundException;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.OtpEntry;
 import com.netpoint.main.models.User;
@@ -37,12 +40,18 @@ public class AuthService {
     //ადმინზე/მფლობელზე ჯერ ამოწმებს ლოგინ/პაროლს, ქმნის ოტპს, გზავნის ოტპს და აბრუნებს დროებით ტოკენს(tempToken)
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        log.info("Comparing: " + user.getRole() + " to requested role: " + request.role());
+        if (!user.getRole().equals(request.role())) {
+            throw new InvalidRoleException("Invalid role");
+        }
+
         //ამოწმებს პაროლს იმ ბკრიფტ ჰაშთან
         log.info("The request password is: " + request.password() +
                 " The User password is: " + user.getPassword());
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new InvalidPasswordException("Invalid password");
         }
         //ქეშიერები პირდაპირ იღებენ ჯვტს და არანაირი 2ფა
         if(user.getRole().equals("CASHIER")){
@@ -62,7 +71,7 @@ public class AuthService {
             return new AuthResponse("2fa_required", tempToken);
         }
         // ეს არის, მაგრამ აქამდე წესით არ მოვა არასდროს
-        throw new RuntimeException("Invalid role");
+        throw new InvalidRoleException("Invalid role");
     }
     //უკვე მეორე ნაბიჯია, ვერიფიკაციას უკეთებს ოტპს და გასცემს ჯვტს თუ წარმატებულად დამთავრდა
     public AuthResponse verifyOtp(VerifyOtpRequest request) {
