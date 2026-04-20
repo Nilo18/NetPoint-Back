@@ -1,5 +1,6 @@
 package com.netpoint.main.exceptions;
 
+import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 * მერე მოხვალ აქ და ჩაამატებ, როგორც ქვემოთაა ნაჩვენები
 */
 @RestControllerAdvice
+@Log
 public class GlobalExceptionHandler {
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<Map<String, String>> handleEmailExists(EmailAlreadyExistsException ex) {
@@ -45,9 +47,26 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleInvalidRole(InvalidRoleException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
     }
-    @ExceptionHandler(RuntimeException.class)
-    public String handleRuntimeException(RuntimeException ex) {
-        // This catches the "Invalid OTP" or "Token Expired" messages from AuthService
-        return "error/500";
+
+    @ExceptionHandler(InvalidOtpException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidOtp(InvalidOtpException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(OtpNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleOtpNotFound(OtpNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(OtpExpiredException.class)
+    public ResponseEntity<Map<String, String>> handleOtpNotFound(OtpExpiredException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleGeneric(Exception ex) {
+        log.info("Got generic error: " + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Something went wrong"));
     }
 }

@@ -5,10 +5,7 @@ import com.netpoint.main.dto.requests.VerifyOtpRequest;
 import com.netpoint.main.dto.responses.AuthResponse;
 import com.netpoint.main.dto.responses.CompanySignupResponse;
 import com.netpoint.main.dto.requests.LoginRequest;
-import com.netpoint.main.exceptions.EmailAlreadyExistsException;
-import com.netpoint.main.exceptions.InvalidPasswordException;
-import com.netpoint.main.exceptions.InvalidRoleException;
-import com.netpoint.main.exceptions.UserNotFoundException;
+import com.netpoint.main.exceptions.*;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.OtpEntry;
 import com.netpoint.main.models.User;
@@ -75,23 +72,28 @@ public class AuthService {
     }
     //უკვე მეორე ნაბიჯია, ვერიფიკაციას უკეთებს ოტპს და გასცემს ჯვტს თუ წარმატებულად დამთავრდა
     public AuthResponse verifyOtp(VerifyOtpRequest request) {
-            OtpEntry entry = otpStore.get(request.tempToken());
+        OtpEntry entry = otpStore.get(request.tempToken());
       //თუ ოტპ არასწორია იმწამსვე უარყოფს და შლის
         if (!entry.getOtpCode().equals(request.otpCode())) {
             otpStore.invalidate(request.tempToken());
-            throw new RuntimeException("Invalid OTP");
+            throw new InvalidOtpException("Invalid verification code.");
+        }
+
+        log.info("Checking entry.isExpired() value: " + entry.isExpired());
+        if (entry.isExpired()) {
+            log.info("Throwing verification code expired error...");
+            throw new OtpExpiredException("Verification code expired.");
         }
         // ოტპ ვალიდურია და მაინც ინვალიდაციას უკეთებსბ
         otpStore.invalidate(request.tempToken());
         //იუზერს იძახებს რო მისი როლი გაიგოს
         User user = userRepository.findById(Integer.parseInt(entry.getUserId()))
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         //ჯვტს გადასცემს იუზერს სწორი როლით
         String jwt = jwtService.generateToken(
                 entry.getUserId(), user.getEmail(), user.getName(), user.getRole()
         );
         return new AuthResponse("authenticated", jwt);
-
     }
 
     @Transactional
