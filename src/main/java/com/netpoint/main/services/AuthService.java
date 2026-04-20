@@ -30,7 +30,7 @@ public class AuthService {
     private BCryptPasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final OtpStore otpStore;
-    private final SmsService smsService;
+    private final EmailService emailService;
     private final AuthenticationManager authenticationManager;
 
     // პირველი ნაბიჯია რა საიტზე შესვლის, ქეშიერზე ამოწმებს პაროლს/ლოგინს და თუ სწორია გამოყოფს JWT-ს
@@ -57,19 +57,21 @@ public class AuthService {
             );
             return new AuthResponse("authenticated", jwt);
         }//2ფას ლოგიკა უკვე ადმინისთვის და მფლობელისთვის
-        else if (user.getRole().equals("ADMIN") || user.getRole().equals("OWNER")){
-            //ქმნის რაღაც უსაფრთხო 6 ციფრა კოდს რაც მესიჯად მიდის ტელეზე(ოტპ)
+        else if (user.getRole().equals("ADMIN") || user.getRole().equals("OWNER")) {
+            // agenerirebs 6 cifra kods
             String otp = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
-            //5 წუთის მანძილზე მეხსიერებაში ინახავს მაგ ოტპს და აბრუნებს ტემპტოკენს
-            String tempToken = otpStore.save(user.getId().toString(), user.getPhoneNumber(), otp);
-            //ტვილიოთი აგზავნის ოტპს
-            smsService.sendOtp(user.getPhoneNumber(), otp);
-            // აბრუნებს ტემპტოკენს რაც გჭირდება 2ფასთვის
+
+            String tempToken = otpStore.save(user.getId().toString(), user.getEmail(), otp);
+
+            //gzavnis ukve imeilze
+            emailService.sendOtpEmail(user.getEmail(), otp);
+
             return new AuthResponse("2fa_required", tempToken);
         }
         // ეს არის, მაგრამ აქამდე წესით არ მოვა არასდროს
         throw new InvalidRoleException("Invalid role");
     }
+
     //უკვე მეორე ნაბიჯია, ვერიფიკაციას უკეთებს ოტპს და გასცემს ჯვტს თუ წარმატებულად დამთავრდა
     public AuthResponse verifyOtp(VerifyOtpRequest request) {
         OtpEntry entry = otpStore.get(request.tempToken());
