@@ -20,17 +20,16 @@ logging.file.name=logs/myapp.log
 
 
 
+jwt.secret=9a4f2c8d3b7e1f5a6g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d
+jwt.expiration=3600000 
 
 
-jwt.secret=REPLACE_ME
-jwt.expiration=3600000
-
-
-twilio.account.sid=REPLACE_ME
-twilio.auth.token=REPLACE_ME
-twilio.phone.number=REPLACE_ME
-
-
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=netpoint19923@gmail.com
+spring.mail.password=REPLACE_MME
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
 
 
 spring.datasource.hikari.max-lifetime=600000
