@@ -1,3 +1,15 @@
-NetPoint(სიტყვებზე თამაში "point of sale" + "Net Profit"), არის საიტი, რომელსაც გამოიყენებენ სხვადასხვა მაღაზიები/კომპანიები. ის გაიყოფა ორ ძირითად ნაწილად, 
-ერთმხრივ იქნება ადმინის მხარე, რომლიდანაც ადმინი შეძლებს ატვირთოს მაღაზიის კატალოგი მისი ყველა მონაცემით(ფასი, აიდი, წონა და ა.შ.), ხოლო მეორე ნაწილი იქნება 
-ქეშიერის ნაწილი, რომლიდანაც მოლარეები შეძლებენ დაასკანერონ პროდუქტი(როგორც მაგალითად კარფურის მაღაზიებში) და ჯამური ფასი დაითვალონ
+## Overview
+This repository contains the backend implementation for NetPoint, responsible for business logic, data persistence, and RESTful API endpoints used by the POS system.
+
+## Features
+- Manage product catalog (create, update, delete)
+- Store product data (price, ID/barcode, weight, etc.)
+- Provide APIs for product retrieval during checkout
+- Handle core application logic
+  
+## Backend Tech Stack
+- Framework: Spring Boot
+- Language: Java
+- Database: (e.g., PostgreSQL / MySQL)
+
+🔗 Frontend repository: https://github.com/Nilo18/NetPoint-Front
