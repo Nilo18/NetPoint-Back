@@ -66,6 +66,7 @@ public class AuthService {
             //gzavnis ukve imeilze
             emailService.sendOtpEmail(user.getEmail(), otp);
 
+            log.info("Before returning the response: ");
             return new AuthResponse("2fa_required", tempToken);
         }
         // ეს არის, მაგრამ აქამდე წესით არ მოვა არასდროს
@@ -116,7 +117,7 @@ public class AuthService {
 
         User user = new User(
                 null,
-                savedCompany.getId(),
+                savedCompany,
                 company.owner_name(),
                 company.owner_email(),
                 passwordEncoder.encode(company.owner_password()),

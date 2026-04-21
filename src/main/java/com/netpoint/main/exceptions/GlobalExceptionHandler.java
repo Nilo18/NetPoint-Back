@@ -3,6 +3,7 @@ package com.netpoint.main.exceptions;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailAuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -61,6 +62,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OtpExpiredException.class)
     public ResponseEntity<Map<String, String>> handleOtpNotFound(OtpExpiredException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(MailAuthenticationException.class)
+    public ResponseEntity<Map<String, String>> handleOtpNotFound(MailAuthenticationException ex) {
+        log.info("Full reason: " + ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

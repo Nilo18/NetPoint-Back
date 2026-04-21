@@ -53,3 +53,1087 @@
 2026-04-21T00:40:01.860+04:00  WARN 15448 --- [NetPoint] [http-nio-8081-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.netpoint.main.dto.responses.AuthResponse> com.netpoint.main.controllers.AuthController.verifyOtp(com.netpoint.main.dto.requests.VerifyOtpRequest): [Field error in object 'verifyOtpRequest' on field 'otpCode': rejected value [null]; codes [NotBlank.verifyOtpRequest.otpCode,NotBlank.otpCode,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [verifyOtpRequest.otpCode,otpCode]; arguments []; default message [otpCode]]; default message [must not be blank]] ]
 2026-04-21T00:40:47.024+04:00  WARN 15448 --- [NetPoint] [http-nio-8081-exec-9] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.netpoint.main.dto.responses.AuthResponse> com.netpoint.main.controllers.AuthController.verifyOtp(com.netpoint.main.dto.requests.VerifyOtpRequest): [Field error in object 'verifyOtpRequest' on field 'otpCode': rejected value [null]; codes [NotBlank.verifyOtpRequest.otpCode,NotBlank.otpCode,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [verifyOtpRequest.otpCode,otpCode]; arguments []; default message [otpCode]]; default message [must not be blank]] ]
 2026-04-21T00:42:02.889+04:00  INFO 15448 --- [NetPoint] [http-nio-8081-exec-1] com.netpoint.main.services.AuthService   : Checking entry.isExpired() value: false
+2026-04-21T18:51:20.830+04:00  INFO 5820 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 5820 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T18:51:20.837+04:00 DEBUG 5820 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T18:51:20.838+04:00  INFO 5820 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T18:51:20.973+04:00  INFO 5820 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T18:51:20.973+04:00  INFO 5820 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T18:51:22.927+04:00  INFO 5820 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T18:51:23.025+04:00  INFO 5820 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 82 ms. Found 2 JPA repository interfaces.
+2026-04-21T18:51:23.963+04:00  INFO 5820 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T18:51:23.987+04:00  INFO 5820 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T18:51:23.987+04:00  INFO 5820 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T18:51:24.046+04:00  INFO 5820 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 3070 ms
+2026-04-21T18:51:24.131+04:00 DEBUG 5820 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T18:51:24.391+04:00  INFO 5820 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T18:51:24.493+04:00  INFO 5820 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T18:51:25.851+04:00  INFO 5820 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T18:51:25.923+04:00  WARN 5820 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T18:51:25.925+04:00  INFO 5820 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T18:51:30.545+04:00  INFO 5820 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5f5416f8
+2026-04-21T18:51:30.545+04:00  INFO 5820 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T18:51:32.899+04:00  INFO 5820 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T18:51:35.379+04:00  INFO 5820 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T18:51:37.009+04:00  INFO 5820 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T18:51:37.176+04:00  INFO 5820 --- [NetPoint] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T18:51:37.588+04:00  WARN 5820 --- [NetPoint] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'authController' defined in file [C:\Users\hp\NetPoint-Back\target\classes\com\netpoint\main\controllers\AuthController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'authService' defined in file [C:\Users\hp\NetPoint-Back\target\classes\com\netpoint\main\services\AuthService.class]: Unsatisfied dependency expressed through constructor parameter 5: Error creating bean with name 'emailService' defined in file [C:\Users\hp\NetPoint-Back\target\classes\com\netpoint\main\services\EmailService.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'org.springframework.mail.javamail.JavaMailSender' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2026-04-21T18:51:37.588+04:00  INFO 5820 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T18:51:37.601+04:00  INFO 5820 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T18:51:39.041+04:00  INFO 5820 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T18:51:39.041+04:00  INFO 5820 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2026-04-21T18:51:39.057+04:00  INFO 5820 --- [NetPoint] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-21T18:51:39.105+04:00 ERROR 5820 --- [NetPoint] [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.netpoint.main.services.EmailService required a bean of type 'org.springframework.mail.javamail.JavaMailSender' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.springframework.mail.javamail.JavaMailSender' in your configuration.
+
+2026-04-21T18:53:58.059+04:00  INFO 6592 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 6592 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T18:53:58.061+04:00 DEBUG 6592 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T18:53:58.063+04:00  INFO 6592 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T18:53:58.121+04:00  INFO 6592 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T18:53:58.121+04:00  INFO 6592 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T18:53:58.864+04:00  INFO 6592 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T18:53:58.931+04:00  INFO 6592 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 59 ms. Found 2 JPA repository interfaces.
+2026-04-21T18:53:59.451+04:00  INFO 6592 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T18:53:59.462+04:00  INFO 6592 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T18:53:59.462+04:00  INFO 6592 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T18:53:59.497+04:00  INFO 6592 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1375 ms
+2026-04-21T18:53:59.545+04:00 DEBUG 6592 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T18:53:59.713+04:00  INFO 6592 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T18:53:59.751+04:00  INFO 6592 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T18:54:00.154+04:00  INFO 6592 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T18:54:00.176+04:00  WARN 6592 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T18:54:00.176+04:00  INFO 6592 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T18:54:03.779+04:00  INFO 6592 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@262f2216
+2026-04-21T18:54:03.780+04:00  INFO 6592 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T18:54:06.075+04:00  INFO 6592 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T18:54:06.839+04:00  INFO 6592 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T18:54:08.404+04:00  INFO 6592 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T18:54:08.481+04:00  INFO 6592 --- [NetPoint] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T18:54:08.612+04:00  WARN 6592 --- [NetPoint] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'authController' defined in file [C:\Users\hp\NetPoint-Back\target\classes\com\netpoint\main\controllers\AuthController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'authService' defined in file [C:\Users\hp\NetPoint-Back\target\classes\com\netpoint\main\services\AuthService.class]: Unsatisfied dependency expressed through constructor parameter 5: Error creating bean with name 'emailService' defined in file [C:\Users\hp\NetPoint-Back\target\classes\com\netpoint\main\services\EmailService.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'org.springframework.mail.javamail.JavaMailSender' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2026-04-21T18:54:08.613+04:00  INFO 6592 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T18:54:08.615+04:00  INFO 6592 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T18:54:09.697+04:00  INFO 6592 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T18:54:09.700+04:00  INFO 6592 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2026-04-21T18:54:09.710+04:00  INFO 6592 --- [NetPoint] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-21T18:54:09.729+04:00 ERROR 6592 --- [NetPoint] [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.netpoint.main.services.EmailService required a bean of type 'org.springframework.mail.javamail.JavaMailSender' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.springframework.mail.javamail.JavaMailSender' in your configuration.
+
+2026-04-21T18:58:28.087+04:00  INFO 15472 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 15472 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T18:58:28.089+04:00 DEBUG 15472 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T18:58:28.091+04:00  INFO 15472 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T18:58:28.135+04:00  INFO 15472 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T18:58:28.135+04:00  INFO 15472 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T18:58:28.801+04:00  INFO 15472 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T18:58:28.859+04:00  INFO 15472 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 50 ms. Found 2 JPA repository interfaces.
+2026-04-21T18:58:29.343+04:00  INFO 15472 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T18:58:29.356+04:00  INFO 15472 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T18:58:29.356+04:00  INFO 15472 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T18:58:29.390+04:00  INFO 15472 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1254 ms
+2026-04-21T18:58:29.428+04:00 DEBUG 15472 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T18:58:29.618+04:00  INFO 15472 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T18:58:29.659+04:00  INFO 15472 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T18:58:30.030+04:00  INFO 15472 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T18:58:30.051+04:00  WARN 15472 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T18:58:30.052+04:00  INFO 15472 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T18:58:33.862+04:00  INFO 15472 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@20f3bb49
+2026-04-21T18:58:33.863+04:00  INFO 15472 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T18:58:36.142+04:00  INFO 15472 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T18:58:36.776+04:00  INFO 15472 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T18:58:38.351+04:00  INFO 15472 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T18:58:38.419+04:00  INFO 15472 --- [NetPoint] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T18:58:38.620+04:00  INFO 15472 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : --- LOGGING SYSTEM INITIALIZED ---
+2026-04-21T18:58:38.620+04:00 DEBUG 15472 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Debug mode is ACTIVE for com.netpoint.main
+2026-04-21T18:58:38.620+04:00 ERROR 15472 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Testing error log: System is running fine.
+2026-04-21T18:58:38.651+04:00  WARN 15472 --- [NetPoint] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-21T18:58:38.823+04:00  WARN 15472 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T18:58:38.823+04:00  WARN 15472 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T18:58:38.823+04:00  WARN 15472 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/css/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T18:58:38.823+04:00  WARN 15472 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/images/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T18:58:38.823+04:00  WARN 15472 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/*.html]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T18:58:39.154+04:00  WARN 15472 --- [NetPoint] [restartedMain] o.s.b.f.a.FreeMarkerAutoConfiguration    : Cannot find template location: [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
+2026-04-21T18:58:39.198+04:00  INFO 15472 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-21T18:58:39.205+04:00  INFO 15472 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Started NetPointApplication in 11.536 seconds (process running for 12.051)
+2026-04-21T18:58:48.783+04:00  INFO 15472 --- [NetPoint] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-21T18:58:48.784+04:00  INFO 15472 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-21T18:58:48.785+04:00  INFO 15472 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-04-21T18:58:50.443+04:00  WARN 15472 --- [NetPoint] [http-nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.netpoint.main.exceptions.UserNotFoundException: User not found]
+2026-04-21T19:00:40.639+04:00  INFO 15472 --- [NetPoint] [http-nio-8080-exec-4] com.netpoint.main.services.AuthService   : Comparing: OWNER to requested role: OWNER
+2026-04-21T19:00:40.651+04:00  INFO 15472 --- [NetPoint] [http-nio-8080-exec-4] com.netpoint.main.services.AuthService   : The request password is: 12345678 The User password is: $2a$10$/IBeELiRRfEq9JoycYeNXOS72cYR5IXL/QM1UvOhogRwcdKCoUN2q
+2026-04-21T19:00:40.768+04:00  WARN 15472 --- [NetPoint] [http-nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.netpoint.main.exceptions.InvalidPasswordException: Invalid password]
+2026-04-21T19:01:02.726+04:00  INFO 15472 --- [NetPoint] [http-nio-8080-exec-8] com.netpoint.main.services.AuthService   : Comparing: OWNER to requested role: OWNER
+2026-04-21T19:01:02.738+04:00  INFO 15472 --- [NetPoint] [http-nio-8080-exec-8] com.netpoint.main.services.AuthService   : The request password is: 123456789 The User password is: $2a$10$/IBeELiRRfEq9JoycYeNXOS72cYR5IXL/QM1UvOhogRwcdKCoUN2q
+2026-04-21T19:01:04.380+04:00  INFO 15472 --- [NetPoint] [http-nio-8080-exec-8] c.n.m.exceptions.GlobalExceptionHandler  : Got generic error: Authentication failed
+2026-04-21T19:01:04.386+04:00  WARN 15472 --- [NetPoint] [http-nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.mail.MailAuthenticationException: Authentication failed]
+2026-04-21T19:06:30.088+04:00  INFO 15472 --- [NetPoint] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-21T19:06:30.095+04:00  INFO 15472 --- [NetPoint] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-21T19:06:30.099+04:00  INFO 15472 --- [NetPoint] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:06:30.102+04:00  INFO 15472 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T19:06:32.624+04:00  INFO 15472 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T19:06:36.313+04:00  INFO 21476 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 21476 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T19:06:36.314+04:00 DEBUG 21476 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T19:06:36.316+04:00  INFO 21476 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T19:06:36.360+04:00  INFO 21476 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T19:06:36.360+04:00  INFO 21476 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T19:06:37.056+04:00  INFO 21476 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T19:06:37.112+04:00  INFO 21476 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 49 ms. Found 2 JPA repository interfaces.
+2026-04-21T19:06:37.580+04:00  INFO 21476 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T19:06:37.590+04:00  INFO 21476 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T19:06:37.591+04:00  INFO 21476 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T19:06:37.624+04:00  INFO 21476 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1264 ms
+2026-04-21T19:06:37.672+04:00 DEBUG 21476 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T19:06:37.817+04:00  INFO 21476 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T19:06:37.867+04:00  INFO 21476 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T19:06:38.239+04:00  INFO 21476 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T19:06:38.262+04:00  WARN 21476 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T19:06:38.263+04:00  INFO 21476 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T19:06:41.816+04:00  INFO 21476 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@17a1803f
+2026-04-21T19:06:41.816+04:00  INFO 21476 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T19:06:44.141+04:00  INFO 21476 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T19:06:44.244+04:00 ERROR 21476 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Association 'com.netpoint.main.models.User.companyId' targets the type 'java.lang.Integer' which is not an '@Entity' type
+2026-04-21T19:06:44.245+04:00  WARN 21476 --- [NetPoint] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/hibernate/autoconfigure/HibernateJpaConfiguration.class]: Association 'com.netpoint.main.models.User.companyId' targets the type 'java.lang.Integer' which is not an '@Entity' type
+2026-04-21T19:06:44.246+04:00  INFO 21476 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T19:06:44.968+04:00  INFO 21476 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T19:06:44.974+04:00  INFO 21476 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2026-04-21T19:06:44.983+04:00  INFO 21476 --- [NetPoint] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-21T19:06:44.992+04:00 ERROR 21476 --- [NetPoint] [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/hibernate/autoconfigure/HibernateJpaConfiguration.class]: Association 'com.netpoint.main.models.User.companyId' targets the type 'java.lang.Integer' which is not an '@Entity' type
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1817) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.3.jar:4.0.3]
+	at com.netpoint.main.NetPointApplication.main(NetPointApplication.java:15) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.3.jar:4.0.3]
+Caused by: org.hibernate.AnnotationException: Association 'com.netpoint.main.models.User.companyId' targets the type 'java.lang.Integer' which is not an '@Entity' type
+	at org.hibernate.boot.model.internal.ToOneFkSecondPass.doSecondPass(ToOneFkSecondPass.java:113) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.processEndOfQueue(InFlightMetadataCollectorImpl.java:1868) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.processFkSecondPassesInOrder(InFlightMetadataCollectorImpl.java:1818) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.processSecondPasses(InFlightMetadataCollectorImpl.java:1731) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.coordinateProcessors(MetadataBuildingProcess.java:330) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:199) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1392) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.populateSessionFactoryBuilder(EntityManagerFactoryBuilderImpl.java:1472) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1454) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813) ~[spring-beans-7.0.5.jar:7.0.5]
+	... 18 common frames omitted
+
+2026-04-21T19:09:13.624+04:00  INFO 16616 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 16616 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T19:09:13.626+04:00 DEBUG 16616 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T19:09:13.627+04:00  INFO 16616 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T19:09:13.677+04:00  INFO 16616 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T19:09:13.677+04:00  INFO 16616 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T19:09:14.385+04:00  INFO 16616 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T19:09:14.442+04:00  INFO 16616 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 48 ms. Found 2 JPA repository interfaces.
+2026-04-21T19:09:14.944+04:00  INFO 16616 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T19:09:14.957+04:00  INFO 16616 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T19:09:14.958+04:00  INFO 16616 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T19:09:14.998+04:00  INFO 16616 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1320 ms
+2026-04-21T19:09:15.059+04:00 DEBUG 16616 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T19:09:15.244+04:00  INFO 16616 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T19:09:15.289+04:00  INFO 16616 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T19:09:15.690+04:00  INFO 16616 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T19:09:15.713+04:00  WARN 16616 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T19:09:15.714+04:00  INFO 16616 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T19:09:19.416+04:00  INFO 16616 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4b4b40d1
+2026-04-21T19:09:19.416+04:00  INFO 16616 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T19:09:22.336+04:00  INFO 16616 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T19:09:23.813+04:00  INFO 16616 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T19:09:26.890+04:00  WARN 16616 --- [NetPoint] [restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists users add constraint FKin8gn4o1hpiwe6qe4ey7ykwq7 foreign key (company_id) references companies" via JDBC [ERROR: insert or update on table "users" violates foreign key constraint "fkin8gn4o1hpiwe6qe4ey7ykwq7"
+  Detail: Key (company_id)=(21) is not present in table "companies".]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists users add constraint FKin8gn4o1hpiwe6qe4ey7ykwq7 foreign key (company_id) references companies" via JDBC [ERROR: insert or update on table "users" violates foreign key constraint "fkin8gn4o1hpiwe6qe4ey7ykwq7"
+  Detail: Key (company_id)=(21) is not present in table "companies".]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:81) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:438) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:256) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:323) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:437) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1456) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.3.jar:4.0.3]
+	at com.netpoint.main.NetPointApplication.main(NetPointApplication.java:15) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.3.jar:4.0.3]
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "users" violates foreign key constraint "fkin8gn4o1hpiwe6qe4ey7ykwq7"
+  Detail: Key (company_id)=(21) is not present in table "companies".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2875) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2560) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:429) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:526) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:436) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:358) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:343) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:319) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:314) ~[postgresql-42.7.10.jar:42.7.10]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:76) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	... 40 common frames omitted
+
+2026-04-21T19:09:26.898+04:00  INFO 16616 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:09:27.045+04:00  INFO 16616 --- [NetPoint] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T19:09:27.438+04:00  INFO 16616 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : --- LOGGING SYSTEM INITIALIZED ---
+2026-04-21T19:09:27.439+04:00 DEBUG 16616 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Debug mode is ACTIVE for com.netpoint.main
+2026-04-21T19:09:27.439+04:00 ERROR 16616 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Testing error log: System is running fine.
+2026-04-21T19:09:27.521+04:00  WARN 16616 --- [NetPoint] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-21T19:09:27.867+04:00  WARN 16616 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:09:27.867+04:00  WARN 16616 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:09:27.867+04:00  WARN 16616 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/css/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:09:27.867+04:00  WARN 16616 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/images/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:09:27.867+04:00  WARN 16616 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/*.html]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:09:28.398+04:00  WARN 16616 --- [NetPoint] [restartedMain] o.s.b.f.a.FreeMarkerAutoConfiguration    : Cannot find template location: [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
+2026-04-21T19:09:28.476+04:00  INFO 16616 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-21T19:09:28.490+04:00  INFO 16616 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Started NetPointApplication in 15.267 seconds (process running for 15.743)
+2026-04-21T19:09:59.074+04:00  INFO 16616 --- [NetPoint] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-21T19:09:59.083+04:00  INFO 16616 --- [NetPoint] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-21T19:09:59.087+04:00  INFO 16616 --- [NetPoint] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:09:59.090+04:00  INFO 16616 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T19:10:02.687+04:00  INFO 16616 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T19:10:06.234+04:00  INFO 20920 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 20920 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T19:10:06.235+04:00 DEBUG 20920 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T19:10:06.236+04:00  INFO 20920 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T19:10:06.284+04:00  INFO 20920 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T19:10:06.284+04:00  INFO 20920 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T19:10:06.995+04:00  INFO 20920 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T19:10:07.051+04:00  INFO 20920 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 49 ms. Found 2 JPA repository interfaces.
+2026-04-21T19:10:07.536+04:00  INFO 20920 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T19:10:07.550+04:00  INFO 20920 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T19:10:07.551+04:00  INFO 20920 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T19:10:07.588+04:00  INFO 20920 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1303 ms
+2026-04-21T19:10:07.629+04:00 DEBUG 20920 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T19:10:07.770+04:00  INFO 20920 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T19:10:07.810+04:00  INFO 20920 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T19:10:08.157+04:00  INFO 20920 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T19:10:08.182+04:00  WARN 20920 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T19:10:08.182+04:00  INFO 20920 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T19:10:11.705+04:00  INFO 20920 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@27bd4702
+2026-04-21T19:10:11.706+04:00  INFO 20920 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T19:10:13.968+04:00  INFO 20920 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T19:10:14.633+04:00  INFO 20920 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T19:10:17.255+04:00  WARN 20920 --- [NetPoint] [restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists users add constraint FKin8gn4o1hpiwe6qe4ey7ykwq7 foreign key (company_id) references companies" via JDBC [ERROR: insert or update on table "users" violates foreign key constraint "fkin8gn4o1hpiwe6qe4ey7ykwq7"
+  Detail: Key (company_id)=(21) is not present in table "companies".]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists users add constraint FKin8gn4o1hpiwe6qe4ey7ykwq7 foreign key (company_id) references companies" via JDBC [ERROR: insert or update on table "users" violates foreign key constraint "fkin8gn4o1hpiwe6qe4ey7ykwq7"
+  Detail: Key (company_id)=(21) is not present in table "companies".]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:81) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:438) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:256) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:323) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:437) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1456) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.3.jar:4.0.3]
+	at com.netpoint.main.NetPointApplication.main(NetPointApplication.java:15) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.3.jar:4.0.3]
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "users" violates foreign key constraint "fkin8gn4o1hpiwe6qe4ey7ykwq7"
+  Detail: Key (company_id)=(21) is not present in table "companies".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2875) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2560) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:429) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:526) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:436) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:358) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:343) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:319) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:314) ~[postgresql-42.7.10.jar:42.7.10]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:76) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	... 40 common frames omitted
+
+2026-04-21T19:10:17.258+04:00  INFO 20920 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:10:17.322+04:00  INFO 20920 --- [NetPoint] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T19:10:17.556+04:00  INFO 20920 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : --- LOGGING SYSTEM INITIALIZED ---
+2026-04-21T19:10:17.557+04:00 DEBUG 20920 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Debug mode is ACTIVE for com.netpoint.main
+2026-04-21T19:10:17.557+04:00 ERROR 20920 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Testing error log: System is running fine.
+2026-04-21T19:10:17.588+04:00  WARN 20920 --- [NetPoint] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-21T19:10:17.742+04:00  WARN 20920 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:10:17.742+04:00  WARN 20920 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:10:17.742+04:00  WARN 20920 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/css/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:10:17.742+04:00  WARN 20920 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/images/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:10:17.742+04:00  WARN 20920 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/*.html]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:10:18.047+04:00  WARN 20920 --- [NetPoint] [restartedMain] o.s.b.f.a.FreeMarkerAutoConfiguration    : Cannot find template location: [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
+2026-04-21T19:10:18.086+04:00  INFO 20920 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-21T19:10:18.092+04:00  INFO 20920 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Started NetPointApplication in 12.256 seconds (process running for 12.731)
+2026-04-21T19:12:10.455+04:00  INFO 20920 --- [NetPoint] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-21T19:12:10.461+04:00  INFO 20920 --- [NetPoint] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-21T19:12:10.464+04:00  INFO 20920 --- [NetPoint] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:12:10.467+04:00  INFO 20920 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T19:12:12.265+04:00  INFO 20920 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T19:12:14.029+04:00  INFO 18520 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 18520 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T19:12:14.032+04:00 DEBUG 18520 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T19:12:14.033+04:00  INFO 18520 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T19:12:14.093+04:00  INFO 18520 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T19:12:14.098+04:00  INFO 18520 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T19:12:14.770+04:00  INFO 18520 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T19:12:14.827+04:00  INFO 18520 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 49 ms. Found 2 JPA repository interfaces.
+2026-04-21T19:12:15.301+04:00  INFO 18520 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T19:12:15.311+04:00  INFO 18520 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T19:12:15.311+04:00  INFO 18520 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T19:12:15.343+04:00  INFO 18520 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1245 ms
+2026-04-21T19:12:15.382+04:00 DEBUG 18520 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T19:12:15.524+04:00  INFO 18520 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T19:12:15.570+04:00  INFO 18520 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T19:12:15.903+04:00  INFO 18520 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T19:12:15.928+04:00  WARN 18520 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T19:12:15.928+04:00  INFO 18520 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T19:12:19.530+04:00  INFO 18520 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@47060efb
+2026-04-21T19:12:19.531+04:00  INFO 18520 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T19:12:21.799+04:00  INFO 18520 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T19:12:22.474+04:00  INFO 18520 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T19:12:25.284+04:00  WARN 18520 --- [NetPoint] [restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists users add constraint FKin8gn4o1hpiwe6qe4ey7ykwq7 foreign key (company_id) references companies" via JDBC [ERROR: insert or update on table "users" violates foreign key constraint "fkin8gn4o1hpiwe6qe4ey7ykwq7"
+  Detail: Key (company_id)=(21) is not present in table "companies".]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists users add constraint FKin8gn4o1hpiwe6qe4ey7ykwq7 foreign key (company_id) references companies" via JDBC [ERROR: insert or update on table "users" violates foreign key constraint "fkin8gn4o1hpiwe6qe4ey7ykwq7"
+  Detail: Key (company_id)=(21) is not present in table "companies".]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:81) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:438) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:256) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:323) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:437) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1456) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.3.jar:4.0.3]
+	at com.netpoint.main.NetPointApplication.main(NetPointApplication.java:15) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.3.jar:4.0.3]
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "users" violates foreign key constraint "fkin8gn4o1hpiwe6qe4ey7ykwq7"
+  Detail: Key (company_id)=(21) is not present in table "companies".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2875) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2560) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:429) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:526) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:436) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:358) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:343) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:319) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:314) ~[postgresql-42.7.10.jar:42.7.10]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:76) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	... 40 common frames omitted
+
+2026-04-21T19:12:25.293+04:00  INFO 18520 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:12:25.438+04:00  INFO 18520 --- [NetPoint] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T19:12:25.866+04:00  INFO 18520 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : --- LOGGING SYSTEM INITIALIZED ---
+2026-04-21T19:12:25.866+04:00 DEBUG 18520 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Debug mode is ACTIVE for com.netpoint.main
+2026-04-21T19:12:25.866+04:00 ERROR 18520 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Testing error log: System is running fine.
+2026-04-21T19:12:25.924+04:00  WARN 18520 --- [NetPoint] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-21T19:12:26.269+04:00  WARN 18520 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:12:26.269+04:00  WARN 18520 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:12:26.269+04:00  WARN 18520 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/css/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:12:26.271+04:00  WARN 18520 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/images/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:12:26.271+04:00  WARN 18520 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/*.html]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:12:26.805+04:00  WARN 18520 --- [NetPoint] [restartedMain] o.s.b.f.a.FreeMarkerAutoConfiguration    : Cannot find template location: [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
+2026-04-21T19:12:26.873+04:00  INFO 18520 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-21T19:12:26.885+04:00  INFO 18520 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Started NetPointApplication in 13.326 seconds (process running for 13.856)
+2026-04-21T19:16:12.856+04:00  INFO 18520 --- [NetPoint] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-21T19:16:12.864+04:00  INFO 18520 --- [NetPoint] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-21T19:16:12.867+04:00  INFO 18520 --- [NetPoint] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:16:12.870+04:00  INFO 18520 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T19:16:14.679+04:00  INFO 18520 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T19:16:16.350+04:00  INFO 22372 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 22372 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T19:16:16.353+04:00 DEBUG 22372 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T19:16:16.353+04:00  INFO 22372 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T19:16:16.403+04:00  INFO 22372 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T19:16:16.403+04:00  INFO 22372 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T19:16:17.076+04:00  INFO 22372 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T19:16:17.132+04:00  INFO 22372 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 49 ms. Found 2 JPA repository interfaces.
+2026-04-21T19:16:17.623+04:00  INFO 22372 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T19:16:17.633+04:00  INFO 22372 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T19:16:17.633+04:00  INFO 22372 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T19:16:17.666+04:00  INFO 22372 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1262 ms
+2026-04-21T19:16:17.705+04:00 DEBUG 22372 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T19:16:17.828+04:00  INFO 22372 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T19:16:17.885+04:00  INFO 22372 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T19:16:18.242+04:00  INFO 22372 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T19:16:18.268+04:00  WARN 22372 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T19:16:18.268+04:00  INFO 22372 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T19:16:21.883+04:00  INFO 22372 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3bf28af2
+2026-04-21T19:16:21.885+04:00  INFO 22372 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T19:16:24.169+04:00  INFO 22372 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T19:16:24.850+04:00  INFO 22372 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T19:16:27.547+04:00  WARN 22372 --- [NetPoint] [restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists users add constraint FKin8gn4o1hpiwe6qe4ey7ykwq7 foreign key (company_id) references companies" via JDBC [ERROR: insert or update on table "users" violates foreign key constraint "fkin8gn4o1hpiwe6qe4ey7ykwq7"
+  Detail: Key (company_id)=(21) is not present in table "companies".]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists users add constraint FKin8gn4o1hpiwe6qe4ey7ykwq7 foreign key (company_id) references companies" via JDBC [ERROR: insert or update on table "users" violates foreign key constraint "fkin8gn4o1hpiwe6qe4ey7ykwq7"
+  Detail: Key (company_id)=(21) is not present in table "companies".]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:81) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:438) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:256) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:323) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:437) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1456) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.3.jar:4.0.3]
+	at com.netpoint.main.NetPointApplication.main(NetPointApplication.java:15) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.3.jar:4.0.3]
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "users" violates foreign key constraint "fkin8gn4o1hpiwe6qe4ey7ykwq7"
+  Detail: Key (company_id)=(21) is not present in table "companies".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2875) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2560) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:429) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:526) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:436) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:358) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:343) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:319) ~[postgresql-42.7.10.jar:42.7.10]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:314) ~[postgresql-42.7.10.jar:42.7.10]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:76) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	... 40 common frames omitted
+
+2026-04-21T19:16:27.554+04:00  INFO 22372 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:16:27.623+04:00  INFO 22372 --- [NetPoint] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T19:16:27.839+04:00  INFO 22372 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : --- LOGGING SYSTEM INITIALIZED ---
+2026-04-21T19:16:27.840+04:00 DEBUG 22372 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Debug mode is ACTIVE for com.netpoint.main
+2026-04-21T19:16:27.840+04:00 ERROR 22372 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Testing error log: System is running fine.
+2026-04-21T19:16:27.879+04:00  WARN 22372 --- [NetPoint] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-21T19:16:28.026+04:00  WARN 22372 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:16:28.027+04:00  WARN 22372 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:16:28.027+04:00  WARN 22372 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/css/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:16:28.027+04:00  WARN 22372 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/images/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:16:28.027+04:00  WARN 22372 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/*.html]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:16:28.343+04:00  WARN 22372 --- [NetPoint] [restartedMain] o.s.b.f.a.FreeMarkerAutoConfiguration    : Cannot find template location: [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
+2026-04-21T19:16:28.388+04:00  INFO 22372 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-21T19:16:28.393+04:00  INFO 22372 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Started NetPointApplication in 12.466 seconds (process running for 13.056)
+2026-04-21T19:19:34.017+04:00  INFO 22372 --- [NetPoint] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-21T19:19:34.024+04:00  INFO 22372 --- [NetPoint] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-21T19:19:34.028+04:00  INFO 22372 --- [NetPoint] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:19:34.030+04:00  INFO 22372 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T19:19:34.035+04:00  INFO 22372 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T19:19:35.899+04:00  INFO 4216 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 4216 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T19:19:35.902+04:00 DEBUG 4216 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T19:19:35.903+04:00  INFO 4216 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T19:19:35.953+04:00  INFO 4216 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T19:19:35.953+04:00  INFO 4216 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T19:19:36.653+04:00  INFO 4216 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T19:19:36.708+04:00  INFO 4216 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 47 ms. Found 2 JPA repository interfaces.
+2026-04-21T19:19:37.208+04:00  INFO 4216 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T19:19:37.218+04:00  INFO 4216 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T19:19:37.218+04:00  INFO 4216 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T19:19:37.250+04:00  INFO 4216 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1296 ms
+2026-04-21T19:19:37.293+04:00 DEBUG 4216 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T19:19:37.458+04:00  INFO 4216 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T19:19:37.499+04:00  INFO 4216 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T19:19:37.839+04:00  INFO 4216 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T19:19:37.862+04:00  WARN 4216 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T19:19:37.862+04:00  INFO 4216 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T19:19:41.666+04:00  INFO 4216 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6d37068b
+2026-04-21T19:19:41.667+04:00  INFO 4216 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T19:19:43.966+04:00  INFO 4216 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T19:19:44.638+04:00  INFO 4216 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T19:19:47.346+04:00  INFO 4216 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:19:47.411+04:00  INFO 4216 --- [NetPoint] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T19:19:47.602+04:00  INFO 4216 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : --- LOGGING SYSTEM INITIALIZED ---
+2026-04-21T19:19:47.603+04:00 DEBUG 4216 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Debug mode is ACTIVE for com.netpoint.main
+2026-04-21T19:19:47.603+04:00 ERROR 4216 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Testing error log: System is running fine.
+2026-04-21T19:19:47.637+04:00  WARN 4216 --- [NetPoint] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-21T19:19:47.783+04:00  WARN 4216 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:19:47.783+04:00  WARN 4216 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:19:47.783+04:00  WARN 4216 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/css/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:19:47.784+04:00  WARN 4216 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/images/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:19:47.784+04:00  WARN 4216 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/*.html]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:19:48.105+04:00  WARN 4216 --- [NetPoint] [restartedMain] o.s.b.f.a.FreeMarkerAutoConfiguration    : Cannot find template location: [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
+2026-04-21T19:19:48.147+04:00  INFO 4216 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-21T19:19:48.155+04:00  INFO 4216 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Started NetPointApplication in 12.668 seconds (process running for 13.244)
+2026-04-21T19:22:56.315+04:00  INFO 4216 --- [NetPoint] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-21T19:22:56.315+04:00  INFO 4216 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-21T19:22:56.321+04:00  INFO 4216 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2026-04-21T19:23:16.426+04:00  INFO 4216 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Comparing: OWNER to requested role: OWNER
+2026-04-21T19:23:16.426+04:00  INFO 4216 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : The request password is: 12345678 The User password is: $2a$10$nFrVV3TY3l38C5ep2KIbWupYW2tCnIJrSzQbZ5ha3YueaHth5Ic/a
+2026-04-21T19:23:17.809+04:00  INFO 4216 --- [NetPoint] [http-nio-8080-exec-2] c.n.m.exceptions.GlobalExceptionHandler  : Got generic error: Authentication failed
+2026-04-21T19:23:17.825+04:00  WARN 4216 --- [NetPoint] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.mail.MailAuthenticationException: Authentication failed]
+2026-04-21T19:23:29.152+04:00  INFO 4216 --- [NetPoint] [http-nio-8080-exec-10] com.netpoint.main.services.AuthService   : Comparing: OWNER to requested role: OWNER
+2026-04-21T19:23:29.152+04:00  INFO 4216 --- [NetPoint] [http-nio-8080-exec-10] com.netpoint.main.services.AuthService   : The request password is: 12345678 The User password is: $2a$10$nFrVV3TY3l38C5ep2KIbWupYW2tCnIJrSzQbZ5ha3YueaHth5Ic/a
+2026-04-21T19:23:30.195+04:00  INFO 4216 --- [NetPoint] [http-nio-8080-exec-10] c.n.m.exceptions.GlobalExceptionHandler  : Got generic error: Authentication failed
+2026-04-21T19:23:30.209+04:00  WARN 4216 --- [NetPoint] [http-nio-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.mail.MailAuthenticationException: Authentication failed]
+2026-04-21T19:27:39.323+04:00  INFO 4216 --- [NetPoint] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-21T19:27:39.331+04:00  INFO 4216 --- [NetPoint] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-21T19:27:39.334+04:00  INFO 4216 --- [NetPoint] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:27:39.337+04:00  INFO 4216 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T19:27:41.510+04:00  INFO 4216 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T19:27:45.298+04:00  INFO 19724 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 19724 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T19:27:45.300+04:00 DEBUG 19724 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T19:27:45.301+04:00  INFO 19724 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T19:27:45.354+04:00  INFO 19724 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T19:27:45.354+04:00  INFO 19724 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T19:27:46.054+04:00  INFO 19724 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T19:27:46.110+04:00  INFO 19724 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 48 ms. Found 2 JPA repository interfaces.
+2026-04-21T19:27:46.611+04:00  INFO 19724 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T19:27:46.626+04:00  INFO 19724 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T19:27:46.627+04:00  INFO 19724 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T19:27:46.665+04:00  INFO 19724 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1311 ms
+2026-04-21T19:27:46.705+04:00 DEBUG 19724 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T19:27:46.888+04:00  INFO 19724 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T19:27:46.926+04:00  INFO 19724 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T19:27:47.280+04:00  INFO 19724 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T19:27:47.310+04:00  WARN 19724 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T19:27:47.310+04:00  INFO 19724 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T19:27:50.977+04:00  INFO 19724 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@53324adb
+2026-04-21T19:27:50.977+04:00  INFO 19724 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T19:27:53.308+04:00  INFO 19724 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T19:27:53.990+04:00  INFO 19724 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T19:27:57.161+04:00  INFO 19724 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:27:57.227+04:00  INFO 19724 --- [NetPoint] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T19:27:57.422+04:00  INFO 19724 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : --- LOGGING SYSTEM INITIALIZED ---
+2026-04-21T19:27:57.422+04:00 DEBUG 19724 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Debug mode is ACTIVE for com.netpoint.main
+2026-04-21T19:27:57.422+04:00 ERROR 19724 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Testing error log: System is running fine.
+2026-04-21T19:27:57.456+04:00  WARN 19724 --- [NetPoint] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-21T19:27:57.617+04:00  WARN 19724 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:27:57.617+04:00  WARN 19724 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:27:57.617+04:00  WARN 19724 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/css/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:27:57.617+04:00  WARN 19724 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/images/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:27:57.617+04:00  WARN 19724 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/*.html]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:27:57.941+04:00  WARN 19724 --- [NetPoint] [restartedMain] o.s.b.f.a.FreeMarkerAutoConfiguration    : Cannot find template location: [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
+2026-04-21T19:27:57.987+04:00  INFO 19724 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-21T19:27:57.993+04:00  INFO 19724 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Started NetPointApplication in 13.107 seconds (process running for 13.618)
+2026-04-21T19:28:22.915+04:00  INFO 19724 --- [NetPoint] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-21T19:28:22.915+04:00  INFO 19724 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-21T19:28:22.915+04:00  INFO 19724 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-04-21T19:28:24.419+04:00  INFO 19724 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Comparing: OWNER to requested role: OWNER
+2026-04-21T19:28:24.435+04:00  INFO 19724 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : The request password is: 12345678 The User password is: $2a$10$nFrVV3TY3l38C5ep2KIbWupYW2tCnIJrSzQbZ5ha3YueaHth5Ic/a
+2026-04-21T19:28:24.589+04:00  INFO 19724 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before generating the code: 
+2026-04-21T19:28:24.589+04:00  INFO 19724 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before saving tempToken: 
+2026-04-21T19:28:24.589+04:00  INFO 19724 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before sending email: 
+2026-04-21T19:28:25.875+04:00  INFO 19724 --- [NetPoint] [http-nio-8080-exec-2] c.n.m.exceptions.GlobalExceptionHandler  : Got generic error: Authentication failed
+2026-04-21T19:28:25.922+04:00  WARN 19724 --- [NetPoint] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.mail.MailAuthenticationException: Authentication failed]
+2026-04-21T19:30:43.498+04:00  INFO 19724 --- [NetPoint] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-21T19:30:43.505+04:00  INFO 19724 --- [NetPoint] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-21T19:30:43.510+04:00  INFO 19724 --- [NetPoint] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:30:43.513+04:00  INFO 19724 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T19:30:45.685+04:00  INFO 19724 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T19:30:49.243+04:00  INFO 10532 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 10532 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T19:30:49.245+04:00 DEBUG 10532 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T19:30:49.246+04:00  INFO 10532 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T19:30:49.303+04:00  INFO 10532 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T19:30:49.303+04:00  INFO 10532 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T19:30:50.111+04:00  INFO 10532 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T19:30:50.168+04:00  INFO 10532 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 48 ms. Found 2 JPA repository interfaces.
+2026-04-21T19:30:50.673+04:00  INFO 10532 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T19:30:50.683+04:00  INFO 10532 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T19:30:50.684+04:00  INFO 10532 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T19:30:50.716+04:00  INFO 10532 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1411 ms
+2026-04-21T19:30:50.762+04:00 DEBUG 10532 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T19:30:50.931+04:00  INFO 10532 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T19:30:50.978+04:00  INFO 10532 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T19:30:51.358+04:00  INFO 10532 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T19:30:51.383+04:00  WARN 10532 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T19:30:51.384+04:00  INFO 10532 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T19:30:55.163+04:00  INFO 10532 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2d898a16
+2026-04-21T19:30:55.163+04:00  INFO 10532 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T19:30:57.408+04:00  INFO 10532 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T19:30:58.079+04:00  INFO 10532 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T19:31:01.060+04:00  INFO 10532 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:31:01.131+04:00  INFO 10532 --- [NetPoint] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T19:31:01.375+04:00  INFO 10532 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : --- LOGGING SYSTEM INITIALIZED ---
+2026-04-21T19:31:01.376+04:00 DEBUG 10532 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Debug mode is ACTIVE for com.netpoint.main
+2026-04-21T19:31:01.376+04:00 ERROR 10532 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Testing error log: System is running fine.
+2026-04-21T19:31:01.414+04:00  WARN 10532 --- [NetPoint] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-21T19:31:01.583+04:00  WARN 10532 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:31:01.584+04:00  WARN 10532 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:31:01.584+04:00  WARN 10532 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/css/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:31:01.584+04:00  WARN 10532 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/images/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:31:01.584+04:00  WARN 10532 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/*.html]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:31:01.918+04:00  WARN 10532 --- [NetPoint] [restartedMain] o.s.b.f.a.FreeMarkerAutoConfiguration    : Cannot find template location: [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
+2026-04-21T19:31:01.965+04:00  INFO 10532 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-21T19:31:01.973+04:00  INFO 10532 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Started NetPointApplication in 13.288 seconds (process running for 13.778)
+2026-04-21T19:31:14.449+04:00  INFO 10532 --- [NetPoint] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-21T19:31:14.449+04:00  INFO 10532 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-21T19:31:14.451+04:00  INFO 10532 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-04-21T19:31:15.980+04:00  INFO 10532 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Comparing: OWNER to requested role: OWNER
+2026-04-21T19:31:15.980+04:00  INFO 10532 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : The request password is: 12345678 The User password is: $2a$10$nFrVV3TY3l38C5ep2KIbWupYW2tCnIJrSzQbZ5ha3YueaHth5Ic/a
+2026-04-21T19:31:16.124+04:00  INFO 10532 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before generating the code: 
+2026-04-21T19:31:16.124+04:00  INFO 10532 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before saving tempToken: 
+2026-04-21T19:31:16.124+04:00  INFO 10532 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before sending email: 
+2026-04-21T19:31:17.443+04:00  WARN 10532 --- [NetPoint] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.mail.MailAuthenticationException: Authentication failed]
+2026-04-21T19:32:48.011+04:00  INFO 10532 --- [NetPoint] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-21T19:32:48.019+04:00  INFO 10532 --- [NetPoint] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-21T19:32:48.022+04:00  INFO 10532 --- [NetPoint] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:32:48.024+04:00  INFO 10532 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T19:32:49.113+04:00  INFO 10532 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T19:32:52.672+04:00  INFO 9368 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 9368 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T19:32:52.674+04:00 DEBUG 9368 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T19:32:52.675+04:00  INFO 9368 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T19:32:52.728+04:00  INFO 9368 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T19:32:52.728+04:00  INFO 9368 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T19:32:53.387+04:00  INFO 9368 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T19:32:53.443+04:00  INFO 9368 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 48 ms. Found 2 JPA repository interfaces.
+2026-04-21T19:32:53.912+04:00  INFO 9368 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T19:32:53.922+04:00  INFO 9368 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T19:32:53.923+04:00  INFO 9368 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T19:32:53.959+04:00  INFO 9368 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1231 ms
+2026-04-21T19:32:54.006+04:00 DEBUG 9368 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T19:32:54.143+04:00  INFO 9368 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T19:32:54.181+04:00  INFO 9368 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T19:32:54.555+04:00  INFO 9368 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T19:32:54.580+04:00  WARN 9368 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T19:32:54.581+04:00  INFO 9368 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T19:32:59.195+04:00  INFO 9368 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2d898a16
+2026-04-21T19:32:59.197+04:00  INFO 9368 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T19:33:01.487+04:00  INFO 9368 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T19:33:02.204+04:00  INFO 9368 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T19:33:05.304+04:00  INFO 9368 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:33:05.380+04:00  INFO 9368 --- [NetPoint] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T19:33:05.585+04:00  INFO 9368 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : --- LOGGING SYSTEM INITIALIZED ---
+2026-04-21T19:33:05.585+04:00 DEBUG 9368 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Debug mode is ACTIVE for com.netpoint.main
+2026-04-21T19:33:05.585+04:00 ERROR 9368 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Testing error log: System is running fine.
+2026-04-21T19:33:05.619+04:00  WARN 9368 --- [NetPoint] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-21T19:33:05.780+04:00  WARN 9368 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:33:05.781+04:00  WARN 9368 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:33:05.781+04:00  WARN 9368 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/css/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:33:05.781+04:00  WARN 9368 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/images/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:33:05.781+04:00  WARN 9368 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/*.html]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:33:06.087+04:00  WARN 9368 --- [NetPoint] [restartedMain] o.s.b.f.a.FreeMarkerAutoConfiguration    : Cannot find template location: [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
+2026-04-21T19:33:06.130+04:00  INFO 9368 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-21T19:33:06.138+04:00  INFO 9368 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Started NetPointApplication in 13.86 seconds (process running for 14.314)
+2026-04-21T19:33:24.381+04:00  INFO 9368 --- [NetPoint] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-21T19:33:24.381+04:00  INFO 9368 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-21T19:33:24.384+04:00  INFO 9368 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-04-21T19:33:26.574+04:00  INFO 9368 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Comparing: OWNER to requested role: OWNER
+2026-04-21T19:33:26.574+04:00  INFO 9368 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : The request password is: 12345678 The User password is: $2a$10$nFrVV3TY3l38C5ep2KIbWupYW2tCnIJrSzQbZ5ha3YueaHth5Ic/a
+2026-04-21T19:33:26.716+04:00  INFO 9368 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before generating the code: 
+2026-04-21T19:33:26.719+04:00  INFO 9368 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before saving tempToken: 
+2026-04-21T19:33:26.719+04:00  INFO 9368 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before sending email: 
+2026-04-21T19:33:28.050+04:00  INFO 9368 --- [NetPoint] [http-nio-8080-exec-2] c.n.m.exceptions.GlobalExceptionHandler  : Full reason: org.springframework.mail.MailAuthenticationException: Authentication failed
+2026-04-21T19:33:28.081+04:00  WARN 9368 --- [NetPoint] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.mail.MailAuthenticationException: Authentication failed]
+2026-04-21T19:34:21.962+04:00  INFO 9368 --- [NetPoint] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-21T19:34:21.969+04:00  INFO 9368 --- [NetPoint] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-21T19:34:21.973+04:00  INFO 9368 --- [NetPoint] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:34:21.976+04:00  INFO 9368 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T19:34:22.704+04:00  INFO 9368 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T19:34:26.216+04:00  INFO 3244 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 3244 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T19:34:26.220+04:00 DEBUG 3244 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T19:34:26.221+04:00  INFO 3244 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T19:34:26.269+04:00  INFO 3244 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T19:34:26.269+04:00  INFO 3244 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T19:34:26.947+04:00  INFO 3244 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T19:34:27.003+04:00  INFO 3244 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 50 ms. Found 2 JPA repository interfaces.
+2026-04-21T19:34:27.490+04:00  INFO 3244 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T19:34:27.505+04:00  INFO 3244 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T19:34:27.505+04:00  INFO 3244 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T19:34:27.544+04:00  INFO 3244 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1274 ms
+2026-04-21T19:34:27.584+04:00 DEBUG 3244 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T19:34:27.923+04:00  INFO 3244 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T19:34:27.963+04:00  INFO 3244 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T19:34:28.369+04:00  INFO 3244 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T19:34:28.402+04:00  WARN 3244 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T19:34:28.403+04:00  INFO 3244 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T19:34:32.742+04:00  INFO 3244 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3bf28af2
+2026-04-21T19:34:32.743+04:00  INFO 3244 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T19:34:37.215+04:00  INFO 3244 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T19:34:37.885+04:00  INFO 3244 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T19:34:41.490+04:00  INFO 3244 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:34:41.552+04:00  INFO 3244 --- [NetPoint] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T19:34:41.750+04:00  INFO 3244 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : --- LOGGING SYSTEM INITIALIZED ---
+2026-04-21T19:34:41.750+04:00 DEBUG 3244 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Debug mode is ACTIVE for com.netpoint.main
+2026-04-21T19:34:41.750+04:00 ERROR 3244 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Testing error log: System is running fine.
+2026-04-21T19:34:41.777+04:00  WARN 3244 --- [NetPoint] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-21T19:34:41.928+04:00  WARN 3244 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:34:41.928+04:00  WARN 3244 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:34:41.928+04:00  WARN 3244 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/css/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:34:41.928+04:00  WARN 3244 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/images/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:34:41.928+04:00  WARN 3244 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/*.html]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:34:42.259+04:00  WARN 3244 --- [NetPoint] [restartedMain] o.s.b.f.a.FreeMarkerAutoConfiguration    : Cannot find template location: [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
+2026-04-21T19:34:42.302+04:00  INFO 3244 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-21T19:34:42.310+04:00  INFO 3244 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Started NetPointApplication in 16.537 seconds (process running for 16.992)
+2026-04-21T19:34:52.805+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-21T19:34:52.805+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-21T19:34:52.807+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-04-21T19:34:54.333+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Comparing: OWNER to requested role: OWNER
+2026-04-21T19:34:54.333+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : The request password is: 12345678 The User password is: $2a$10$nFrVV3TY3l38C5ep2KIbWupYW2tCnIJrSzQbZ5ha3YueaHth5Ic/a
+2026-04-21T19:34:54.461+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before generating the code: 
+2026-04-21T19:34:54.461+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before saving tempToken: 
+2026-04-21T19:34:54.461+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before sending email: 
+2026-04-21T19:34:54.461+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Sending mail to: nikalongurashvili@gmail.com
+2026-04-21T19:34:55.689+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-2] c.n.m.exceptions.GlobalExceptionHandler  : Full reason: org.springframework.mail.MailAuthenticationException: Authentication failed
+2026-04-21T19:34:55.731+04:00  WARN 3244 --- [NetPoint] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.mail.MailAuthenticationException: Authentication failed]
+2026-04-21T19:35:08.773+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-4] com.netpoint.main.services.AuthService   : Comparing: OWNER to requested role: OWNER
+2026-04-21T19:35:08.773+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-4] com.netpoint.main.services.AuthService   : The request password is: 12345678 The User password is: $2a$10$nFrVV3TY3l38C5ep2KIbWupYW2tCnIJrSzQbZ5ha3YueaHth5Ic/a
+2026-04-21T19:35:08.917+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-4] com.netpoint.main.services.AuthService   : Before generating the code: 
+2026-04-21T19:35:08.920+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-4] com.netpoint.main.services.AuthService   : Before saving tempToken: 
+2026-04-21T19:35:08.920+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-4] com.netpoint.main.services.AuthService   : Before sending email: 
+2026-04-21T19:35:08.920+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-4] com.netpoint.main.services.AuthService   : Sending mail to: nikalongurashvili@gmail.com
+2026-04-21T19:35:09.865+04:00  INFO 3244 --- [NetPoint] [http-nio-8080-exec-4] c.n.m.exceptions.GlobalExceptionHandler  : Full reason: org.springframework.mail.MailAuthenticationException: Authentication failed
+2026-04-21T19:35:09.865+04:00  WARN 3244 --- [NetPoint] [http-nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.mail.MailAuthenticationException: Authentication failed]
+2026-04-21T19:39:11.766+04:00  INFO 3244 --- [NetPoint] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-21T19:39:11.771+04:00  INFO 3244 --- [NetPoint] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-21T19:39:11.775+04:00  INFO 3244 --- [NetPoint] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:39:11.778+04:00  INFO 3244 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T19:39:14.648+04:00  INFO 3244 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-04-21T19:39:16.723+04:00  INFO 1744 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Starting NetPointApplication using Java 25 with PID 1744 (C:\Users\hp\NetPoint-Back\target\classes started by hp in C:\Users\hp\NetPoint-Back)
+2026-04-21T19:39:16.728+04:00 DEBUG 1744 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-04-21T19:39:16.729+04:00  INFO 1744 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-04-21T19:39:16.785+04:00  INFO 1744 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-21T19:39:16.786+04:00  INFO 1744 --- [NetPoint] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-21T19:39:17.554+04:00  INFO 1744 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-21T19:39:17.622+04:00  INFO 1744 --- [NetPoint] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 56 ms. Found 2 JPA repository interfaces.
+2026-04-21T19:39:18.330+04:00  INFO 1744 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-21T19:39:18.341+04:00  INFO 1744 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-21T19:39:18.341+04:00  INFO 1744 --- [NetPoint] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-21T19:39:18.375+04:00  INFO 1744 --- [NetPoint] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1589 ms
+2026-04-21T19:39:18.421+04:00 DEBUG 1744 --- [NetPoint] [restartedMain] c.netpoint.main.filters.JwtAuthFilter    : Filter 'jwtAuthFilter' configured for use
+2026-04-21T19:39:18.548+04:00  INFO 1744 --- [NetPoint] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-21T19:39:18.592+04:00  INFO 1744 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-21T19:39:19.197+04:00  INFO 1744 --- [NetPoint] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-21T19:39:19.255+04:00  WARN 1744 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - idleTimeout has been set but has no effect because the pool is operating as a fixed size pool.
+2026-04-21T19:39:19.255+04:00  INFO 1744 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-21T19:39:23.027+04:00  INFO 1744 --- [NetPoint] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@388ee621
+2026-04-21T19:39:23.029+04:00  INFO 1744 --- [NetPoint] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-21T19:39:25.290+04:00  INFO 1744 --- [NetPoint] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?prepareThreshold=0]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.6
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-21T19:39:26.751+04:00  INFO 1744 --- [NetPoint] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-21T19:39:29.710+04:00  INFO 1744 --- [NetPoint] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T19:39:29.847+04:00  INFO 1744 --- [NetPoint] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-21T19:39:30.278+04:00  INFO 1744 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : --- LOGGING SYSTEM INITIALIZED ---
+2026-04-21T19:39:30.278+04:00 DEBUG 1744 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Debug mode is ACTIVE for com.netpoint.main
+2026-04-21T19:39:30.278+04:00 ERROR 1744 --- [NetPoint] [restartedMain] com.netpoint.main.LoggingTest            : Testing error log: System is running fine.
+2026-04-21T19:39:30.351+04:00  WARN 1744 --- [NetPoint] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-21T19:39:30.702+04:00  WARN 1744 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:39:30.703+04:00  WARN 1744 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/error/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:39:30.703+04:00  WARN 1744 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/css/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:39:30.703+04:00  WARN 1744 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/images/**]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:39:30.703+04:00  WARN 1744 --- [NetPoint] [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore PathPattern [/*.html]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2026-04-21T19:39:31.224+04:00  WARN 1744 --- [NetPoint] [restartedMain] o.s.b.f.a.FreeMarkerAutoConfiguration    : Cannot find template location: [classpath:/templates/] (please add some templates, check your FreeMarker configuration, or set spring.freemarker.check-template-location=false)
+2026-04-21T19:39:31.318+04:00  INFO 1744 --- [NetPoint] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-21T19:39:31.329+04:00  INFO 1744 --- [NetPoint] [restartedMain] com.netpoint.main.NetPointApplication    : Started NetPointApplication in 15.031 seconds (process running for 15.565)
+2026-04-21T19:39:53.918+04:00  INFO 1744 --- [NetPoint] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-21T19:39:53.918+04:00  INFO 1744 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-21T19:39:53.919+04:00  INFO 1744 --- [NetPoint] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-04-21T19:39:55.458+04:00  INFO 1744 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Comparing: OWNER to requested role: OWNER
+2026-04-21T19:39:55.458+04:00  INFO 1744 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : The request password is: 12345678 The User password is: $2a$10$nFrVV3TY3l38C5ep2KIbWupYW2tCnIJrSzQbZ5ha3YueaHth5Ic/a
+2026-04-21T19:39:55.586+04:00  INFO 1744 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before generating the code: 
+2026-04-21T19:39:55.587+04:00  INFO 1744 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before saving tempToken: 
+2026-04-21T19:39:55.587+04:00  INFO 1744 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before sending email: 
+2026-04-21T19:39:55.587+04:00  INFO 1744 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Sending mail to: nikalongurashvili@gmail.com
+2026-04-21T19:39:58.343+04:00  INFO 1744 --- [NetPoint] [http-nio-8080-exec-2] com.netpoint.main.services.AuthService   : Before returning the response: 
+2026-04-21T19:40:46.717+04:00  INFO 1744 --- [NetPoint] [http-nio-8080-exec-4] com.netpoint.main.services.AuthService   : Checking entry.isExpired() value: false
+2026-04-21T20:53:40.315+04:00  INFO 1744 --- [NetPoint] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-21T20:53:40.336+04:00  INFO 1744 --- [NetPoint] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-04-21T20:53:40.345+04:00  INFO 1744 --- [NetPoint] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-21T20:53:40.350+04:00  INFO 1744 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-04-21T20:53:41.985+04:00  INFO 1744 --- [NetPoint] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
