@@ -76,7 +76,7 @@ public class InvitationService {
         user.setPassword(passwordEncoder.encode(password));
         user.setName(fullName);          // setFullName -> setName
         user.setRole(invitation.getRole());
-        user.setCompanyId(invitation.getCompanyId());
+        user.getCompanyId().setId(invitation.getCompanyId());
         userRepository.save(user);
 
         // tokens gamoyenebulze ayenebs
