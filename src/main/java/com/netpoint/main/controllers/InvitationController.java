@@ -1,7 +1,9 @@
 package com.netpoint.main.controllers;
 
+import com.netpoint.main.dto.responses.AuthResponse;
 import com.netpoint.main.dto.responses.InvitationControllerResponse;
 import com.netpoint.main.services.InvitationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,7 @@ public class InvitationController {
     // mowveva igzavneba
     @PostMapping("/invite")
     // xo owneria magas naxulobs
-    public ResponseEntity<InvitationControllerResponse> invite(@RequestBody InviteRequest request) {
+    public ResponseEntity<InvitationControllerResponse> invite(@RequestBody @Valid InviteRequest request) {
         invitationService.inviteUser(request.email(), request.role(), request.companyId());
         return ResponseEntity.ok(new InvitationControllerResponse(200,"Invitation sent"));
     }
@@ -26,18 +28,22 @@ public class InvitationController {
     // tokenis validurobis shesamowmebelia
     @GetMapping("/validate")
     public ResponseEntity<InvitationControllerResponse> validate(@RequestParam String token) {
-        return ResponseEntity.ok(new InvitationControllerResponse(200, "Valid"));
+        String companyName = this.invitationService.validateInvitation(token);
+        return ResponseEntity.ok(new InvitationControllerResponse(
+                200, "Welcome to " + companyName + "!"
+        ));
     }
 
     // admins info sheyavs
     @PostMapping("/complete")
-    public ResponseEntity<InvitationControllerResponse>
-    complete(@RequestBody CompleteRegistrationRequest request) {
-        invitationService.completeRegistration(
-                request.token(),
-                request.password(),
-                request.fullName()
+    public ResponseEntity<AuthResponse>
+    complete(@RequestParam String token, @RequestBody @Valid CompleteRegistrationRequest request) {
+        return ResponseEntity.ok(
+                invitationService.completeRegistration(
+                        token,
+                        request.password(),
+                        request.name()
+                )
         );
-        return ResponseEntity.ok(new InvitationControllerResponse(200,"Account created"));
     }
 }

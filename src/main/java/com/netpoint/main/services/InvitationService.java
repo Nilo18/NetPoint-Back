@@ -1,10 +1,18 @@
 package com.netpoint.main.services;
 
+import com.netpoint.main.dto.responses.AuthResponse;
+import com.netpoint.main.exceptions.CompanyNotFoundException;
+import com.netpoint.main.exceptions.InvitationTokenAlreadyUsedException;
+import com.netpoint.main.exceptions.InvitationTokenExpiredException;
+import com.netpoint.main.exceptions.InvitationTokenNotFoundException;
+import com.netpoint.main.models.Company;
 import com.netpoint.main.models.Invitation;
 import com.netpoint.main.models.User;
+import com.netpoint.main.repositories.CompanyRepository;
 import com.netpoint.main.repositories.InvitationRepository;
 import com.netpoint.main.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,15 +20,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Log
 public class InvitationService {
 
     private final InvitationRepository invitationRepository;
     private final JavaMailSender mailSender;
     private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
+    private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${app.frontend-url}")
@@ -57,30 +69,61 @@ public class InvitationService {
         mailSender.send(message);
     }
 
+    public String validateInvitation(String token) {
+        Invitation suggestedInvitation = this.invitationRepository.findByToken(token)
+                .orElseThrow(() -> new InvitationTokenNotFoundException("Invitation not found"));
+
+        if (suggestedInvitation.isUsed()) {
+            throw new InvitationTokenAlreadyUsedException("Invitation already used");
+        }
+
+        if (suggestedInvitation.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new InvitationTokenExpiredException("Invitation expired");
+        }
+
+        Company company = this.companyRepository
+                .findById(Long.valueOf(suggestedInvitation.getCompanyId()))
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+        return company.getName();
+    }
+
     // admini amas idzaxebs linkze gadasvlis mere
-    public void completeRegistration(String token, String password, String fullName) {
+    public AuthResponse completeRegistration(String token, String password, String fullName) {
         Invitation invitation = invitationRepository.findByToken(token)
-                .orElseThrow(() -> new RuntimeException("Invalid token"));
+                .orElseThrow(() -> new InvitationTokenNotFoundException("Invitation not found"));
 
         if (invitation.isUsed()) {
-            throw new RuntimeException("Invitation already used");
+            throw new InvitationTokenAlreadyUsedException("Invitation already used");
         }
 
         if (invitation.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Invitation expired");
+            throw new InvitationTokenExpiredException("Invitation expired");
         }
 
+        Company company = this.companyRepository.findById(Long.valueOf(invitation.getCompanyId()))
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+
         // axal momxmarebels amatebs USER tables
+        log.info("The suggested invitation is: " + invitation);
         User user = new User();
+        log.info("user values before using setters: " + user);
         user.setEmail(invitation.getEmail());
         user.setPassword(passwordEncoder.encode(password));
-        user.setName(fullName);          // setFullName -> setName
+        user.setName(fullName);
         user.setRole(invitation.getRole());
+        user.setCompanyId(company);
+        log.info("invitation.getCompanyId() returns: " + invitation.getCompanyId());
+        log.info("user.getCompanyId() returns: " + user.getCompanyId());
+        log.info("user values after using setters: " + user);
         user.getCompanyId().setId(invitation.getCompanyId());
         userRepository.save(user);
 
         // tokens gamoyenebulze ayenebs
         invitation.setUsed(true);
         invitationRepository.save(invitation);
+        String jwt = jwtService.generateToken(
+                String.valueOf(user.getId()), user.getEmail(), user.getName(), user.getRole()
+        );
+        return new AuthResponse("Valid", jwt);
     }
 }

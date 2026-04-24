@@ -70,6 +70,28 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", ex.getMessage()));
     }
 
+    @ExceptionHandler(InvitationTokenNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleInvitationNotFound(InvitationTokenNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvitationTokenAlreadyUsedException.class)
+    public ResponseEntity<Map<String, String>> handleInvitationTokenAlreadyUsed(
+            InvitationTokenAlreadyUsedException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvitationTokenExpiredException.class)
+    public ResponseEntity<Map<String, String>> handleInvitationTokenExpired(
+            InvitationTokenExpiredException ex) {
+        return ResponseEntity.status(HttpStatus.GONE).body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(CompanyNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleCompanyNotFound(CompanyNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneric(Exception ex) {
         log.info("Got generic error: " + ex.getMessage());
