@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 
 // მთელ ავტენტიპიკაციის ლოგიკას ეს უმკლავდება - საიტზე შესვლა, 2ფა და რეგისტრაციაც
 @Service
@@ -36,6 +37,7 @@ public class AuthService {
     // პირველი ნაბიჯია რა საიტზე შესვლის, ქეშიერზე ამოწმებს პაროლს/ლოგინს და თუ სწორია გამოყოფს JWT-ს
     //ადმინზე/მფლობელზე ჯერ ამოწმებს ლოგინ/პაროლს, ქმნის ოტპს, გზავნის ოტპს და აბრუნებს დროებით ტოკენს(tempToken)
     public AuthResponse login(LoginRequest request) {
+        log.info("login method is running in AuthService");
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
@@ -51,9 +53,10 @@ public class AuthService {
             throw new InvalidPasswordException("Invalid password");
         }
         //ქეშიერები პირდაპირ იღებენ ჯვტს და არანაირი 2ფა
-        if(user.getRole().equals("CASHIER")){
+        if (user.getRole().equals("CASHIER")){
             String jwt = jwtService.generateToken(
-                    user.getId().toString(), user.getEmail(), user.getName(), user.getRole()
+                    user.getId().toString(), String.valueOf(user.getCompanyId().getId()),
+                    user.getEmail(), user.getName(), user.getRole()
             );
             return new AuthResponse("authenticated", jwt);
         }//2ფას ლოგიკა უკვე ადმინისთვის და მფლობელისთვის
@@ -94,7 +97,8 @@ public class AuthService {
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         //ჯვტს გადასცემს იუზერს სწორი როლით
         String jwt = jwtService.generateToken(
-                entry.getUserId(), user.getEmail(), user.getName(), user.getRole()
+                entry.getUserId(), String.valueOf(user.getCompanyId().getId()),
+                user.getEmail(), user.getName(), user.getRole()
         );
         return new AuthResponse("authenticated", jwt);
     }
@@ -110,7 +114,8 @@ public class AuthService {
                 company.name(),
                 company.email(),
                 passwordEncoder.encode(company.password()),
-                company.industry()
+                company.industry(),
+                new ArrayList<>()
         );
 
         Company savedCompany = this.companyRepository.save(newCompany);
@@ -128,7 +133,8 @@ public class AuthService {
         User savedUser = this.userRepository.save(user);
 
         String accessToken = this.jwtService.generateToken(
-                savedUser.getId().toString(), savedUser.getName(), savedCompany.getEmail(), savedUser.getRole()
+                savedUser.getId().toString(), String.valueOf(user.getCompanyId().getId()),
+                savedUser.getName(), savedCompany.getEmail(), savedUser.getRole()
         );
 
         return new CompanySignupResponse(200, accessToken);

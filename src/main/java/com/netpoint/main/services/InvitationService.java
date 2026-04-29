@@ -40,6 +40,13 @@ public class InvitationService {
 
     // owneri idzaxebs amas
     public void inviteUser(String email, String role, Integer companyId) {
+        // ADD A CHECK HERE THAT IF A USER WITH THIS EMAIL HAS ALREADY BEEN INVITED
+        // DON'T INVITE THEM AGAIN AND SEND THE CORRESPONDING RESPONSE TO THE FRONTEND
+        // TO IMPLEMENT THIS FEATURE, WE NEED A TABLE WHICH WILL LIST ALL THE EMAILS
+        // WHICH HAVE ALREADY BEEN INVITED
+        // YOU CAN ACHIEVE THIS BY CHECKING IF THE REQUESTED EMAIL IS IN THE USERS/EMPLOYEES SECTION
+        // OF THE GIVEN COMPANY
+
         String token = UUID.randomUUID().toString();
 
         Invitation invitation = new Invitation();
@@ -122,7 +129,8 @@ public class InvitationService {
         invitation.setUsed(true);
         invitationRepository.save(invitation);
         String jwt = jwtService.generateToken(
-                String.valueOf(user.getId()), user.getEmail(), user.getName(), user.getRole()
+                String.valueOf(user.getId()), String.valueOf(user.getCompanyId().getId()),
+                user.getEmail(), user.getName(), user.getRole()
         );
         return new AuthResponse("Valid", jwt);
     }

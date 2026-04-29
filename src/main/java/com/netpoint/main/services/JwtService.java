@@ -25,9 +25,14 @@ public class JwtService {
 
     // name, email, role
     // jwt-ს ჰქმნის მომხმარებლისთვის, რაშიც შედის მისი აიდი და როლი
-    public String generateToken(String userId, String name, String email, String role) {
+    public String generateToken(String userId, String companyId, String name, String email, String role) {
         return Jwts.builder()
                 .subject(userId)
+                .claim("userId", userId)
+                .claim("companyId", companyId)
+                .claim("name", name)
+                .claim("email", email)
+                .claim("role", role)
                 .claim("role", role)
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey())
