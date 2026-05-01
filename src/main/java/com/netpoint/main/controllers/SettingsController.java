@@ -1,9 +1,12 @@
 package com.netpoint.main.controllers;
 
 import com.netpoint.main.dto.UserDTO;
+import com.netpoint.main.dto.requests.CashierAdditionRequest;
+import com.netpoint.main.dto.responses.CashierAdditionResponse;
 import com.netpoint.main.dto.responses.PageResponse;
 import com.netpoint.main.models.User;
 import com.netpoint.main.services.SettingsService;
+import jakarta.validation.Valid;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,5 +28,11 @@ public class SettingsController {
         return ResponseEntity.ok(
                 PageResponse.from(settingsService.fetchCompanyUsers(id, PageRequest.of(page, size)))
         );
+    }
+
+    @PostMapping(path = "/add-cashier")
+    public ResponseEntity<CashierAdditionResponse> addCashier(
+            @Valid @RequestBody CashierAdditionRequest cashier) {
+        return ResponseEntity.ok(this.settingsService.addCashier(cashier));
     }
 }

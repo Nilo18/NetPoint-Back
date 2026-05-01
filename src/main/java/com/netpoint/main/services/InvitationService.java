@@ -111,9 +111,9 @@ public class InvitationService {
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         // axal momxmarebels amatebs USER tables
-        log.info("The suggested invitation is: " + invitation);
+//        log.info("The suggested invitation is: " + invitation);
         User user = new User();
-        log.info("user values before using setters: " + user);
+//        log.info("user values before using setters: " + user);
         user.setEmail(invitation.getEmail());
         user.setPassword(passwordEncoder.encode(password));
         user.setName(fullName);
@@ -122,7 +122,7 @@ public class InvitationService {
         log.info("invitation.getCompanyId() returns: " + invitation.getCompanyId());
         log.info("user.getCompanyId() returns: " + user.getCompanyId());
         log.info("user values after using setters: " + user);
-        user.getCompanyId().setId(invitation.getCompanyId());
+//        user.getCompanyId().setId(invitation.getCompanyId());
         userRepository.save(user);
 
         // tokens gamoyenebulze ayenebs

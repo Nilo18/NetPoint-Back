@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -24,5 +25,6 @@ public class Company {
     private String password;
     private String industry;
     @OneToMany(mappedBy = "companyId", fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<User> userList;
 }
