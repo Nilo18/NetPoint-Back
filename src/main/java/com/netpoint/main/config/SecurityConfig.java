@@ -66,7 +66,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "OWNER")
 
                         // Everything else requires a valid JWT
-                        .anyRequest().permitAll()
+//                        .anyRequest().permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/settings/**").hasRole("OWNER")
                         .anyRequest().authenticated()
@@ -74,7 +74,7 @@ public class SecurityConfig {
                 )
 
                 // 5. Add your JWT Filter before the standard Username/Password filter
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) ->
                                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
