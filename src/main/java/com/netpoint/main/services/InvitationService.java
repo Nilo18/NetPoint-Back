@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,18 +41,33 @@ public class InvitationService {
         Company company = this.companyRepository.findById(Long.valueOf(companyId))
                 .orElseThrow(() -> new CompanyNotFoundException("Suggested company was not found"));
 
+        if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+            throw new BadInvitationRequestException("Invalid email format");
+        }
+
         boolean isOwner = this.userRepository.existsByEmailAndCompanyIdAndRole(email, company, "OWNER");
 
         if (isOwner) {
             throw new BadInvitationRequestException("Invited user must not be the owner");
         }
 
-        // ADD A CHECK HERE THAT IF A USER WITH THIS EMAIL HAS ALREADY BEEN INVITED
-        // DON'T INVITE THEM AGAIN AND SEND THE CORRESPONDING RESPONSE TO THE FRONTEND
-        // TO IMPLEMENT THIS FEATURE, WE NEED A TABLE WHICH WILL LIST ALL THE EMAILS
-        // WHICH HAVE ALREADY BEEN INVITED
-        // YOU CAN ACHIEVE THIS BY CHECKING IF THE REQUESTED EMAIL IS IN THE USERS/EMPLOYEES SECTION
-        // OF THE GIVEN COMPANY
+        boolean alreadyMember = this.userRepository.existsByEmailAndCompanyId(email, company);
+
+        if (alreadyMember) {
+            throw new BadInvitationRequestException("User is already a member of the company");
+        }
+
+        boolean alreadyInvited = this.invitationRepository.
+                existsByEmailAndCompanyIdAndUsedFalseAndExpiresAtAfter(email, companyId, LocalDateTime.now());
+
+        if (alreadyInvited) {
+            throw new BadInvitationRequestException("User already has a pending invitation");
+        }
+
+//        List<String> validRoles = List.of("EMPLOYEE", "MANAGER", "ADMIN");
+//        if (!validRoles.contains(role)) {
+//            throw new BadInvitationRequestException("Invalid role: " + role);
+//        }
 
         String token = UUID.randomUUID().toString();
 
