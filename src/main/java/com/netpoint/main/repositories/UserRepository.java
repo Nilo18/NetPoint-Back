@@ -1,5 +1,6 @@
 package com.netpoint.main.repositories;
 
+import com.netpoint.main.models.Company;
 import com.netpoint.main.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,4 +16,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // In UserRepository:
     Page<User> findByCompanyId_Id(Long companyId, Pageable pageable);
     boolean existsByEmail(String email);
+    boolean existsByEmailAndCompanyIdAndRole(String email, Company companyId, String role);
 }

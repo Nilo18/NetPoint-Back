@@ -1,10 +1,7 @@
 package com.netpoint.main.services;
 
 import com.netpoint.main.dto.responses.AuthResponse;
-import com.netpoint.main.exceptions.CompanyNotFoundException;
-import com.netpoint.main.exceptions.InvitationTokenAlreadyUsedException;
-import com.netpoint.main.exceptions.InvitationTokenExpiredException;
-import com.netpoint.main.exceptions.InvitationTokenNotFoundException;
+import com.netpoint.main.exceptions.*;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.Invitation;
 import com.netpoint.main.models.User;
@@ -40,6 +37,15 @@ public class InvitationService {
 
     // owneri idzaxebs amas
     public void inviteUser(String email, String role, Integer companyId) {
+        Company company = this.companyRepository.findById(Long.valueOf(companyId))
+                .orElseThrow(() -> new CompanyNotFoundException("Suggested company was not found"));
+
+        boolean isOwner = this.userRepository.existsByEmailAndCompanyIdAndRole(email, company, "OWNER");
+
+        if (isOwner) {
+            throw new BadInvitationRequestException("Invited user must not be the owner");
+        }
+
         // ADD A CHECK HERE THAT IF A USER WITH THIS EMAIL HAS ALREADY BEEN INVITED
         // DON'T INVITE THEM AGAIN AND SEND THE CORRESPONDING RESPONSE TO THE FRONTEND
         // TO IMPLEMENT THIS FEATURE, WE NEED A TABLE WHICH WILL LIST ALL THE EMAILS
