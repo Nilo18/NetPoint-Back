@@ -35,4 +35,10 @@ public class SettingsController {
             @Valid @RequestBody CashierAdditionRequest cashier) {
         return ResponseEntity.ok(this.settingsService.addCashier(cashier));
     }
+
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Integer userId) {
+        settingsService.deleteUser(userId);
+        return ResponseEntity.ok("User deleted successfully");
+    }
 }

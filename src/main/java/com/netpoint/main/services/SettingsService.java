@@ -3,10 +3,7 @@ package com.netpoint.main.services;
 import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
 import com.netpoint.main.dto.responses.CashierAdditionResponse;
-import com.netpoint.main.exceptions.CompanyNotFoundException;
-import com.netpoint.main.exceptions.EmailAlreadyExistsException;
-import com.netpoint.main.exceptions.InvalidPinException;
-import com.netpoint.main.exceptions.UnallowedRoleException;
+import com.netpoint.main.exceptions.*;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.User;
 import com.netpoint.main.repositories.CompanyRepository;
@@ -75,5 +72,19 @@ public class SettingsService {
                     user.getEmail(), user.getRole()
                 )
         );
+    }
+
+    public void deleteUser(Integer userId) {
+        // თუ იუზერი არ არსებობს, exception
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+
+        // Owner-ის წაშლა არ შეიძლება
+        if (user.getRole().equals("OWNER")) {
+            throw new InvalidRoleException("Cannot delete the owner account");
+        }
+
+        userRepository.delete(user);
+        log.info("User deleted: " + userId);
     }
 }

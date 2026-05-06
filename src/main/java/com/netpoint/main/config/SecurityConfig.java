@@ -68,7 +68,7 @@ public class SecurityConfig {
                         // Everything else requires a valid JWT
 //                        .anyRequest().permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/settings/**").hasRole("OWNER")
+                        .requestMatchers("/api/settings/**").hasAuthority("OWNER")
                         .anyRequest().authenticated()
 
                 )
