@@ -2,7 +2,8 @@ package com.netpoint.main.services;
 
 import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
-import com.netpoint.main.dto.responses.CashierAdditionResponse;
+//import com.netpoint.main.dto.responses.CashierAdditionResponse;
+import com.netpoint.main.dto.responses.UserModificationResponse;
 import com.netpoint.main.exceptions.*;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.User;
@@ -32,7 +33,7 @@ public class SettingsService {
                 .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole()));
     }
 
-    public CashierAdditionResponse addCashier(CashierAdditionRequest cashier) {
+    public UserModificationResponse addCashier(CashierAdditionRequest cashier) {
         String role = cashier.role().trim().toLowerCase();
 
         if (!role.equals("cashier")) {
@@ -65,7 +66,7 @@ public class SettingsService {
         this.userRepository.save(user);
 
         log.info("Saving " + user + " to the database...");
-        return new CashierAdditionResponse(
+        return new UserModificationResponse(
                 200,
                 new UserDTO(
                     user.getId(), user.getName(),
@@ -74,7 +75,7 @@ public class SettingsService {
         );
     }
 
-    public void deleteUser(Integer userId) {
+    public UserModificationResponse deleteUser(Integer userId) {
         // თუ იუზერი არ არსებობს, exception
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
@@ -84,7 +85,15 @@ public class SettingsService {
             throw new InvalidRoleException("Cannot delete the owner account");
         }
 
-        userRepository.delete(user);
+        this.userRepository.delete(user);
+
         log.info("User deleted: " + userId);
+        return new UserModificationResponse(
+                200,
+                new UserDTO(
+                        user.getId(), user.getName(),
+                        user.getEmail(), user.getRole()
+                )
+        );
     }
 }

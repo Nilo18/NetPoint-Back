@@ -2,8 +2,8 @@ package com.netpoint.main.controllers;
 
 import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
-import com.netpoint.main.dto.responses.CashierAdditionResponse;
 import com.netpoint.main.dto.responses.PageResponse;
+import com.netpoint.main.dto.responses.UserModificationResponse;
 import com.netpoint.main.models.User;
 import com.netpoint.main.services.SettingsService;
 import jakarta.validation.Valid;
@@ -31,14 +31,13 @@ public class SettingsController {
     }
 
     @PostMapping(path = "/add-cashier")
-    public ResponseEntity<CashierAdditionResponse> addCashier(
+    public ResponseEntity<UserModificationResponse> addCashier(
             @Valid @RequestBody CashierAdditionRequest cashier) {
         return ResponseEntity.ok(this.settingsService.addCashier(cashier));
     }
 
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable Integer userId) {
-        settingsService.deleteUser(userId);
-        return ResponseEntity.ok("User deleted successfully");
+    public ResponseEntity<UserModificationResponse> deleteUser(@PathVariable Integer userId) {
+        return ResponseEntity.ok(this.settingsService.deleteUser(userId));
     }
 }

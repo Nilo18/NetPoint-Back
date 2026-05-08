@@ -1,7 +1,7 @@
 package com.netpoint.main.services;
 
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
-import com.netpoint.main.dto.responses.CashierAdditionResponse;
+import com.netpoint.main.dto.responses.UserModificationResponse;
 import com.netpoint.main.exceptions.EmailAlreadyExistsException;
 import com.netpoint.main.exceptions.InvalidPinException;
 import com.netpoint.main.exceptions.UnallowedRoleException;
@@ -50,7 +50,7 @@ public class SettingsServiceTest {
         when(companyRepository.findById(22L)).thenReturn(Optional.of(company));
         when(passwordEncoder.encode("123456")).thenReturn("encoded123456");
 
-        CashierAdditionResponse response = settingsService.addCashier(request);
+        UserModificationResponse response = settingsService.addCashier(request);
         assertEquals(200, response.status());
         verify(userRepository).save(any(User.class));
     }
