@@ -8,14 +8,16 @@ public record PageResponse<T>(
         List<T> userList,
         int page,
         int size,
-        int totalPages
+        int totalPages,
+        int currentPage
 ) {
     public static <T> PageResponse<T> from(Page<T> page) {
         return new PageResponse<T>(
                 page.getContent(),
                 page.getNumber(),
                 page.getSize(),
-                page.getTotalPages()
+                page.getTotalPages(),
+                page.getNumber()
         );
     }
 }
