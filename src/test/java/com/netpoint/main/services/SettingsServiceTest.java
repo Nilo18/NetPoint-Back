@@ -1,5 +1,6 @@
 package com.netpoint.main.services;
 
+import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
 import com.netpoint.main.dto.responses.UserModificationResponse;
 import com.netpoint.main.exceptions.EmailAlreadyExistsException;
@@ -17,14 +18,17 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,17 +53,18 @@ public class SettingsServiceTest {
         when(userRepository.existsByEmail("bob@gmail.com")).thenReturn(false);
         when(companyRepository.findById(22L)).thenReturn(Optional.of(company));
         when(passwordEncoder.encode("123456")).thenReturn("encoded123456");
-
-        UserModificationResponse response = settingsService.addCashier(request);
-        assertEquals(200, response.status());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<UserDTO> response = settingsService.addCashier(request, pageable);
+        assertNotNull(response);
         verify(userRepository).save(any(User.class));
     }
 
     @ParameterizedTest
     @MethodSource("invalidCashierProvider")
     public void shouldThrowOnInvalidCashier(CashierAdditionRequest request,
-                Class<? extends Exception> expectedException) {
-        assertThrows(expectedException, () -> settingsService.addCashier(request));
+                    @PageableDefault(page = 1, size = 10) Pageable pageable,
+                    Class<? extends Exception> expectedException) {
+        assertThrows(expectedException, () -> settingsService.addCashier(request, pageable));
     }
 
     static Stream<Arguments> invalidCashierProvider() {

@@ -33,7 +33,7 @@ public class SettingsService {
                 .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole()));
     }
 
-    public UserModificationResponse addCashier(CashierAdditionRequest cashier) {
+    public Page<UserDTO> addCashier(CashierAdditionRequest cashier, Pageable pageable) {
         String role = cashier.role().trim().toLowerCase();
 
         if (!role.equals("cashier")) {
@@ -63,22 +63,18 @@ public class SettingsService {
         user.setCompanyId(company);
         user.setPin(passwordEncoder.encode(cashier.pin()));
 
+        log.info("Saving " + user + " to the database...");
+
         this.userRepository.save(user);
 
-        log.info("Saving " + user + " to the database...");
-        return new UserModificationResponse(
-                200,
-                new UserDTO(
-                    user.getId(), user.getName(),
-                    user.getEmail(), user.getRole()
-                )
-        );
+        return userRepository.findByCompanyId_Id(Long.valueOf(cashier.companyId()), pageable)
+                .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole()));
     }
 
     public UserModificationResponse deleteUser(Integer userId) {
         // თუ იუზერი არ არსებობს, exception
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+                .orElseThrow(() -> new UserNotFoundException("Suggested user was not found"));
 
         // Owner-ის წაშლა არ შეიძლება
         if (user.getRole().equals("OWNER")) {
