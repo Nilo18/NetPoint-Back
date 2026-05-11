@@ -149,7 +149,7 @@ public class InvitationService {
 
         // tokens gamoyenebulze ayenebs
         invitation.setUsed(true);
-        invitationRepository.save(invitation);
+        invitationRepository.delete(invitation);
         String jwt = jwtService.generateToken(
                 String.valueOf(user.getId()), String.valueOf(user.getCompanyId().getId()),
                 user.getEmail(), user.getName(), user.getRole()
