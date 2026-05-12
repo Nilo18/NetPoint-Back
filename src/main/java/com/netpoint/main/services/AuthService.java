@@ -52,28 +52,16 @@ public class AuthService {
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new InvalidPasswordException("Invalid password");
         }
-        //ქეშიერები პირდაპირ იღებენ ჯვტს და არანაირი 2ფა
-        if (user.getRole().equals("CASHIER")){
-            String jwt = jwtService.generateToken(
-                    user.getId().toString(), String.valueOf(user.getCompanyId().getId()),
-                    user.getEmail(), user.getName(), user.getRole()
-            );
-            return new AuthResponse("authenticated", jwt);
-        }//2ფას ლოგიკა უკვე ადმინისთვის და მფლობელისთვის
-        else if (user.getRole().equals("ADMIN") || user.getRole().equals("OWNER")) {
-            // agenerirebs 6 cifra kods
-            String otp = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
+        // agenerirebs 6 cifra kods
+        String otp = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
 
-            String tempToken = otpStore.save(user.getId().toString(), user.getEmail(), otp);
+        String tempToken = otpStore.save(user.getId().toString(), user.getEmail(), otp);
 
-            //gzavnis ukve imeilze
-            emailService.sendOtpEmail(user.getEmail(), otp);
+        //gzavnis ukve imeilze
+        emailService.sendOtpEmail(user.getEmail(), otp);
 
-            log.info("Before returning the response: ");
-            return new AuthResponse("2fa_required", tempToken);
-        }
-        // ეს არის, მაგრამ აქამდე წესით არ მოვა არასდროს
-        throw new InvalidRoleException("Invalid role");
+        log.info("Before returning the response: ");
+        return new AuthResponse("2fa_required", tempToken);
     }
 
     //უკვე მეორე ნაბიჯია, ვერიფიკაციას უკეთებს ოტპს და გასცემს ჯვტს თუ წარმატებულად დამთავრდა
