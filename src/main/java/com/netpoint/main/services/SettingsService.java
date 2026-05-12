@@ -92,4 +92,20 @@ public class SettingsService {
                 )
         );
     }
+
+    public UserDTO searchUser(String searchTerm) {
+        User user = userRepository
+                .findByNameOrEmail(searchTerm, searchTerm)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found: " + searchTerm)
+                );
+
+        // DTO ზე გადაყავს და ავტომატურად მალავს პაროლს
+        return new UserDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getRole()
+        );
+    }
 }

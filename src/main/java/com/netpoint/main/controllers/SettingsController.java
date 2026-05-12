@@ -15,14 +15,17 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/settings")
 @Data
 public class SettingsController {
     private final SettingsService settingsService;
+
 
     @GetMapping(path = "/company-users/{id}")
     public ResponseEntity<PageResponse<UserDTO>> getCompanyUsers(@PathVariable Long id,
@@ -42,5 +45,17 @@ public class SettingsController {
     @DeleteMapping("/users/{userId}")
     public ResponseEntity<UserModificationResponse> deleteUser(@PathVariable Integer userId) {
         return ResponseEntity.ok(this.settingsService.deleteUser(userId));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
+    @GetMapping("/search")
+    public ResponseEntity<?> searchUser(@RequestParam String searchTerm) {
+        try {
+            UserDTO user = settingsService.searchUser(searchTerm);
+            return ResponseEntity.ok(user);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        }
     }
 }
