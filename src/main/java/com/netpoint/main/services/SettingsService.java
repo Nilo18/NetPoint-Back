@@ -97,7 +97,7 @@ public class SettingsService {
         User user = userRepository
                 .findByNameOrEmail(searchTerm, searchTerm)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found: " + searchTerm)
+                        new UserNotFoundException("User not found: " + searchTerm)
                 );
 
         // DTO ზე გადაყავს და ავტომატურად მალავს პაროლს

@@ -50,12 +50,6 @@ public class SettingsController {
     @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
     @GetMapping("/search")
     public ResponseEntity<?> searchUser(@RequestParam String searchTerm) {
-        try {
-            UserDTO user = settingsService.searchUser(searchTerm);
-            return ResponseEntity.ok(user);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("error", e.getMessage()));
-        }
+        return ResponseEntity.ok(this.settingsService.searchUser(searchTerm));
     }
 }
