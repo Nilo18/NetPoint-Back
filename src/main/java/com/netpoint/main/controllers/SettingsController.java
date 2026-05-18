@@ -3,6 +3,9 @@ package com.netpoint.main.controllers;
 import com.netpoint.main.dto.CompanyDTO;
 import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
+import com.netpoint.main.dto.requests.CompanyUpdateRequest;
+import com.netpoint.main.dto.requests.VerifyOtpRequest;
+import com.netpoint.main.dto.responses.CompanyInfoChangeVerificationResponse;
 import com.netpoint.main.dto.responses.PageResponse;
 import com.netpoint.main.dto.responses.UserModificationResponse;
 import com.netpoint.main.models.User;
@@ -58,5 +61,19 @@ public class SettingsController {
     @GetMapping(path = "/company/{companyId}")
     public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable Integer companyId) {
         return ResponseEntity.ok(this.settingsService.getCompanyById(companyId));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
+    @PostMapping(path = "/company/verify")
+    public ResponseEntity<CompanyInfoChangeVerificationResponse>
+    verifyCompanyBusinessInfoUpdateRequest(@RequestBody @Valid CompanyDTO suggested) {
+        return ResponseEntity.ok(this.settingsService.verifyCompanyUpdateRequest(suggested));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
+    @PutMapping(path = "/company")
+    public ResponseEntity<CompanyDTO> updateCompanyBusinessInfo(
+            @RequestBody @Valid CompanyUpdateRequest suggested) {
+        return ResponseEntity.ok(this.settingsService.updateCompanyBusinessInfo(suggested));
     }
 }

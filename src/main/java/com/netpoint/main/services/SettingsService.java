@@ -4,9 +4,12 @@ import com.netpoint.main.dto.CompanyDTO;
 import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
 //import com.netpoint.main.dto.responses.CashierAdditionResponse;
+import com.netpoint.main.dto.requests.CompanyUpdateRequest;
+import com.netpoint.main.dto.responses.CompanyInfoChangeVerificationResponse;
 import com.netpoint.main.dto.responses.UserModificationResponse;
 import com.netpoint.main.exceptions.*;
 import com.netpoint.main.models.Company;
+import com.netpoint.main.models.OtpEntry;
 import com.netpoint.main.models.User;
 import com.netpoint.main.repositories.CompanyRepository;
 import com.netpoint.main.repositories.UserRepository;
@@ -14,8 +17,12 @@ import lombok.Data;
 import lombok.extern.java.Log;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
 
 @Service
 @Data
@@ -24,6 +31,8 @@ public class SettingsService {
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JavaMailSender mailSender;
+    private final OtpStore otpStore;
 
     public Page<UserDTO> fetchCompanyUsers(Long id, Pageable pageable) {
         if (!companyRepository.existsById(id)) {
@@ -120,5 +129,51 @@ public class SettingsService {
                 company.getName(),
                 company.getIndustry()
         );
+    }
+
+    public CompanyInfoChangeVerificationResponse verifyCompanyUpdateRequest(CompanyDTO suggested) {
+        Company company = companyRepository.findById(Long.valueOf(suggested.id()))
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+
+        String otp = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
+
+        String tempToken = otpStore.save(suggested.id().toString(), suggested.email(), otp);
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom("netpoint19923@gmail.com");
+        message.setTo(suggested.email());
+        message.setSubject("Your Business Info Update Request Verification");
+        message.setText("Hello! Your verification code is: " + otp +
+                "\n\nIt will expire in 5 minutes.");
+
+        mailSender.send(message);
+        return new CompanyInfoChangeVerificationResponse(200, tempToken);
+    }
+
+    public CompanyDTO updateCompanyBusinessInfo(CompanyUpdateRequest suggested) {
+        OtpEntry otpEntry = otpStore.get(suggested.verificationInfo().tempToken());
+
+        if (!otpEntry.getOtpCode().equals(suggested.verificationInfo().otpCode())) {
+            otpStore.invalidate(suggested.verificationInfo().tempToken());
+            throw new InvalidOtpException("Invalid verification code.");
+        }
+
+        if (otpEntry.isExpired()) {
+//            log.info("Throwing verification code expired error...");
+            throw new OtpExpiredException("Verification code expired.");
+        }
+        // ოტპ ვალიდურია და მაინც ინვალიდაციას უკეთებსბ
+        otpStore.invalidate(suggested.verificationInfo().tempToken());
+
+        Company company = companyRepository.findById(Long.valueOf(suggested.newInfo().id()))
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+
+        company.setName(suggested.newInfo().name());
+        company.setEmail(suggested.newInfo().email());
+        company.setIndustry(suggested.newInfo().industry());
+
+        Company saved = companyRepository.save(company);
+        return new CompanyDTO(saved.getId(), saved.getEmail(), saved.getName(), saved.getIndustry());
     }
 }

@@ -1,4 +1,15 @@
 package com.netpoint.main.dto;
 
-public record CompanyDTO(Integer id, String email, String name, String industry) {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+public record CompanyDTO(
+        Integer id,
+        @NotBlank
+        @Email
+        String email,
+        @NotBlank
+        String name,
+        @NotBlank
+        String industry) {
 }
