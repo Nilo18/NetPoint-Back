@@ -1,5 +1,6 @@
 package com.netpoint.main.services;
 
+import com.netpoint.main.dto.CompanyDTO;
 import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
 //import com.netpoint.main.dto.responses.CashierAdditionResponse;
@@ -106,6 +107,18 @@ public class SettingsService {
                 user.getName(),
                 user.getEmail(),
                 user.getRole()
+        );
+    }
+
+    public CompanyDTO getCompanyById(Integer id) {
+        Company company = companyRepository.findById(Long.valueOf(id))
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+
+        return new CompanyDTO(
+                company.getId(),
+                company.getEmail(),
+                company.getName(),
+                company.getIndustry()
         );
     }
 }

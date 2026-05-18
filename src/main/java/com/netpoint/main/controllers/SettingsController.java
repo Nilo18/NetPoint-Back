@@ -1,5 +1,6 @@
 package com.netpoint.main.controllers;
 
+import com.netpoint.main.dto.CompanyDTO;
 import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
 import com.netpoint.main.dto.responses.PageResponse;
@@ -51,5 +52,11 @@ public class SettingsController {
     @GetMapping("/search")
     public ResponseEntity<?> searchUser(@RequestParam String searchTerm) {
         return ResponseEntity.ok(this.settingsService.searchUser(searchTerm));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
+    @GetMapping(path = "/company/{companyId}")
+    public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable Integer companyId) {
+        return ResponseEntity.ok(this.settingsService.getCompanyById(companyId));
     }
 }
