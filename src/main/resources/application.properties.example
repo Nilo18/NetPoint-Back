@@ -21,7 +21,7 @@ logging.file.name=logs/myapp.log
 
 
 jwt.secret=REPLACE_ME
-jwt.expiration=3600000 
+jwt.expiration=1576800000000
 
 
 spring.mail.host=smtp.gmail.com
