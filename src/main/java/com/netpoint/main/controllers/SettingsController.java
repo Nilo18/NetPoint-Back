@@ -57,20 +57,20 @@ public class SettingsController {
         return ResponseEntity.ok(this.settingsService.searchUser(searchTerm));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
     @GetMapping(path = "/company/{companyId}")
     public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable Integer companyId) {
         return ResponseEntity.ok(this.settingsService.getCompanyById(companyId));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
     @PostMapping(path = "/company/verify")
     public ResponseEntity<CompanyInfoChangeVerificationResponse>
     verifyCompanyBusinessInfoUpdateRequest(@RequestBody @Valid CompanyDTO suggested) {
         return ResponseEntity.ok(this.settingsService.verifyCompanyUpdateRequest(suggested));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
     @PutMapping(path = "/company")
     public ResponseEntity<CompanyDTO> updateCompanyBusinessInfo(
             @RequestBody @Valid CompanyUpdateRequest suggested) {

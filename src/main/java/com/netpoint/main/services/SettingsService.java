@@ -155,7 +155,7 @@ public class SettingsService {
         OtpEntry otpEntry = otpStore.get(suggested.verificationInfo().tempToken());
 
         if (!otpEntry.getOtpCode().equals(suggested.verificationInfo().otpCode())) {
-            otpStore.invalidate(suggested.verificationInfo().tempToken());
+//            otpStore.invalidate(suggested.verificationInfo().tempToken());
             throw new InvalidOtpException("Invalid verification code.");
         }
 
