@@ -1,5 +1,6 @@
 package com.netpoint.main.controllers;
 
+import com.netpoint.main.dto.AuthenticatedUser;
 import com.netpoint.main.dto.CompanyDTO;
 import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -51,10 +53,11 @@ public class SettingsController {
         return ResponseEntity.ok(this.settingsService.deleteUser(userId));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
+    @PreAuthorize("hasAnyAuthority('OWNER')")
     @GetMapping("/search")
-    public ResponseEntity<?> searchUser(@RequestParam String searchTerm) {
-        return ResponseEntity.ok(this.settingsService.searchUser(searchTerm));
+    public ResponseEntity<List<UserDTO>> searchUser(@RequestParam String searchTerm,
+                                @AuthenticationPrincipal AuthenticatedUser principal) {
+        return ResponseEntity.ok(this.settingsService.searchUser(searchTerm, principal.companyId()));
     }
 
 //    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")

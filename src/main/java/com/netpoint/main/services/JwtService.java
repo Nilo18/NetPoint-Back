@@ -68,6 +68,15 @@ public class JwtService {
                 .getSubject();
     }
 
+    public String extractCompanyId(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("companyId", String.class);
+    }
+
 //ამოწმებს ტოკენი ხო ვალიდურია და ვადა ხომ აქვს კიდევ
     public boolean isTokenValid(String token) {
         try {

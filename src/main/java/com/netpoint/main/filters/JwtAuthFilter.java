@@ -1,5 +1,6 @@
 package com.netpoint.main.filters;
 
+import com.netpoint.main.dto.AuthenticatedUser;
 import com.netpoint.main.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -45,11 +46,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             // 5. Extract userId and Role from the JWT
             String userId = jwtService.extractUserId(token);
             String role = jwtService.extractRole(token);
+            Long companyId = Long.valueOf(jwtService.extractCompanyId(token));
+
+            AuthenticatedUser principal = new AuthenticatedUser(userId, role, companyId);
 
             // 6. Map the role string (e.g., "ADMIN") to a GrantedAuthority
             // This is critical because your SecurityConfig uses .hasAnyAuthority()
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    userId,
+                    principal,
                     null,
                     List.of(new SimpleGrantedAuthority(role))
             );

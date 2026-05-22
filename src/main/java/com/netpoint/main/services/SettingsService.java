@@ -23,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.List;
 
 @Service
 @Data
@@ -103,20 +104,23 @@ public class SettingsService {
         );
     }
 
-    public UserDTO searchUser(String searchTerm) {
-        User user = userRepository
-                .findByNameOrEmail(searchTerm, searchTerm)
-                .orElseThrow(() ->
-                        new UserNotFoundException("User not found: " + searchTerm)
-                );
+    public List<UserDTO> searchUser(String searchTerm, Long companyId) {
+        log.info("Possible point before error.");
+        companyRepository.findById(companyId)
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
-        // DTO ზე გადაყავს და ავტომატურად მალავს პაროლს
-        return new UserDTO(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getRole()
-        );
+        log.info("The error should have been thrown, this shouldn't be printed");
+
+        List<User> users = userRepository
+                .searchByNameOrEmailWithinCompany(searchTerm, companyId);
+
+        log.info("After searching users.");
+
+        if (users.isEmpty()) throw new UserNotFoundException("No users found: " + searchTerm);
+
+        return users.stream()
+                .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole()))
+                .toList();
     }
 
     public CompanyDTO getCompanyById(Integer id) {

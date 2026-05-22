@@ -5,8 +5,11 @@ import com.netpoint.main.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,4 +24,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     boolean existsByEmailAndCompanyIdAndRole(String email, Company companyId, String role);
     boolean existsByEmailAndCompanyId(String email, Company companyId);
     User findByCompanyId(Company companyId);
+    @Query("""
+            select u from User u
+            where u.companyId.id = :companyId
+              and (
+                lower(u.name) like lower(concat('%', :searchTerm, '%'))
+                or lower(u.email) like lower(concat('%', :searchTerm, '%'))
+              )
+            """)
+    List<User> searchByNameOrEmailWithinCompany(@Param("searchTerm") String searchTerm, @Param("companyId") Long companyId);
 }

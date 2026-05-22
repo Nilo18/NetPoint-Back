@@ -1,4 +1,4 @@
-package com.netpoint.main.config;
+package com.netpoint.main.filters;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
@@ -21,6 +21,18 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
     private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
+    private Bucket createBucketFor(HttpServletRequest request) {
+        if (request.getRequestURI().equals("/settings/search")) {
+            return Bucket.builder()
+                    .addLimit(Bandwidth.classic(120, Refill.greedy(120, Duration.ofMinutes(1))))
+                    .build();
+        }
+
+        return Bucket.builder()
+                .addLimit(Bandwidth.classic(10, Refill.greedy(10, Duration.ofMinutes(1))))
+                .build();
+    }
+
     private Bucket createNewBucket() {
         return Bucket.builder()
                 .addLimit(Bandwidth.classic(10, Refill.greedy(10, Duration.ofMinutes(1))))
@@ -34,7 +46,9 @@ public class RateLimitFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String ip = request.getRemoteAddr();
-        Bucket bucket = buckets.computeIfAbsent(ip, k -> createNewBucket());
+        String path = request.getRequestURI();
+        String key = ip + ":" + path;
+        Bucket bucket = buckets.computeIfAbsent(key, k -> createBucketFor(request));
 
         if (bucket.tryConsume(1)) {
             filterChain.doFilter(request, response);
