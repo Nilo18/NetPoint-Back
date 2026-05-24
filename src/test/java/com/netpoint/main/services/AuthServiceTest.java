@@ -50,7 +50,7 @@ class AuthServiceTest {
         user.setPassword("hashed");
         user.setRole(role);
         user.setName("Test User");
-        user.setCompanyId(company);
+        user.setCompany(company);
         return user;
     }
 

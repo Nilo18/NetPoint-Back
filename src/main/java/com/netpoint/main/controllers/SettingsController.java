@@ -5,6 +5,7 @@ import com.netpoint.main.dto.CompanyDTO;
 import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
 import com.netpoint.main.dto.requests.CompanyUpdateRequest;
+import com.netpoint.main.dto.requests.UpdateAccountRequest;
 import com.netpoint.main.dto.requests.VerifyOtpRequest;
 import com.netpoint.main.dto.responses.CompanyInfoChangeVerificationResponse;
 import com.netpoint.main.dto.responses.PageResponse;
@@ -22,9 +23,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
-
+import com.netpoint.main.dto.requests.UpdateAccountRequest;
+import com.netpoint.main.dto.UserDTO;  // normal dto package
+import com.netpoint.main.models.User;
 import java.util.List;
 import java.util.Map;
+
 
 @RestController
 @RequestMapping(path = "/settings")
@@ -79,4 +83,37 @@ public class SettingsController {
             @RequestBody @Valid CompanyUpdateRequest suggested) {
         return ResponseEntity.ok(this.settingsService.updateCompanyBusinessInfo(suggested));
     }
+
+    // ========== ACCOUNT UPDATE ==========
+
+    @PutMapping("/account")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserDTO> updateAccount(
+            @AuthenticationPrincipal AuthenticatedUser user, // Changed type to AuthenticatedUser
+            @Valid @RequestBody UpdateAccountRequest request) {
+
+        // Parse the String userId into an Integer for your service
+        Integer numericUserId = Integer.parseInt(user.userId());
+
+        UserDTO updated = settingsService.updateAccount(numericUserId, request);
+        return ResponseEntity.ok(updated);
+    }
+
+// ========== DELETE COMPANY ==========
+
+    @DeleteMapping("/company")
+    @PreAuthorize("hasAuthority('OWNER')")
+    public ResponseEntity<Void> deleteCompany(@AuthenticationPrincipal AuthenticatedUser user) {
+        // 1. Extract the Long companyId from the record and convert it to Integer
+        Integer numericCompanyId = user.companyId().intValue();
+
+        // 2. Pass it into your updated 1-parameter service method
+        settingsService.deleteCompany(numericCompanyId);
+
+        return ResponseEntity.noContent().build();
+    }
+
+
+
+
 }

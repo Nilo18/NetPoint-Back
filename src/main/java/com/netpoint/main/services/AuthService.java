@@ -85,7 +85,7 @@ public class AuthService {
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         //ჯვტს გადასცემს იუზერს სწორი როლით
         String jwt = jwtService.generateToken(
-                entry.getUserId(), String.valueOf(user.getCompanyId().getId()),
+                entry.getUserId(), String.valueOf(user.getCompany().getId()),
                 user.getEmail(), user.getName(), user.getRole()
         );
         return new AuthResponse("authenticated", jwt);
@@ -97,31 +97,29 @@ public class AuthService {
             throw new EmailAlreadyExistsException(company.email());
         }
 
-        Company newCompany = new Company(
-                null,
-                company.name(),
-                company.email(),
-                passwordEncoder.encode(company.password()),
-                company.industry(),
-                new ArrayList<>()
-        );
+        Company newCompany = new Company();
+        newCompany.setName(company.name());
+        newCompany.setEmail(company.email());
+        newCompany.setPassword(passwordEncoder.encode(company.password()));
+        newCompany.setIndustry(company.industry());
 
         Company savedCompany = this.companyRepository.save(newCompany);
 
-        User user = new User(
-                null,
-                savedCompany,
-                company.owner_name(),
-                company.owner_email(),
-                passwordEncoder.encode(company.owner_password()),
-                company.role(),
-                company.phone_number()
-        );
+
+
+        User user = new User();
+        user.setCompany(savedCompany);
+        user.setName(company.owner_name());
+        user.setEmail(company.owner_email());
+        user.setPassword(passwordEncoder.encode(company.owner_password()));
+        user.setRole(company.role());
+        user.setPin(company.phone_number());  // assuming pin field holds phone number
 
         User savedUser = this.userRepository.save(user);
 
+
         String accessToken = this.jwtService.generateToken(
-                savedUser.getId().toString(), String.valueOf(user.getCompanyId().getId()),
+                savedUser.getId().toString(), String.valueOf(user.getCompany().getId()),
                 savedUser.getName(), savedCompany.getEmail(), savedUser.getRole()
         );
 

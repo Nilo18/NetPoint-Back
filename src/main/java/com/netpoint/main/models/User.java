@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "users")
@@ -20,7 +23,7 @@ public class User {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "companyId", nullable = false)
-    private Company companyId;
+    private Company company;  // <-- mxolod es erti, saxeli company
 
     private String name;
 

@@ -3,13 +3,14 @@ package com.netpoint.main.services;
 import com.netpoint.main.dto.CompanyDTO;
 import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
-//import com.netpoint.main.dto.responses.CashierAdditionResponse;
+import com.netpoint.main.repositories.*;
 import com.netpoint.main.dto.requests.CompanyUpdateRequest;
 import com.netpoint.main.dto.responses.CompanyInfoChangeVerificationResponse;
 import com.netpoint.main.dto.responses.UserModificationResponse;
 import com.netpoint.main.exceptions.*;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.OtpEntry;
+import com.netpoint.main.models.ProductAttribute;
 import com.netpoint.main.models.User;
 import com.netpoint.main.repositories.CompanyRepository;
 import com.netpoint.main.repositories.UserRepository;
@@ -21,6 +22,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.netpoint.main.dto.requests.UpdateAccountRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.util.List;
@@ -34,13 +37,16 @@ public class SettingsService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
     private final OtpStore otpStore;
+    private final ProductRepository productRepository;
+    private final ProductAttributeRepository productAttributeRepository;
+    private final ProductAttributeValueRepository productAttributeValueRepository;
 
     public Page<UserDTO> fetchCompanyUsers(Long id, Pageable pageable) {
         if (!companyRepository.existsById(id)) {
             throw new CompanyNotFoundException("Couldn't find company by id");
         }
 
-        return userRepository.findByCompanyId_Id(id, pageable)
+        return userRepository.findByCompany_Id(id, pageable)  // <-- changed
                 .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole()));
     }
 
@@ -71,14 +77,14 @@ public class SettingsService {
         user.setName(cashier.name());
         user.setEmail(cashier.email());
         user.setRole(cashier.role());
-        user.setCompanyId(company);
+        user.setCompany(company);
         user.setPin(passwordEncoder.encode(cashier.pin()));
 
         log.info("Saving " + user + " to the database...");
 
         this.userRepository.save(user);
 
-        return userRepository.findByCompanyId_Id(Long.valueOf(cashier.companyId()), pageable)
+        return userRepository.findByCompany_Id(Long.valueOf(cashier.companyId()), pageable)
                 .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole()));
     }
 
@@ -159,12 +165,12 @@ public class SettingsService {
         OtpEntry otpEntry = otpStore.get(suggested.verificationInfo().tempToken());
 
         if (!otpEntry.getOtpCode().equals(suggested.verificationInfo().otpCode())) {
-//            otpStore.invalidate(suggested.verificationInfo().tempToken());
+
             throw new InvalidOtpException("Invalid verification code.");
         }
 
         if (otpEntry.isExpired()) {
-//            log.info("Throwing verification code expired error...");
+
             throw new OtpExpiredException("Verification code expired.");
         }
         // ოტპ ვალიდურია და მაინც ინვალიდაციას უკეთებსბ
@@ -180,4 +186,54 @@ public class SettingsService {
         Company saved = companyRepository.save(company);
         return new CompanyDTO(saved.getId(), saved.getEmail(), saved.getName(), saved.getIndustry());
     }
+    // accountis daapdeiteba
+
+    @Transactional
+    public UserDTO updateAccount(Integer userId, UpdateAccountRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (request.getName() != null && !request.getName().isBlank()) {
+            user.setName(request.getName());
+        }
+
+        if (request.getEmail() != null && !request.getEmail().isBlank()) {
+            if (userRepository.existsByEmail(request.getEmail()) &&
+                    !user.getEmail().equals(request.getEmail())) {
+                throw new RuntimeException("Email already in use");
+            }
+            user.setEmail(request.getEmail());
+        }
+
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
+        User updated = userRepository.save(user);
+        return new UserDTO(updated.getId(), updated.getName(), updated.getEmail(), updated.getRole());
+    }
+
+// kompaniis washla, es marto owners sheudzlia
+
+    @Transactional
+    public void deleteCompany(Integer companyId) {
+        // jer poulobs kompaniis produqtebis atributebs
+        List<ProductAttribute> attributes = productAttributeRepository.findByCompanyId(companyId);
+
+        for (ProductAttribute attr : attributes) {
+            productAttributeValueRepository.deleteByAttributeId(attr.getId());
+        }
+
+        //  attributebs, produqtebs da momxmareblebs shlis
+
+        productAttributeRepository.deleteByCompanyId(companyId);
+        productRepository.deleteByCompanyId(companyId);
+
+
+        userRepository.deleteByCompanyId(companyId.longValue());
+
+        //bolos imena kompanias shlis
+        companyRepository.deleteById(companyId.longValue());
+    }
+
 }

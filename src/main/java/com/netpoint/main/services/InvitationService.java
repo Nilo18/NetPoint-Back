@@ -133,25 +133,25 @@ public class InvitationService {
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         // axal momxmarebels amatebs USER tables
-//        log.info("The suggested invitation is: " + invitation);
+
         User user = new User();
 //        log.info("user values before using setters: " + user);
         user.setEmail(invitation.getEmail());
         user.setPassword(passwordEncoder.encode(password));
         user.setName(fullName);
         user.setRole(invitation.getRole());
-        user.setCompanyId(company);
+        user.setCompany(company);
         log.info("invitation.getCompanyId() returns: " + invitation.getCompanyId());
-        log.info("user.getCompanyId() returns: " + user.getCompanyId());
+        log.info("user.getCompanyId() returns: " + user.getCompany().getId());
         log.info("user values after using setters: " + user);
-//        user.getCompanyId().setId(invitation.getCompanyId());
+
         userRepository.save(user);
 
         // tokens gamoyenebulze ayenebs
         invitation.setUsed(true);
         invitationRepository.delete(invitation);
         String jwt = jwtService.generateToken(
-                String.valueOf(user.getId()), String.valueOf(user.getCompanyId().getId()),
+                String.valueOf(user.getId()), String.valueOf(user.getCompany().getId()),
                 user.getEmail(), user.getName(), user.getRole()
         );
         return new AuthResponse("Valid", jwt);

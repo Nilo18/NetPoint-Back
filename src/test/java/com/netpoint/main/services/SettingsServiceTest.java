@@ -42,11 +42,11 @@ public class SettingsServiceTest {
 
     @Test
     public void shouldAddCashier() {
-        Company company = new Company(
-                22, "Company1", "company@gmail.com",
-                "password123", "Retail",
-                new ArrayList<>()
-            );
+        Company company = new Company();
+        company.setId(1);
+        company.setName("Test Company");
+        company.setEmail("test@company.com");
+        company.setIndustry("Tech");
         CashierAdditionRequest request = new CashierAdditionRequest(
                 "Bob", "bob@gmail.com", "cashier", "123456", 22);
 

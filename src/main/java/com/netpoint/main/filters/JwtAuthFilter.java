@@ -71,4 +71,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         return path.startsWith("/error") || path.startsWith("/auth");
     }
+
+
 }
