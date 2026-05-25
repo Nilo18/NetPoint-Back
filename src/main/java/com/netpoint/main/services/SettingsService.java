@@ -5,7 +5,7 @@ import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
 import com.netpoint.main.repositories.*;
 import com.netpoint.main.dto.requests.CompanyUpdateRequest;
-import com.netpoint.main.dto.responses.CompanyInfoChangeVerificationResponse;
+import com.netpoint.main.dto.responses.InfoChangeVerificationResponse;
 import com.netpoint.main.dto.responses.UserModificationResponse;
 import com.netpoint.main.exceptions.*;
 import com.netpoint.main.models.Company;
@@ -14,6 +14,7 @@ import com.netpoint.main.models.ProductAttribute;
 import com.netpoint.main.models.User;
 import com.netpoint.main.repositories.CompanyRepository;
 import com.netpoint.main.repositories.UserRepository;
+import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.extern.java.Log;
 import org.jspecify.annotations.Nullable;
@@ -142,7 +143,7 @@ public class SettingsService {
         );
     }
 
-    public CompanyInfoChangeVerificationResponse verifyCompanyUpdateRequest(CompanyDTO suggested) {
+    public InfoChangeVerificationResponse verifyCompanyUpdateRequest(CompanyDTO suggested) {
         Company company = companyRepository.findById(Long.valueOf(suggested.id()))
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
@@ -159,7 +160,7 @@ public class SettingsService {
                 "\n\nIt will expire in 5 minutes.");
 
         mailSender.send(message);
-        return new CompanyInfoChangeVerificationResponse(200, tempToken);
+        return new InfoChangeVerificationResponse(200, tempToken);
     }
 
     public CompanyDTO updateCompanyBusinessInfo(CompanyUpdateRequest suggested) {
@@ -247,5 +248,25 @@ public class SettingsService {
                 user.getEmail(),
                 user.getRole()
         );
+    }
+
+    public InfoChangeVerificationResponse verifyUserInfoUpdateRequest(UserDTO suggested) {
+        User user = userRepository.findById(suggested.id())
+                .orElseThrow(() -> new UserNotFoundException("User with this id was not found"));
+
+        String otp = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
+
+        String tempToken = otpStore.save(suggested.id().toString(), suggested.email(), otp);
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom("netpoint19923@gmail.com");
+        message.setTo(suggested.email());
+        message.setSubject("Your Personal Info Update Request Verification");
+        message.setText("Hello! Your verification code is: " + otp +
+                "\n\nIt will expire in 5 minutes.");
+
+        mailSender.send(message);
+        return new InfoChangeVerificationResponse(200, tempToken);
     }
 }

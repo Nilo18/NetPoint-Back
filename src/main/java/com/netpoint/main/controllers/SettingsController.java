@@ -6,15 +6,12 @@ import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
 import com.netpoint.main.dto.requests.CompanyUpdateRequest;
 import com.netpoint.main.dto.requests.UpdateAccountRequest;
-import com.netpoint.main.dto.requests.VerifyOtpRequest;
-import com.netpoint.main.dto.responses.CompanyInfoChangeVerificationResponse;
+import com.netpoint.main.dto.responses.InfoChangeVerificationResponse;
 import com.netpoint.main.dto.responses.PageResponse;
 import com.netpoint.main.dto.responses.UserModificationResponse;
-import com.netpoint.main.models.User;
 import com.netpoint.main.services.SettingsService;
 import jakarta.validation.Valid;
 import lombok.Data;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -23,11 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
-import com.netpoint.main.dto.requests.UpdateAccountRequest;
-import com.netpoint.main.dto.UserDTO;  // normal dto package
-import com.netpoint.main.models.User;
+
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
@@ -72,7 +66,7 @@ public class SettingsController {
 
     @PreAuthorize("hasAuthority('OWNER')")
     @PostMapping(path = "/company/verify")
-    public ResponseEntity<CompanyInfoChangeVerificationResponse>
+    public ResponseEntity<InfoChangeVerificationResponse>
     verifyCompanyBusinessInfoUpdateRequest(@RequestBody @Valid CompanyDTO suggested) {
         return ResponseEntity.ok(this.settingsService.verifyCompanyUpdateRequest(suggested));
     }
@@ -98,6 +92,13 @@ public class SettingsController {
     }
 
     // ========== ACCOUNT UPDATE ==========
+
+    @PostMapping("/account/verify")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<InfoChangeVerificationResponse>
+    verifyUserInfoUpdateRequest(@RequestBody @Valid UserDTO suggested) {
+        return ResponseEntity.ok(this.settingsService.verifyUserInfoUpdateRequest(suggested));
+    }
 
     @PutMapping("/account")
     @PreAuthorize("isAuthenticated()")
