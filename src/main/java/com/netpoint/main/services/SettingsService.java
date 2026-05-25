@@ -16,6 +16,7 @@ import com.netpoint.main.repositories.CompanyRepository;
 import com.netpoint.main.repositories.UserRepository;
 import lombok.Data;
 import lombok.extern.java.Log;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
@@ -236,4 +237,15 @@ public class SettingsService {
         companyRepository.deleteById(companyId.longValue());
     }
 
+    public UserDTO getUserAccountInfo(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with this id was not found"));
+
+        return new UserDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getRole()
+        );
+    }
 }

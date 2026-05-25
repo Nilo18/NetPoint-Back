@@ -84,6 +84,19 @@ public class SettingsController {
         return ResponseEntity.ok(this.settingsService.updateCompanyBusinessInfo(suggested));
     }
 
+    @GetMapping("/account")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserDTO> getAccountInfo(
+            @AuthenticationPrincipal AuthenticatedUser user
+            /*@PathVariable Integer userId*/) {
+
+//        if (!Integer.valueOf(user.userId()).equals(userId)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//        }
+
+        return ResponseEntity.ok(this.settingsService.getUserAccountInfo(Integer.valueOf(user.userId())));
+    }
+
     // ========== ACCOUNT UPDATE ==========
 
     @PutMapping("/account")
