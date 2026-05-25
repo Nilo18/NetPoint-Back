@@ -21,10 +21,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     // In UserRepository:
     Page<User> findByCompany_Id(Long id, Pageable pageable);
     boolean existsByEmail(String email);
-    boolean existsByEmailAndCompanyIdAndRole(String email, Company companyId, String role);
-    boolean existsByEmailAndCompanyId(String email, Company companyId);
-    User findByCompanyId(Company companyId);
+    boolean existsByEmailAndCompany_IdAndRole(String email, Integer companyId, String role);
+    boolean existsByEmailAndCompany_Id(String email, Integer companyId);
+    User findByCompany(Company company);
     @Query("select u from User u where u.company.id = :companyId and (lower(u.name) like lower(concat('%', :searchTerm, '%')) or lower(u.email) like lower(concat('%', :searchTerm, '%')))")
     List<User> searchByNameOrEmailWithinCompany(@Param("searchTerm") String searchTerm, @Param("companyId") Long companyId);
-    void deleteByCompanyId(Long companyId);
+    void deleteByCompany_Id(Long companyId);
 }

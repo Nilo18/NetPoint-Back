@@ -64,20 +64,20 @@ public class SettingsController {
         return ResponseEntity.ok(this.settingsService.searchUser(searchTerm, principal.companyId()));
     }
 
-//    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
+    @PreAuthorize("hasAuthority('OWNER')")
     @GetMapping(path = "/company/{companyId}")
     public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable Integer companyId) {
         return ResponseEntity.ok(this.settingsService.getCompanyById(companyId));
     }
 
-//    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
+    @PreAuthorize("hasAuthority('OWNER')")
     @PostMapping(path = "/company/verify")
     public ResponseEntity<CompanyInfoChangeVerificationResponse>
     verifyCompanyBusinessInfoUpdateRequest(@RequestBody @Valid CompanyDTO suggested) {
         return ResponseEntity.ok(this.settingsService.verifyCompanyUpdateRequest(suggested));
     }
 
-//    @PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
+    @PreAuthorize("hasAuthority('OWNER')")
     @PutMapping(path = "/company")
     public ResponseEntity<CompanyDTO> updateCompanyBusinessInfo(
             @RequestBody @Valid CompanyUpdateRequest suggested) {
@@ -101,19 +101,16 @@ public class SettingsController {
 
 // ========== DELETE COMPANY ==========
 
-    @DeleteMapping("/company")
+    @DeleteMapping("/company/{companyId}")
     @PreAuthorize("hasAuthority('OWNER')")
-    public ResponseEntity<Void> deleteCompany(@AuthenticationPrincipal AuthenticatedUser user) {
-        // 1. Extract the Long companyId from the record and convert it to Integer
-        Integer numericCompanyId = user.companyId().intValue();
+    public ResponseEntity<Void> deleteCompany(@PathVariable Integer companyId,
+                                              @AuthenticationPrincipal AuthenticatedUser user) {
+        if (!user.companyId().equals(companyId.longValue())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
-        // 2. Pass it into your updated 1-parameter service method
-        settingsService.deleteCompany(numericCompanyId);
+        settingsService.deleteCompany(companyId);
 
         return ResponseEntity.noContent().build();
     }
-
-
-
-
 }

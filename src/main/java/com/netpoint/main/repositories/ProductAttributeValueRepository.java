@@ -14,8 +14,8 @@ import java.util.List;
 
 @Repository
 public interface ProductAttributeValueRepository extends JpaRepository<ProductAttributeValue, Integer> {
-    List<ProductAttributeValue> findByProductId(Integer productId);
-    void deleteByProductId(Integer productId);
+    List<ProductAttributeValue> findByProduct_Id(Integer productId);
+    void deleteByProduct_Id(Integer productId);
 
     @Modifying
     @Transactional

@@ -28,7 +28,7 @@ public class ProductService {
 
     @Transactional
     public ProductAttributeDTO createAttribute(Integer companyId, CreateProductAttributeRequest request) {
-        if (productAttributeRepository.existsByAttributeNameAndCompanyId(request.getAttributeName(), companyId)) {
+        if (productAttributeRepository.existsByAttributeNameAndCompany_Id(request.getAttributeName(), companyId)) {
             throw new RuntimeException("Attribute with this name already exists");
         }
 
@@ -46,7 +46,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<ProductAttributeDTO> getCompanyAttributes(Integer companyId) {
-        return productAttributeRepository.findByCompanyId(companyId)
+        return productAttributeRepository.findByCompany_Id(companyId)
                 .stream()
                 .map(this::mapToAttributeDTO)
                 .collect(Collectors.toList());
@@ -55,7 +55,7 @@ public class ProductService {
     @Transactional
     public void deleteAttribute(Integer companyId, Integer attributeId) {
         // ormagad amowmebs rom es atributi am kompaniisa
-        ProductAttribute attribute = productAttributeRepository.findByIdAndCompanyId(attributeId, companyId)
+        ProductAttribute attribute = productAttributeRepository.findByIdAndCompany_Id(attributeId, companyId)
                 .orElseThrow(() -> new RuntimeException("Attribute not found"));
 
 
@@ -87,7 +87,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<ProductDTO> getCompanyProducts(Integer companyId) {
-        return productRepository.findByCompanyId(companyId)
+        return productRepository.findByCompany_Id(companyId)
                 .stream()
                 .map(this::mapToProductDTO)
                 .collect(Collectors.toList());
@@ -95,14 +95,14 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductDTO getProductById(Integer companyId, Integer productId) {
-        Product product = productRepository.findByIdAndCompanyId(productId, companyId)
+        Product product = productRepository.findByIdAndCompany_Id(productId, companyId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         return mapToProductDTO(product);
     }
 
     @Transactional
     public ProductDTO updateProduct(Integer companyId, Integer productId, UpdateProductRequest request) {
-        Product product = productRepository.findByIdAndCompanyId(productId, companyId)
+        Product product = productRepository.findByIdAndCompany_Id(productId, companyId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         if (request.getName() != null) {
@@ -117,7 +117,7 @@ public class ProductService {
         // davapdeitet custom attributebi ro moetana
         if (request.getCustomAttributes() != null) {
             // wavashot dzvel values da davamato axlebi
-            productAttributeValueRepository.deleteByProductId(productId);
+            productAttributeValueRepository.deleteByProduct_Id(productId);
             saveCustomAttributes(updated, companyId, request.getCustomAttributes());
         }
 
@@ -126,7 +126,7 @@ public class ProductService {
 
     @Transactional
     public void deleteProduct(Integer companyId, Integer productId) {
-        Product product = productRepository.findByIdAndCompanyId(productId, companyId)
+        Product product = productRepository.findByIdAndCompany_Id(productId, companyId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         productRepository.delete(product);
     }
@@ -138,7 +138,7 @@ public class ProductService {
             Integer attributeId = Integer.parseInt(entry.getKey());
 
             // shevamowmot attribute arsebobs da es companiis attributes
-            ProductAttribute attribute = productAttributeRepository.findByIdAndCompanyId(attributeId, companyId)
+            ProductAttribute attribute = productAttributeRepository.findByIdAndCompany_Id(attributeId, companyId)
                     .orElseThrow(() -> new RuntimeException("Attribute not found: " + attributeId));
 
             // validacias vuketebt values sachiroebisamebr
@@ -177,7 +177,7 @@ public class ProductService {
         Map<String, String> customAttrs = new HashMap<>();
 
 
-        List<ProductAttributeValue> values = productAttributeValueRepository.findByProductId(product.getId());
+        List<ProductAttributeValue> values = productAttributeValueRepository.findByProduct_Id(product.getId());
 
         if (values != null) {
             for (ProductAttributeValue value : values) {

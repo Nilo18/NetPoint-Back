@@ -45,13 +45,13 @@ public class InvitationService {
             throw new BadInvitationRequestException("Invalid email format");
         }
 
-        boolean isOwner = this.userRepository.existsByEmailAndCompanyIdAndRole(email, company, "OWNER");
+        boolean isOwner = this.userRepository.existsByEmailAndCompany_IdAndRole(email, companyId, "OWNER");
 
         if (isOwner) {
             throw new BadInvitationRequestException("Invited user must not be the owner");
         }
 
-        boolean alreadyMember = this.userRepository.existsByEmailAndCompanyId(email, company);
+        boolean alreadyMember = this.userRepository.existsByEmailAndCompany_Id(email, companyId);
 
         if (alreadyMember) {
             throw new BadInvitationRequestException("User is already a member of the company");
@@ -118,6 +118,7 @@ public class InvitationService {
 
     // admini amas idzaxebs linkze gadasvlis mere
     public AuthResponse completeRegistration(String token, String password, String fullName) {
+        log.info("First attempt to catch StackOverflowError");
         Invitation invitation = invitationRepository.findByToken(token)
                 .orElseThrow(() -> new InvitationTokenNotFoundException("Invitation not found"));
 
@@ -125,10 +126,12 @@ public class InvitationService {
             throw new InvitationTokenAlreadyUsedException("Invitation already used");
         }
 
+        log.info("Second attempt to catch StackOverflowError");
         if (invitation.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new InvitationTokenExpiredException("Invitation expired");
         }
 
+        log.info("Third attempt to catch StackOverflowError");
         Company company = this.companyRepository.findById(Long.valueOf(invitation.getCompanyId()))
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
@@ -143,9 +146,12 @@ public class InvitationService {
         user.setCompany(company);
         log.info("invitation.getCompanyId() returns: " + invitation.getCompanyId());
         log.info("user.getCompanyId() returns: " + user.getCompany().getId());
+        log.info("FOURTH ATTEMPT TO CATCH STACKOVERLOWERROR");
         log.info("user values after using setters: " + user);
+        log.info("FIFTH ATTEMPT TO CATCH STACKOVERLOWERROR");
 
         userRepository.save(user);
+        log.info("SIXTH ATTEMPT TO CATCH STACKOVERLOWERROR");
 
         // tokens gamoyenebulze ayenebs
         invitation.setUsed(true);

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Range;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class User {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "companyId", nullable = false)
+    @ToString.Exclude
     private Company company;  // <-- mxolod es erti, saxeli company
 
     private String name;

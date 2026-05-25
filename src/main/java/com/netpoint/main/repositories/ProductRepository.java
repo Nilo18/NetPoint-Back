@@ -10,8 +10,8 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-    List<Product> findByCompanyId(Integer companyId);
-    Optional<Product> findByIdAndCompanyId(Integer id, Integer companyId);
-    void deleteByIdAndCompanyId(Integer id, Integer companyId);
-    void deleteByCompanyId(Integer companyId);
+    List<Product> findByCompany_Id(Integer companyId);
+    Optional<Product> findByIdAndCompany_Id(Integer id, Integer companyId);
+    void deleteByIdAndCompany_Id(Integer id, Integer companyId);
+    void deleteByCompany_Id(Integer companyId);
 }

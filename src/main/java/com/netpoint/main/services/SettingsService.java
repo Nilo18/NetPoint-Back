@@ -218,7 +218,7 @@ public class SettingsService {
     @Transactional
     public void deleteCompany(Integer companyId) {
         // jer poulobs kompaniis produqtebis atributebs
-        List<ProductAttribute> attributes = productAttributeRepository.findByCompanyId(companyId);
+        List<ProductAttribute> attributes = productAttributeRepository.findByCompany_Id(companyId);
 
         for (ProductAttribute attr : attributes) {
             productAttributeValueRepository.deleteByAttributeId(attr.getId());
@@ -226,11 +226,11 @@ public class SettingsService {
 
         //  attributebs, produqtebs da momxmareblebs shlis
 
-        productAttributeRepository.deleteByCompanyId(companyId);
-        productRepository.deleteByCompanyId(companyId);
+        productAttributeRepository.deleteByCompany_Id(companyId);
+        productRepository.deleteByCompany_Id(companyId);
 
 
-        userRepository.deleteByCompanyId(companyId.longValue());
+        userRepository.deleteByCompany_Id(companyId.longValue());
 
         //bolos imena kompanias shlis
         companyRepository.deleteById(companyId.longValue());

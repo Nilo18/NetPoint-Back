@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProductAttributeRepository extends JpaRepository<ProductAttribute, Long> {
+public interface ProductAttributeRepository extends JpaRepository<ProductAttribute, Integer> {
 
     // 1. Keep your existing working methods
-    List<ProductAttribute> findByCompanyId(Integer companyId);
-    Optional<ProductAttribute> findByIdAndCompanyId(Integer id, Integer companyId);
-    boolean existsByAttributeNameAndCompanyId(String attributeName, Integer companyId);
+    List<ProductAttribute> findByCompany_Id(Integer companyId);
+    Optional<ProductAttribute> findByIdAndCompany_Id(Integer id, Integer companyId);
+    boolean existsByAttributeNameAndCompany_Id(String attributeName, Integer companyId);
 
     // 2. ADD THIS EXACT METHOD FOR THE DELETE CHAIN
     @Transactional
-    void deleteByCompanyId(Integer companyId);
+    void deleteByCompany_Id(Integer companyId);
 }
