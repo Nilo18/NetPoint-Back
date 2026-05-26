@@ -202,7 +202,7 @@ public class SettingsService {
         if (request.getEmail() != null && !request.getEmail().isBlank()) {
             if (userRepository.existsByEmail(request.getEmail()) &&
                     !user.getEmail().equals(request.getEmail())) {
-                throw new RuntimeException("Email already in use");
+                throw new EmailAlreadyExistsException("Email already in use");
             }
             user.setEmail(request.getEmail());
         }
