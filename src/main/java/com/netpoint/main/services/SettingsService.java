@@ -266,6 +266,13 @@ public class SettingsService {
         User user = userRepository.findById(suggested.id())
                 .orElseThrow(() -> new UserNotFoundException("User with this id was not found"));
 
+//        if (suggested.email() != null && !suggested.email().isBlank()) {
+        if (!user.getEmail().equals(suggested.email()) && userRepository.existsByEmail(suggested.email())) {
+            throw new EmailAlreadyExistsException("A user with this email already exists");
+        }
+//            user.setEmail(request.getNewInfo().email());
+//        }
+
         String otp = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
 
         String tempToken = otpStore.save(suggested.id().toString(), suggested.email(), otp);
