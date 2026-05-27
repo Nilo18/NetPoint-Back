@@ -14,10 +14,8 @@ import com.netpoint.main.models.ProductAttribute;
 import com.netpoint.main.models.User;
 import com.netpoint.main.repositories.CompanyRepository;
 import com.netpoint.main.repositories.UserRepository;
-import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.extern.java.Log;
-import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
@@ -192,23 +190,37 @@ public class SettingsService {
 
     @Transactional
     public UserDTO updateAccount(Integer userId, UpdateAccountRequest request) {
+        OtpEntry otpEntry = otpStore.get(request.getVerificationInfo().tempToken());
+
+        if (!otpEntry.getOtpCode().equals(request.getVerificationInfo().otpCode())) {
+
+            throw new InvalidOtpException("Invalid verification code.");
+        }
+
+        if (otpEntry.isExpired()) {
+
+            throw new OtpExpiredException("Verification code expired.");
+        }
+        // ოტპ ვალიდურია და მაინც ინვალიდაციას უკეთებსბ
+        otpStore.invalidate(request.getVerificationInfo().tempToken());
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (request.getName() != null && !request.getName().isBlank()) {
-            user.setName(request.getName());
+        if (request.getNewInfo().name() != null && !request.getNewInfo().name().isBlank()) {
+            user.setName(request.getNewInfo().name());
         }
 
-        if (request.getEmail() != null && !request.getEmail().isBlank()) {
-            if (userRepository.existsByEmail(request.getEmail()) &&
-                    !user.getEmail().equals(request.getEmail())) {
+        if (request.getNewInfo().email() != null && !request.getNewInfo().email().isBlank()) {
+            if (userRepository.existsByEmail(request.getNewInfo().email()) &&
+                    !user.getEmail().equals(request.getNewInfo().email())) {
                 throw new EmailAlreadyExistsException("Email already in use");
             }
-            user.setEmail(request.getEmail());
+            user.setEmail(request.getNewInfo().email());
         }
 
-        if (request.getPassword() != null && !request.getPassword().isBlank()) {
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if (request.getNewInfo().newPassword() != null && !request.getNewInfo().newPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getNewInfo().newPassword()));
         }
 
         User updated = userRepository.save(user);
