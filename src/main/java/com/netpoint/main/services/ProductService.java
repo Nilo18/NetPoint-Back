@@ -9,6 +9,9 @@ import com.netpoint.main.repositories.ProductAttributeValueRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 import com.netpoint.main.dto.*;
@@ -74,14 +77,30 @@ public class ProductService {
         product.setName(request.getName());
         product.setPrice(request.getPrice());
         product.setCompany(company);
-
+        product.setImageUrl(request.getImageUrl());
         Product savedProduct = productRepository.save(product);
 
         if (request.getCustomAttributes() != null && !request.getCustomAttributes().isEmpty()) {
             saveCustomAttributes(savedProduct, companyId, request.getCustomAttributes());
         }
 
+        product.setWholesalePrice(request.getWholesalePrice());
+        product.setStock(request.getStock() != null ? request.getStock() : 0);
+
+        //gamoitvlis wholesalevePrice
+        if (request.getWholesalePrice() != null && product.getPrice() != null) {
+            BigDecimal margin = product.getPrice()
+                    .subtract(request.getWholesalePrice())
+                    .divide(product.getPrice(), 4, RoundingMode.HALF_UP)
+                    .multiply(BigDecimal.valueOf(100));
+            product.setMarginPercent(margin);
+        }
+
+        productRepository.save(product); // save again with new fields
         return mapToProductDTO(savedProduct);
+
+
+
     }
 
 
@@ -121,7 +140,26 @@ public class ProductService {
             saveCustomAttributes(updated, companyId, request.getCustomAttributes());
         }
 
+        //amowmebs ro nullebi araa, es imistvis davamate ro daapdeitebisas ar gaanulos eseni
+        if (request.getStock() != null) product.setStock(request.getStock());
+        if (request.getWholesalePrice() != null) product.setWholesalePrice(request.getWholesalePrice());
+        if (request.getImageUrl() != null) product.setImageUrl(request.getImageUrl());
+        product.setStock(request.getStock() != null ? request.getStock() : 0);
+
+        //gamoitvlis margins
+        if (product.getPrice() != null && product.getWholesalePrice() != null) {
+            BigDecimal margin = product.getPrice()
+                    .subtract(product.getWholesalePrice())
+                    .divide(product.getPrice(), 4, RoundingMode.HALF_UP)
+                    .multiply(BigDecimal.valueOf(100));
+            product.setMarginPercent(margin);
+        }
+
+        productRepository.save(product);
         return mapToProductDTO(updated);
+
+
+
     }
 
     @Transactional
@@ -175,7 +213,7 @@ public class ProductService {
 
     private ProductDTO mapToProductDTO(Product product) {
         Map<String, String> customAttrs = new HashMap<>();
-
+        String imageUrl = product.getImageUrl();
 
         List<ProductAttributeValue> values = productAttributeValueRepository.findByProduct_Id(product.getId());
 
@@ -187,9 +225,26 @@ public class ProductService {
             }
         }
 
-        return new ProductDTO(product.getId(), product.getName(), product.getPrice(), customAttrs);
+        BigDecimal profitability = null;
+        if (product.getPrice() != null && product.getWholesalePrice() != null) {
+            profitability = product.getPrice().subtract(product.getWholesalePrice());
+        }
+
+        return new ProductDTO(
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                customAttrs,
+                product.getStock(),
+                product.getWholesalePrice(),
+                product.getMarginPercent(),
+                profitability,
+                imageUrl
+        );
     }
-    private ProductAttributeDTO mapToAttributeDTO(ProductAttribute attribute) {
-        return new ProductAttributeDTO(attribute.getId(), attribute.getAttributeName(), attribute.getAttributeType());
+        private ProductAttributeDTO mapToAttributeDTO (ProductAttribute attribute){
+            return new ProductAttributeDTO(attribute.getId(), attribute.getAttributeName(), attribute.getAttributeType());
+        }
     }
-}
+
+

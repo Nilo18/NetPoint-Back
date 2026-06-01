@@ -24,8 +24,26 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
+    @Column
+    private String imageUrl;
+
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
+
+    @Column(nullable = false)
+    private Integer stock = 0;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal wholesalePrice;
+
+    @Column(precision = 5, scale = 2)
+    private BigDecimal marginPercent;
+
+    @Transient
+    public BigDecimal getProfitability() {
+        if (wholesalePrice == null || price == null) return null;
+        return price.subtract(wholesalePrice);
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)

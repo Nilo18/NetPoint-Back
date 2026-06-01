@@ -14,7 +14,9 @@ import java.util.Map;
 @AllArgsConstructor
 public class UpdateProductRequest {
     private String name;
-
+    private Integer stock;
+    private BigDecimal wholesalePrice;
+    private String imageUrl;
     @Positive(message = "Price must be positive")
     private BigDecimal price;
 

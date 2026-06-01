@@ -14,6 +14,9 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateProductRequest {
+    private Integer stock;
+    private BigDecimal wholesalePrice;
+    private String imageUrl;
 
     @NotBlank(message = "Product name is required")
     private String name;
