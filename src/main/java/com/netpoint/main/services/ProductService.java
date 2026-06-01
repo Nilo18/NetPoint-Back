@@ -1,25 +1,28 @@
 package com.netpoint.main.services;
 
 import com.netpoint.main.dto.requests.*;
+import com.netpoint.main.exceptions.AttributeAlreadyExistsException;
+import com.netpoint.main.exceptions.AttributeCapacityReachedException;
+import com.netpoint.main.exceptions.CompanyNotFoundException;
 import com.netpoint.main.models.*;
 import com.netpoint.main.repositories.*;
 import com.netpoint.main.repositories.ProductAttributeRepository;
 import com.netpoint.main.repositories.ProductRepository;
 import com.netpoint.main.repositories.ProductAttributeValueRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 import com.netpoint.main.dto.*;
 
+import javax.management.Attribute;
 
 
 @Service
 @RequiredArgsConstructor
+@Log
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -32,11 +35,18 @@ public class ProductService {
     @Transactional
     public ProductAttributeDTO createAttribute(Integer companyId, CreateProductAttributeRequest request) {
         if (productAttributeRepository.existsByAttributeNameAndCompany_Id(request.getAttributeName(), companyId)) {
-            throw new RuntimeException("Attribute with this name already exists");
+            throw new AttributeAlreadyExistsException("Attribute with this name already exists");
+        }
+
+        long numberOfAttributes = productAttributeRepository.countByCompanyId(companyId);
+
+        log.info("Counted numberOfAttributes as: " + numberOfAttributes);
+        if (numberOfAttributes >= 10L) {
+            throw new AttributeCapacityReachedException("Product can only have 10 attributes");
         }
 
         Company company = companyRepository.findById(Long.valueOf(companyId))
-                .orElseThrow(() -> new RuntimeException("Company not found"));
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         ProductAttribute attribute = new ProductAttribute();
         attribute.setAttributeName(request.getAttributeName());
@@ -49,10 +59,16 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<ProductAttributeDTO> getCompanyAttributes(Integer companyId) {
-        return productAttributeRepository.findByCompany_Id(companyId)
+        List<ProductAttributeDTO> attributes = productAttributeRepository.findByCompany_Id(companyId)
                 .stream()
                 .map(this::mapToAttributeDTO)
                 .collect(Collectors.toList());
+
+        Product product = productRepository.getById(companyId);
+        attributes.addFirst(new ProductAttributeDTO(0, "Name", ProductAttribute.AttributeType.TEXT, true));
+        attributes.add(1, new ProductAttributeDTO(1, "Price", ProductAttribute.AttributeType.TEXT, true));
+
+        return attributes;
     }
 
     @Transactional
@@ -77,30 +93,14 @@ public class ProductService {
         product.setName(request.getName());
         product.setPrice(request.getPrice());
         product.setCompany(company);
-        product.setImageUrl(request.getImageUrl());
+
         Product savedProduct = productRepository.save(product);
 
         if (request.getCustomAttributes() != null && !request.getCustomAttributes().isEmpty()) {
             saveCustomAttributes(savedProduct, companyId, request.getCustomAttributes());
         }
 
-        product.setWholesalePrice(request.getWholesalePrice());
-        product.setStock(request.getStock() != null ? request.getStock() : 0);
-
-        //gamoitvlis wholesalevePrice
-        if (request.getWholesalePrice() != null && product.getPrice() != null) {
-            BigDecimal margin = product.getPrice()
-                    .subtract(request.getWholesalePrice())
-                    .divide(product.getPrice(), 4, RoundingMode.HALF_UP)
-                    .multiply(BigDecimal.valueOf(100));
-            product.setMarginPercent(margin);
-        }
-
-        productRepository.save(product); // save again with new fields
         return mapToProductDTO(savedProduct);
-
-
-
     }
 
 
@@ -140,26 +140,7 @@ public class ProductService {
             saveCustomAttributes(updated, companyId, request.getCustomAttributes());
         }
 
-        //amowmebs ro nullebi araa, es imistvis davamate ro daapdeitebisas ar gaanulos eseni
-        if (request.getStock() != null) product.setStock(request.getStock());
-        if (request.getWholesalePrice() != null) product.setWholesalePrice(request.getWholesalePrice());
-        if (request.getImageUrl() != null) product.setImageUrl(request.getImageUrl());
-        product.setStock(request.getStock() != null ? request.getStock() : 0);
-
-        //gamoitvlis margins
-        if (product.getPrice() != null && product.getWholesalePrice() != null) {
-            BigDecimal margin = product.getPrice()
-                    .subtract(product.getWholesalePrice())
-                    .divide(product.getPrice(), 4, RoundingMode.HALF_UP)
-                    .multiply(BigDecimal.valueOf(100));
-            product.setMarginPercent(margin);
-        }
-
-        productRepository.save(product);
         return mapToProductDTO(updated);
-
-
-
     }
 
     @Transactional
@@ -213,7 +194,7 @@ public class ProductService {
 
     private ProductDTO mapToProductDTO(Product product) {
         Map<String, String> customAttrs = new HashMap<>();
-        String imageUrl = product.getImageUrl();
+
 
         List<ProductAttributeValue> values = productAttributeValueRepository.findByProduct_Id(product.getId());
 
@@ -225,26 +206,9 @@ public class ProductService {
             }
         }
 
-        BigDecimal profitability = null;
-        if (product.getPrice() != null && product.getWholesalePrice() != null) {
-            profitability = product.getPrice().subtract(product.getWholesalePrice());
-        }
-
-        return new ProductDTO(
-                product.getId(),
-                product.getName(),
-                product.getPrice(),
-                customAttrs,
-                product.getStock(),
-                product.getWholesalePrice(),
-                product.getMarginPercent(),
-                profitability,
-                imageUrl
-        );
+        return new ProductDTO(product.getId(), product.getName(), product.getPrice(), customAttrs);
     }
-        private ProductAttributeDTO mapToAttributeDTO (ProductAttribute attribute){
-            return new ProductAttributeDTO(attribute.getId(), attribute.getAttributeName(), attribute.getAttributeType());
-        }
+    private ProductAttributeDTO mapToAttributeDTO(ProductAttribute attribute) {
+        return new ProductAttributeDTO(attribute.getId(), attribute.getAttributeName(), attribute.getAttributeType(), attribute.isDefault());
     }
-
-
+}

@@ -14,6 +14,7 @@ public interface ProductAttributeRepository extends JpaRepository<ProductAttribu
     List<ProductAttribute> findByCompany_Id(Integer companyId);
     Optional<ProductAttribute> findByIdAndCompany_Id(Integer id, Integer companyId);
     boolean existsByAttributeNameAndCompany_Id(String attributeName, Integer companyId);
+    long countByCompanyId(Integer companyId);
 
     // 2. ADD THIS EXACT METHOD FOR THE DELETE CHAIN
     @Transactional
