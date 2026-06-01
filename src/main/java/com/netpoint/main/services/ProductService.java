@@ -2,6 +2,7 @@ package com.netpoint.main.services;
 
 import com.netpoint.main.dto.requests.*;
 import com.netpoint.main.exceptions.AttributeAlreadyExistsException;
+import com.netpoint.main.exceptions.AttributeCapacityReachedException;
 import com.netpoint.main.exceptions.CompanyNotFoundException;
 import com.netpoint.main.models.*;
 import com.netpoint.main.repositories.*;
@@ -9,6 +10,7 @@ import com.netpoint.main.repositories.ProductAttributeRepository;
 import com.netpoint.main.repositories.ProductRepository;
 import com.netpoint.main.repositories.ProductAttributeValueRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
@@ -20,6 +22,7 @@ import javax.management.Attribute;
 
 @Service
 @RequiredArgsConstructor
+@Log
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -33,6 +36,13 @@ public class ProductService {
     public ProductAttributeDTO createAttribute(Integer companyId, CreateProductAttributeRequest request) {
         if (productAttributeRepository.existsByAttributeNameAndCompany_Id(request.getAttributeName(), companyId)) {
             throw new AttributeAlreadyExistsException("Attribute with this name already exists");
+        }
+
+        long numberOfAttributes = productAttributeRepository.countByCompanyId(companyId);
+
+        log.info("Counted numberOfAttributes as: " + numberOfAttributes);
+        if (numberOfAttributes >= 10L) {
+            throw new AttributeCapacityReachedException("Product can only have 10 attributes");
         }
 
         Company company = companyRepository.findById(Long.valueOf(companyId))
