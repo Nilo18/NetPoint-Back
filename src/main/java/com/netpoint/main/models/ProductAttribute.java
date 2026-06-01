@@ -30,6 +30,8 @@ public class ProductAttribute {
     @ToString.Exclude
     private Company company;
 
+    boolean isDefault;
+
     public enum AttributeType {
         TEXT,
         NUMBER,

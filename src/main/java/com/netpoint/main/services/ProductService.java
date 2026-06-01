@@ -59,10 +59,16 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<ProductAttributeDTO> getCompanyAttributes(Integer companyId) {
-        return productAttributeRepository.findByCompany_Id(companyId)
+        List<ProductAttributeDTO> attributes = productAttributeRepository.findByCompany_Id(companyId)
                 .stream()
                 .map(this::mapToAttributeDTO)
                 .collect(Collectors.toList());
+
+        Product product = productRepository.getById(companyId);
+        attributes.addFirst(new ProductAttributeDTO(0, "Name", ProductAttribute.AttributeType.TEXT, true));
+        attributes.add(1, new ProductAttributeDTO(1, "Price", ProductAttribute.AttributeType.TEXT, true));
+
+        return attributes;
     }
 
     @Transactional
@@ -203,6 +209,6 @@ public class ProductService {
         return new ProductDTO(product.getId(), product.getName(), product.getPrice(), customAttrs);
     }
     private ProductAttributeDTO mapToAttributeDTO(ProductAttribute attribute) {
-        return new ProductAttributeDTO(attribute.getId(), attribute.getAttributeName(), attribute.getAttributeType());
+        return new ProductAttributeDTO(attribute.getId(), attribute.getAttributeName(), attribute.getAttributeType(), attribute.isDefault());
     }
 }
