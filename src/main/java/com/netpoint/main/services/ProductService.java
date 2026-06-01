@@ -1,6 +1,8 @@
 package com.netpoint.main.services;
 
 import com.netpoint.main.dto.requests.*;
+import com.netpoint.main.exceptions.AttributeAlreadyExistsException;
+import com.netpoint.main.exceptions.CompanyNotFoundException;
 import com.netpoint.main.models.*;
 import com.netpoint.main.repositories.*;
 import com.netpoint.main.repositories.ProductAttributeRepository;
@@ -13,6 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import com.netpoint.main.dto.*;
 
+import javax.management.Attribute;
 
 
 @Service
@@ -29,11 +32,11 @@ public class ProductService {
     @Transactional
     public ProductAttributeDTO createAttribute(Integer companyId, CreateProductAttributeRequest request) {
         if (productAttributeRepository.existsByAttributeNameAndCompany_Id(request.getAttributeName(), companyId)) {
-            throw new RuntimeException("Attribute with this name already exists");
+            throw new AttributeAlreadyExistsException("Attribute with this name already exists");
         }
 
         Company company = companyRepository.findById(Long.valueOf(companyId))
-                .orElseThrow(() -> new RuntimeException("Company not found"));
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         ProductAttribute attribute = new ProductAttribute();
         attribute.setAttributeName(request.getAttributeName());

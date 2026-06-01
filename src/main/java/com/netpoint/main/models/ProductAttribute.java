@@ -33,6 +33,7 @@ public class ProductAttribute {
     public enum AttributeType {
         TEXT,
         NUMBER,
-        BOOLEAN
+        DATE,
+        BOOLEAN,
     }
 }
