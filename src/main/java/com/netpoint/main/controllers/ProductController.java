@@ -8,6 +8,7 @@ import com.netpoint.main.dto.ProductDTO;
 import com.netpoint.main.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
+@Log
 public class ProductController {
 
     private final ProductService productService;
@@ -42,7 +44,7 @@ public class ProductController {
 
     @DeleteMapping("/attributes/{id}")
     @PreAuthorize("hasAnyAuthority('OWNER', 'ADMIN')")
-    public ResponseEntity<Void> deleteAttribute(
+    public ResponseEntity<ProductAttributeDTO> deleteAttribute(
             @PathVariable Integer id,
             @AuthenticationPrincipal AuthenticatedUser user) {
 
@@ -50,10 +52,10 @@ public class ProductController {
         Integer numericCompanyId = user.companyId().intValue();
 
 
-        productService.deleteAttribute(numericCompanyId, id);
+        return ResponseEntity.ok(productService.deleteAttribute(numericCompanyId, id));
 
-        // abrunebs HTTP 204 No Content status
-        return ResponseEntity.noContent().build();
+        // abrunebs HTTP 204 No Content status/
+//        return ResponseEntity.noContent().build();
     }
 
 

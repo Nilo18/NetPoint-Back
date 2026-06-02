@@ -3,6 +3,7 @@ package com.netpoint.main.services;
 import com.netpoint.main.dto.requests.*;
 import com.netpoint.main.exceptions.AttributeAlreadyExistsException;
 import com.netpoint.main.exceptions.AttributeCapacityReachedException;
+import com.netpoint.main.exceptions.AttributeNotFoundException;
 import com.netpoint.main.exceptions.CompanyNotFoundException;
 import com.netpoint.main.filters.DefaultProductAttribute;
 import com.netpoint.main.models.*;
@@ -47,7 +48,6 @@ public class ProductService {
         int defaultAttributeCount = defaultAttributes.size();
         int artificialAttributeCount = productAttributeRepository.countByCompanyId(companyId);
 
-        log.info("attributeCount is: " + artificialAttributeCount);
         if (defaultAttributeCount + artificialAttributeCount >= 10) {
             throw new AttributeCapacityReachedException("You can only have up to 10 attributes");
         }
@@ -91,19 +91,23 @@ public class ProductService {
                 .map(this::mapToAttributeDTO)
                 .toList();
 
-        return Stream.concat(artificialAttributes.stream(), defaultAttributes.stream()).toList();
+        return Stream.concat(defaultAttributes.stream(), artificialAttributes.stream()).toList();
     }
 
     @Transactional
-    public void deleteAttribute(Integer companyId, Integer attributeId) {
+    public ProductAttributeDTO deleteAttribute(Integer companyId, Integer attributeId) {
         // ormagad amowmebs rom es atributi am kompaniisa
         ProductAttribute attribute = productAttributeRepository.findByIdAndCompany_Id(attributeId, companyId)
-                .orElseThrow(() -> new RuntimeException("Attribute not found"));
-
+                .orElseThrow(() -> new AttributeNotFoundException("Attribute not found"));
 
         productAttributeValueRepository.deleteByAttributeId(attributeId);
 
         productAttributeRepository.delete(attribute);
+
+        return new ProductAttributeDTO(
+                attribute.getId(), attribute.getAttributeName(),
+                attribute.getAttributeType(), attribute.isDefault()
+        );
     }
 
 
