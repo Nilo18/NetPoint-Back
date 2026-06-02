@@ -42,6 +42,15 @@ public class ProductController {
         return ResponseEntity.ok(attributes);
     }
 
+    @PutMapping("/attributes")
+    @PreAuthorize("hasAuthority('OWNER')")
+    public ResponseEntity<ProductAttributeDTO> updateAttribute(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @Valid @RequestBody ProductAttributeDTO request) {
+        ProductAttributeDTO attribute = productService.updateAttribute(user.companyId().intValue(), request);
+        return ResponseEntity.ok(attribute);
+    }
+
     @DeleteMapping("/attributes/{id}")
     @PreAuthorize("hasAnyAuthority('OWNER', 'ADMIN')")
     public ResponseEntity<ProductAttributeDTO> deleteAttribute(

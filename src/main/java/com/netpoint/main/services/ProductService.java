@@ -95,6 +95,26 @@ public class ProductService {
     }
 
     @Transactional
+    public ProductAttributeDTO updateAttribute(Integer companyId, ProductAttributeDTO newAttribute) {
+        log.info("Looking for attribute with id: " + newAttribute.id() + " and company with id: " + companyId);
+
+        ProductAttribute attribute = productAttributeRepository.findByIdAndCompany_Id(newAttribute.id(), companyId)
+                .orElseThrow(() -> new AttributeNotFoundException("Attribute not found"));
+
+        log.info("Possible line before exception");
+        if (productAttributeRepository.existsByAttributeNameAndCompany_IdAndIdNot(
+                newAttribute.attributeName(), companyId, newAttribute.id())) {
+            throw new AttributeAlreadyExistsException("Attribute with this name already exists");
+        }
+        log.info("Possible line AFTER exception");
+        attribute.setAttributeName(newAttribute.attributeName());
+        attribute.setAttributeType(newAttribute.attributeType());
+
+        ProductAttribute saved = productAttributeRepository.save(attribute);
+        return mapToAttributeDTO(saved);
+    }
+
+    @Transactional
     public ProductAttributeDTO deleteAttribute(Integer companyId, Integer attributeId) {
         // ormagad amowmebs rom es atributi am kompaniisa
         ProductAttribute attribute = productAttributeRepository.findByIdAndCompany_Id(attributeId, companyId)
