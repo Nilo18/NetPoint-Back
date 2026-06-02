@@ -1,12 +1,17 @@
 package com.netpoint.main.services;
 
 import com.netpoint.main.dto.requests.*;
+import com.netpoint.main.exceptions.AttributeAlreadyExistsException;
+import com.netpoint.main.exceptions.AttributeCapacityReachedException;
+import com.netpoint.main.exceptions.CompanyNotFoundException;
+import com.netpoint.main.filters.DefaultProductAttribute;
 import com.netpoint.main.models.*;
 import com.netpoint.main.repositories.*;
 import com.netpoint.main.repositories.ProductAttributeRepository;
 import com.netpoint.main.repositories.ProductRepository;
 import com.netpoint.main.repositories.ProductAttributeValueRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,12 +19,15 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.netpoint.main.dto.*;
 
 
 
 @Service
 @RequiredArgsConstructor
+@Log
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -32,11 +40,20 @@ public class ProductService {
     @Transactional
     public ProductAttributeDTO createAttribute(Integer companyId, CreateProductAttributeRequest request) {
         if (productAttributeRepository.existsByAttributeNameAndCompany_Id(request.getAttributeName(), companyId)) {
-            throw new RuntimeException("Attribute with this name already exists");
+            throw new AttributeAlreadyExistsException("Attribute with this name already exists");
+        }
+
+        List<ProductAttributeDTO> defaultAttributes = getDefaultProductAttributes();
+        int defaultAttributeCount = defaultAttributes.size();
+        int artificialAttributeCount = productAttributeRepository.countByCompanyId(companyId);
+
+        log.info("attributeCount is: " + artificialAttributeCount);
+        if (defaultAttributeCount + artificialAttributeCount >= 10) {
+            throw new AttributeCapacityReachedException("You can only have up to 10 attributes");
         }
 
         Company company = companyRepository.findById(Long.valueOf(companyId))
-                .orElseThrow(() -> new RuntimeException("Company not found"));
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         ProductAttribute attribute = new ProductAttribute();
         attribute.setAttributeName(request.getAttributeName());
@@ -47,12 +64,34 @@ public class ProductService {
         return mapToAttributeDTO(saved);
     }
 
+    private List<ProductAttributeDTO> getDefaultProductAttributes() {
+        return Arrays.stream(Product.class.getDeclaredFields())
+                .filter(field -> field.isAnnotationPresent(DefaultProductAttribute.class))
+                .map(field -> {
+                    DefaultProductAttribute annotation = field.getAnnotation(DefaultProductAttribute.class);
+                    String name = annotation.name().isBlank() ? field.getName() : annotation.name();
+
+                    return new ProductAttributeDTO(
+                            null,
+                            name,
+                            annotation.type(),
+                            true
+                    );
+                })
+                .toList();
+    }
+
     @Transactional(readOnly = true)
     public List<ProductAttributeDTO> getCompanyAttributes(Integer companyId) {
-        return productAttributeRepository.findByCompany_Id(companyId)
+        List<ProductAttributeDTO> defaultAttributes = getDefaultProductAttributes();
+
+        List<ProductAttributeDTO> artificialAttributes =
+            productAttributeRepository.findByCompany_Id(companyId)
                 .stream()
                 .map(this::mapToAttributeDTO)
-                .collect(Collectors.toList());
+                .toList();
+
+        return Stream.concat(artificialAttributes.stream(), defaultAttributes.stream()).toList();
     }
 
     @Transactional

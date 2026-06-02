@@ -1,6 +1,7 @@
 package com.netpoint.main.models;
 
 
+import com.netpoint.main.filters.DefaultProductAttribute;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,12 +23,16 @@ public class Product {
     private Integer id;
 
     @Column(nullable = false)
+    // ეს წინასწარ ანიშნებს რომ დეფაულტ ატრიბუტია, შემდეგ რომ ყველა დეფაულტ ატრიბუტი ერთად მარტივად ამოვიღოთ
+    @DefaultProductAttribute(name = "Name", type = ProductAttribute.AttributeType.TEXT)
     private String name;
 
     @Column
+    @DefaultProductAttribute(name = "Image", type = ProductAttribute.AttributeType.TEXT)
     private String imageUrl;
 
     @Column(nullable = false, precision = 10, scale = 2)
+    @DefaultProductAttribute(name = "Price", type = ProductAttribute.AttributeType.TEXT)
     private BigDecimal price;
 
     @Column(nullable = false)

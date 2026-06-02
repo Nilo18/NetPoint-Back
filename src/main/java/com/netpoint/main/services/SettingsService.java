@@ -78,7 +78,7 @@ public class SettingsService {
         user.setEmail(cashier.email());
         user.setRole(cashier.role());
         user.setCompany(company);
-        user.setPin(passwordEncoder.encode(cashier.pin()));
+//        user.setPin(passwordEncoder.encode(cashier.pin()));
 
         log.info("Saving " + user + " to the database...");
 

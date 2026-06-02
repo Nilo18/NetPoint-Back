@@ -113,7 +113,7 @@ public class AuthService {
         user.setEmail(company.owner_email());
         user.setPassword(passwordEncoder.encode(company.owner_password()));
         user.setRole(company.role());
-        user.setPin(company.phone_number());  // assuming pin field holds phone number
+//        user.setPin(company.phone_number());  // assuming pin field holds phone number
 
         User savedUser = this.userRepository.save(user);
 
