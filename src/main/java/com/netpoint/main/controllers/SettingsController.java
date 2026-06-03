@@ -9,6 +9,7 @@ import com.netpoint.main.dto.requests.UpdateAccountRequest;
 import com.netpoint.main.dto.responses.InfoChangeVerificationResponse;
 import com.netpoint.main.dto.responses.PageResponse;
 import com.netpoint.main.dto.responses.UserModificationResponse;
+import com.netpoint.main.services.PlanEnforcementService;
 import com.netpoint.main.services.SettingsService;
 import jakarta.validation.Valid;
 import lombok.Data;
@@ -29,6 +30,7 @@ import java.util.List;
 @Data
 public class SettingsController {
     private final SettingsService settingsService;
+    private final PlanEnforcementService planEnforcementService;
 
 
     @GetMapping(path = "/company-users/{id}")
@@ -43,6 +45,7 @@ public class SettingsController {
     public ResponseEntity<PageResponse<UserDTO>> addCashier(
             @Valid @RequestBody CashierAdditionRequest cashier,
             @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        planEnforcementService.enforceTeamMemberLimit(cashier.companyId(), cashier.role());
         return ResponseEntity.ok(PageResponse.from(this.settingsService.addCashier(cashier, pageable)));
     }
 

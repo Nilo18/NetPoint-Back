@@ -5,6 +5,7 @@ import com.netpoint.main.dto.requests.*;
 import com.netpoint.main.dto.responses.*;
 import com.netpoint.main.dto.ProductAttributeDTO;
 import com.netpoint.main.dto.ProductDTO;
+import com.netpoint.main.services.PlanEnforcementService;
 import com.netpoint.main.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final PlanEnforcementService planEnforcementService;
 
 
     @PostMapping("/attributes")
@@ -73,6 +75,7 @@ public class ProductController {
     public ResponseEntity<ProductDTO> createProduct(
             @AuthenticationPrincipal AuthenticatedUser user,
             @Valid @RequestBody CreateProductRequest request) {
+        planEnforcementService.enforceProductLimit(user.companyId().intValue());
         // iwers dabrunebul ProductDTOs servisidan
         ProductDTO product = productService.createProduct(user.companyId().intValue(), request);
 

@@ -27,4 +27,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select u from User u where u.company.id = :companyId and (lower(u.name) like lower(concat('%', :searchTerm, '%')) or lower(u.email) like lower(concat('%', :searchTerm, '%')))")
     List<User> searchByNameOrEmailWithinCompany(@Param("searchTerm") String searchTerm, @Param("companyId") Long companyId);
     void deleteByCompany_Id(Long companyId);
+    long countByCompany_Id(Integer companyId);
+    long countByCompany_IdAndRoleIgnoreCase(Integer companyId, String role);
 }
