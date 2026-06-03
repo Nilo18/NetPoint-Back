@@ -38,5 +38,7 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users = new ArrayList<>();
 
-
+    @ManyToOne
+    @JoinColumn(name = "plan_id", nullable = false)
+    private PaymentPlan plan;
 }

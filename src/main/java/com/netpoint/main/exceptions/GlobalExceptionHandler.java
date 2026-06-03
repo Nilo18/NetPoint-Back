@@ -123,6 +123,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
     }
 
+    @ExceptionHandler(PaymentPlanNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleBadInvitation(PaymentPlanNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneric(Exception ex) {
         log.info("Got generic error: " + ex.getMessage());
