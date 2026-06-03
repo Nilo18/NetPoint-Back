@@ -28,16 +28,19 @@ public class PaymentPlanController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('OWNER')")
-    public ResponseEntity<String> changePlan(@RequestBody ChangePlanRequest request) {
-        // ეს შეცვალე რომ ახალ სტრუქტურას მოერგოს
+    public ResponseEntity<String> changePlan(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @RequestBody ChangePlanRequest request) {
+        Integer companyId = user.companyId().intValue();
+        paymentPlanService.changePlan(companyId, request.getNewPlanName());
         return ResponseEntity.ok("Plan changed to: " + request.getNewPlanName());
     }
 
-    // DELETE - საბსქრიბშინს შლის
     @DeleteMapping
     @PreAuthorize("hasAuthority('OWNER')")
     public ResponseEntity<String> cancelSubscription(@AuthenticationPrincipal AuthenticatedUser user) {
-        // ეს შეცვალე რომ ახალ სტრუქტურას მოერგოს
+        Integer companyId = user.companyId().intValue();
+        paymentPlanService.cancelSubscription(companyId);
         return ResponseEntity.ok("Subscription cancelled successfully");
     }
 }

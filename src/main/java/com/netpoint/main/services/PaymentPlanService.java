@@ -38,4 +38,28 @@ public class PaymentPlanService {
                 paymentPlan.getPlanRules()
         );
     }
+
+    @Transactional
+    public void changePlan(Integer companyId, String newPlanName) {
+        Company company = companyRepository.findById(Long.valueOf(companyId))
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+
+        PaymentPlan newPlan = paymentPlanRepository.findByPlanName(newPlanName)
+                .orElseThrow(() -> new PaymentPlanNotFoundException("Plan not found: " + newPlanName));
+
+        company.setPlan(newPlan);
+        companyRepository.save(company);
+    }
+
+    @Transactional
+    public void cancelSubscription(Integer companyId) {
+        Company company = companyRepository.findById(Long.valueOf(companyId))
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+
+        PaymentPlan starterPlan = paymentPlanRepository.findByPlanName("Starter Plan")
+                .orElseThrow(() -> new PaymentPlanNotFoundException("Starter Plan not found in database"));
+
+        company.setPlan(starterPlan);
+        companyRepository.save(company);
+    }
 }
