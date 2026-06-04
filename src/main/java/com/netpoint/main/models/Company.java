@@ -41,4 +41,8 @@ public class Company {
     @ManyToOne
     @JoinColumn(name = "plan_id", nullable = false)
     private PaymentPlan plan;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PaymentMethod> paymentMethods = new ArrayList<>();
 }

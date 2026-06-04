@@ -1,6 +1,7 @@
 package com.netpoint.main.services;
 
 import com.netpoint.main.dto.PaymentPlanDTO;
+import com.netpoint.main.dto.responses.PaymentPlanChangeResponse;
 import com.netpoint.main.exceptions.CompanyNotFoundException;
 import com.netpoint.main.exceptions.PaymentPlanNotFoundException;
 import com.netpoint.main.models.Company;
@@ -39,8 +40,9 @@ public class PaymentPlanService {
         );
     }
 
-    @Transactional
-    public void changePlan(Integer companyId, String newPlanName) {
+//    @Transactional
+    public PaymentPlanChangeResponse changePlan(Integer companyId, String newPlanName) {
+//        throw new CompanyNotFoundException("Company not found");
         Company company = companyRepository.findById(Long.valueOf(companyId))
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
@@ -49,17 +51,19 @@ public class PaymentPlanService {
 
         company.setPlan(newPlan);
         companyRepository.save(company);
+        return new PaymentPlanChangeResponse(200, "Plan changed to: " + newPlan.getPlanName());
     }
 
-    @Transactional
-    public void cancelSubscription(Integer companyId) {
+//    @Transactional
+    public PaymentPlanChangeResponse cancelSubscription(Integer companyId) {
         Company company = companyRepository.findById(Long.valueOf(companyId))
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         PaymentPlan starterPlan = paymentPlanRepository.findByPlanName("Starter Plan")
-                .orElseThrow(() -> new PaymentPlanNotFoundException("Starter Plan not found in database"));
+                .orElseThrow(() -> new PaymentPlanNotFoundException("Default plan not found"));
 
         company.setPlan(starterPlan);
         companyRepository.save(company);
+        return new PaymentPlanChangeResponse(200, "Plan cancelled successfully.");
     }
 }

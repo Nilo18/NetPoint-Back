@@ -3,6 +3,7 @@ package com.netpoint.main.controllers;
 import com.netpoint.main.dto.AuthenticatedUser;
 import com.netpoint.main.dto.PaymentPlanDTO;
 import com.netpoint.main.dto.requests.ChangePlanRequest;
+import com.netpoint.main.dto.responses.PaymentPlanChangeResponse;
 import com.netpoint.main.services.PaymentPlanService;
 import lombok.Data;
 import lombok.extern.java.Log;
@@ -28,19 +29,18 @@ public class PaymentPlanController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('OWNER')")
-    public ResponseEntity<String> changePlan(
+    public ResponseEntity<PaymentPlanChangeResponse> changePlan(
             @AuthenticationPrincipal AuthenticatedUser user,
             @RequestBody ChangePlanRequest request) {
         Integer companyId = user.companyId().intValue();
-        paymentPlanService.changePlan(companyId, request.getNewPlanName());
-        return ResponseEntity.ok("Plan changed to: " + request.getNewPlanName());
+        return ResponseEntity.ok(paymentPlanService.changePlan(companyId, request.getNewPlanName()));
     }
 
     @DeleteMapping
     @PreAuthorize("hasAuthority('OWNER')")
-    public ResponseEntity<String> cancelSubscription(@AuthenticationPrincipal AuthenticatedUser user) {
+    public ResponseEntity<PaymentPlanChangeResponse>
+    cancelSubscription(@AuthenticationPrincipal AuthenticatedUser user) {
         Integer companyId = user.companyId().intValue();
-        paymentPlanService.cancelSubscription(companyId);
-        return ResponseEntity.ok("Subscription cancelled successfully");
+        return ResponseEntity.ok(paymentPlanService.cancelSubscription(companyId));
     }
 }
