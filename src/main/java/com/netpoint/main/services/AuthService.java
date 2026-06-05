@@ -86,7 +86,7 @@ public class AuthService {
         //ჯვტს გადასცემს იუზერს სწორი როლით
         String jwt = jwtService.generateToken(
                 entry.getUserId(), String.valueOf(user.getCompany().getId()),
-                user.getEmail(), user.getName(), user.getRole()
+                user.getName(), user.getEmail(), user.getRole()
         );
         return new AuthResponse("authenticated", jwt);
     }

@@ -144,14 +144,8 @@ public class InvitationService {
         user.setName(fullName);
         user.setRole(invitation.getRole());
         user.setCompany(company);
-        log.info("invitation.getCompanyId() returns: " + invitation.getCompanyId());
-        log.info("user.getCompanyId() returns: " + user.getCompany().getId());
-        log.info("FOURTH ATTEMPT TO CATCH STACKOVERLOWERROR");
-        log.info("user values after using setters: " + user);
-        log.info("FIFTH ATTEMPT TO CATCH STACKOVERLOWERROR");
 
         userRepository.save(user);
-        log.info("SIXTH ATTEMPT TO CATCH STACKOVERLOWERROR");
 
         // tokens gamoyenebulze ayenebs
         invitation.setUsed(true);
