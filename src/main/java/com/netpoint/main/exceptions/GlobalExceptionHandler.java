@@ -150,4 +150,9 @@ public class GlobalExceptionHandler {
                         "message", "You do not have permission to access this resource."
                 ));
     }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Map<String, String>> handleBadRequest(BadRequestException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
+    }
 }

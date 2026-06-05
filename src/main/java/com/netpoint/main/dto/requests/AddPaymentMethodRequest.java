@@ -1,7 +1,6 @@
 package com.netpoint.main.dto.requests;
 
-
-public record UpdatePaymentMethodRequest(
+public record AddPaymentMethodRequest(
         String cardNumber,
         Short  expMonth,
         Short  expYear,

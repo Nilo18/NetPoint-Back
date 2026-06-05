@@ -1,33 +1,55 @@
 package com.netpoint.main.controllers;
 
-
+import com.netpoint.main.dto.AuthenticatedUser;
+import com.netpoint.main.dto.requests.AddPaymentMethodRequest;
 import com.netpoint.main.dto.requests.UpdatePaymentMethodRequest;
 import com.netpoint.main.dto.responses.PaymentMethodResponse;
+import com.netpoint.main.services.PaymentMethodService;
+import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Data
 @RestController
 @RequestMapping("/api/payment-method")
 public class PaymentMethodController {
 
-    // აბრუნებს ახლანდელ მეთოდს
+    private final PaymentMethodService paymentMethodService;
+
     @GetMapping
     @PreAuthorize("hasAuthority('OWNER')")
-    public ResponseEntity<PaymentMethodResponse> getPaymentMethod() {
-        PaymentMethodResponse paymentMethod = new PaymentMethodResponse(
-                "VISA",
-                "4242",
-                "12/26"
-        );
-        return ResponseEntity.ok(paymentMethod);
+    public ResponseEntity<PaymentMethodResponse> getPaymentMethod(
+            @AuthenticationPrincipal AuthenticatedUser user) {
+        PaymentMethodResponse pm =
+                paymentMethodService.getPaymentMethod(user.companyId().intValue());
+        return ResponseEntity.ok(pm);   // tu carielia, anu karta araaqvs
     }
 
-    // PUT - გადახდის მეთოდს ააფდეითებს
+    @PostMapping
+    @PreAuthorize("hasAuthority('OWNER')")
+    public ResponseEntity<PaymentMethodResponse> addPaymentMethod(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @RequestBody AddPaymentMethodRequest request) {
+        return ResponseEntity.ok(
+                paymentMethodService.addPaymentMethod(user.companyId().intValue(), request));
+    }
+
     @PutMapping
     @PreAuthorize("hasAuthority('OWNER')")
-    public ResponseEntity<String> updatePaymentMethod(@RequestBody UpdatePaymentMethodRequest request) {
+    public ResponseEntity<PaymentMethodResponse> updatePaymentMethod(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @RequestBody UpdatePaymentMethodRequest request) {
+        return ResponseEntity.ok(
+                paymentMethodService.updatePaymentMethod(user.companyId().intValue(), request));
+    }
 
-        return ResponseEntity.ok("Payment method updated successfully");
+    @DeleteMapping
+    @PreAuthorize("hasAuthority('OWNER')")
+    public ResponseEntity<String> deletePaymentMethod(
+            @AuthenticationPrincipal AuthenticatedUser user) {
+        paymentMethodService.deletePaymentMethod(user.companyId().intValue());
+        return ResponseEntity.ok("Payment method removed.");
     }
 }
