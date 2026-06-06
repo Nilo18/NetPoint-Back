@@ -104,32 +104,37 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BadInvitationRequestException.class)
-    public ResponseEntity<Map<String, String>> handleBadInvitation(BadInvitationRequestException ex) {
+    public ResponseEntity<Map<String, String>> handlePaymentPlanNotFound(BadInvitationRequestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
     }
 
     @ExceptionHandler(AttributeAlreadyExistsException.class)
-    public ResponseEntity<Map<String, String>> handleBadInvitation(AttributeAlreadyExistsException ex) {
+    public ResponseEntity<Map<String, String>> handlePaymentPlanNotFound(AttributeAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
     }
 
     @ExceptionHandler(AttributeCapacityReachedException.class)
-    public ResponseEntity<Map<String, String>> handleBadInvitation(AttributeCapacityReachedException ex) {
+    public ResponseEntity<Map<String, String>> handleAttributeCapacity(AttributeCapacityReachedException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
     }
 
     @ExceptionHandler(AttributeNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleBadInvitation(AttributeNotFoundException ex) {
+    public ResponseEntity<Map<String, String>> handleAttributeNotFound(AttributeNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
     }
 
     @ExceptionHandler(PaymentPlanNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleBadInvitation(PaymentPlanNotFoundException ex) {
+    public ResponseEntity<Map<String, String>> handlePaymentPlanNotFound(PaymentPlanNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", ex.getMessage()));
     }
 
     @ExceptionHandler(PlanLimitExceededException.class)
     public ResponseEntity<Map<String, String>> handlePlanLimitExceeded(PlanLimitExceededException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(PaymentMethodNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handlePlanLimitExceeded(PaymentMethodNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", ex.getMessage()));
     }
 

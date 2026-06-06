@@ -5,6 +5,7 @@ import com.netpoint.main.dto.requests.UpdatePaymentMethodRequest;
 import com.netpoint.main.dto.responses.PaymentMethodResponse;
 import com.netpoint.main.exceptions.BadRequestException;
 import com.netpoint.main.exceptions.CompanyNotFoundException;
+import com.netpoint.main.exceptions.PaymentMethodNotFoundException;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.PaymentMethod;
 import com.netpoint.main.repositories.CompanyRepository;
@@ -31,7 +32,7 @@ public class PaymentMethodService {
         return paymentMethodRepository
                 .findByCompanyAndStatus(company, "active")
                 .map(this::toResponse)
-                .orElse(null);
+                .orElseThrow(() -> new PaymentMethodNotFoundException("Payment method missing"));
     }
 
 
