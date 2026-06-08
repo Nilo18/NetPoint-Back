@@ -12,6 +12,7 @@ import com.netpoint.main.repositories.CompanyRepository;
 import com.netpoint.main.repositories.PaymentMethodRepository;
 import com.netpoint.main.utils.CardValidationUtils;
 import lombok.Data;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.UUID;
 
 @Data
 @Service
+@Log
 public class PaymentMethodService {
 
     private final PaymentMethodRepository paymentMethodRepository;
@@ -50,6 +52,7 @@ public class PaymentMethodService {
         }
 
         String normalized = CardValidationUtils.normalize(req.cardNumber());
+        log.info("The normalized cardNumber looks like: " + normalized);
         CardValidationUtils.validateFormat(normalized);
         CardValidationUtils.validateLuhn(normalized);
 

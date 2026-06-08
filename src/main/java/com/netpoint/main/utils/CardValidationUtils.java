@@ -1,9 +1,11 @@
 package com.netpoint.main.utils;
 
 import com.netpoint.main.exceptions.BadRequestException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.YearMonth;
 
+@Slf4j
 public class CardValidationUtils {
 
     // spacebs da dashebs shlis
@@ -32,18 +34,19 @@ public class CardValidationUtils {
             alternate = !alternate;
         }
         if (sum % 10 != 0) {
-            throw new BadRequestException("Invalid card number (failed Luhn check).");
+            throw new BadRequestException("The card number entered doesn't look right. Please check the digits.");
         }
     }
 
     // Detects brand from IIN prefix
     public static String detectBrand(String normalized) {
-        if (normalized.matches("^4\\d+"))                          return "visa";
-        if (normalized.matches("^5[1-5]\\d+"))                    return "mastercard";
-        if (normalized.matches("^(34|37)\\d+"))                   return "amex";
-        if (normalized.matches("^6(?:011|5\\d{2})\\d+"))          return "discover";
-        if (normalized.matches("^3(?:0[0-5]|[68])\\d+"))          return "dinersclub";
-        if (normalized.matches("^35(?:2[89]|[3-8]\\d)\\d+"))      return "jcb";
+        if (normalized.matches("^4\\d+")) return "visa";
+
+        // Modernized Mastercard regex (handles 5-series and 2-series)
+        if (normalized.matches("^(?:5[1-5]|2(?:22[1-9]|2[3-9]\\d|[3-6]\\d{2}|7[0-1]\\d|720))\\d+")) {
+            return "mastercard";
+        }
+
         return "unknown";
     }
 
@@ -56,7 +59,7 @@ public class CardValidationUtils {
         if (cvc == null || !cvc.matches("\\d+")) {
             throw new BadRequestException("Invalid CVC.");
         }
-        int expected = "amex".equals(brand) ? 4 : 3;
+        int expected = 3;
         if (cvc.length() != expected) {
             throw new BadRequestException("CVC must be " + expected + " digits for " + brand + ".");
         }
@@ -66,8 +69,14 @@ public class CardValidationUtils {
         if (expMonth < 1 || expMonth > 12) {
             throw new BadRequestException("Invalid expiry month.");
         }
-        YearMonth expiry  = YearMonth.of(expYear, expMonth);
+        String expYearString = expYear.toString();
+        if (expYearString.length() != 4) {
+            throw new BadRequestException("Expiry year must be 4 digits.");
+        }
+        YearMonth expiry = YearMonth.of(expYear, expMonth);
+        log.info("The expiry is: {}", expiry);
         YearMonth current = YearMonth.now();
+        log.info("current is: {}", current);
         if (expiry.isBefore(current)) {
             throw new BadRequestException("Card is expired.");
         }
