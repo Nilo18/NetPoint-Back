@@ -2,6 +2,7 @@ package com.netpoint.main.services;
 
 import com.netpoint.main.dto.requests.AddPaymentMethodRequest;
 import com.netpoint.main.dto.requests.UpdatePaymentMethodRequest;
+import com.netpoint.main.dto.responses.GenericResponse;
 import com.netpoint.main.dto.responses.PaymentMethodResponse;
 import com.netpoint.main.exceptions.BadRequestException;
 import com.netpoint.main.exceptions.CompanyNotFoundException;
@@ -118,7 +119,7 @@ public class PaymentMethodService {
     // soft deletia es
 
     @Transactional
-    public void deletePaymentMethod(Integer companyId) {
+    public GenericResponse deletePaymentMethod(Integer companyId) {
         Company company = findCompany(companyId);
 
         // washlas blokavs tu pasianze arian
@@ -134,6 +135,7 @@ public class PaymentMethodService {
         pm.setStatus("removed");
         pm.setIsDefault(false);
         paymentMethodRepository.save(pm);
+        return new GenericResponse(200, "Payment method removed successfully");
     }
 
 

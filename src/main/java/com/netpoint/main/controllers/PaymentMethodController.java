@@ -3,6 +3,7 @@ package com.netpoint.main.controllers;
 import com.netpoint.main.dto.AuthenticatedUser;
 import com.netpoint.main.dto.requests.AddPaymentMethodRequest;
 import com.netpoint.main.dto.requests.UpdatePaymentMethodRequest;
+import com.netpoint.main.dto.responses.GenericResponse;
 import com.netpoint.main.dto.responses.PaymentMethodResponse;
 import com.netpoint.main.services.PaymentMethodService;
 import lombok.Data;
@@ -47,9 +48,8 @@ public class PaymentMethodController {
 
     @DeleteMapping
     @PreAuthorize("hasAuthority('OWNER')")
-    public ResponseEntity<String> deletePaymentMethod(
+    public ResponseEntity<GenericResponse> deletePaymentMethod(
             @AuthenticationPrincipal AuthenticatedUser user) {
-        paymentMethodService.deletePaymentMethod(user.companyId().intValue());
-        return ResponseEntity.ok("Payment method removed.");
+        return ResponseEntity.ok(paymentMethodService.deletePaymentMethod(user.companyId().intValue()));
     }
 }
