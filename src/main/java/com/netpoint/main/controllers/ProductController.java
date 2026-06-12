@@ -44,6 +44,13 @@ public class ProductController {
         return ResponseEntity.ok(attributes);
     }
 
+    @GetMapping("/artificial-attributes")
+    @PreAuthorize("hasAnyAuthority('OWNER', 'ADMIN')")
+    public ResponseEntity<List<ProductAttributeDTO>> getArtificialAttributes(@AuthenticationPrincipal
+                                                                             AuthenticatedUser user) {
+        return ResponseEntity.ok(productService.getArtificialProductAttributes(user.companyId().intValue()));
+    }
+
     @PutMapping("/attributes")
     @PreAuthorize("hasAuthority('OWNER')")
     public ResponseEntity<ProductAttributeDTO> updateAttribute(
@@ -71,7 +78,7 @@ public class ProductController {
 
 
     @PostMapping
-    @PreAuthorize("hasAuthority('OWNER')")
+    @PreAuthorize("hasAnyAuthority('OWNER', 'ADMIN')")
     public ResponseEntity<ProductDTO> createProduct(
             @AuthenticationPrincipal AuthenticatedUser user,
             @Valid @RequestBody CreateProductRequest request) {

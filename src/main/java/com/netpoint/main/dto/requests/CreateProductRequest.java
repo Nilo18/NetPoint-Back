@@ -23,7 +23,7 @@ public class CreateProductRequest {
 
     @NotNull(message = "Price is required")
     @Positive(message = "Price must be positive")
-    private BigDecimal price;
+    private BigDecimal retailPrice;
 
     private Map<String, String> customAttributes; // attributeId -> value
 }

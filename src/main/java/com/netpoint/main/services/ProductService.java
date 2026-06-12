@@ -81,15 +81,18 @@ public class ProductService {
                 .toList();
     }
 
+    public List<ProductAttributeDTO> getArtificialProductAttributes(Integer companyId) {
+        return productAttributeRepository.findByCompany_Id(companyId)
+                .stream()
+                .map(this::mapToAttributeDTO)
+                .toList();
+    }
+
     @Transactional(readOnly = true)
     public List<ProductAttributeDTO> getCompanyAttributes(Integer companyId) {
         List<ProductAttributeDTO> defaultAttributes = getDefaultProductAttributes();
 
-        List<ProductAttributeDTO> artificialAttributes =
-            productAttributeRepository.findByCompany_Id(companyId)
-                .stream()
-                .map(this::mapToAttributeDTO)
-                .toList();
+        List<ProductAttributeDTO> artificialAttributes = getArtificialProductAttributes(companyId);
 
         return Stream.concat(defaultAttributes.stream(), artificialAttributes.stream()).toList();
     }
@@ -138,7 +141,7 @@ public class ProductService {
 
         Product product = new Product();
         product.setName(request.getName());
-        product.setPrice(request.getPrice());
+        product.setPrice(request.getRetailPrice());
         product.setCompany(company);
         product.setImageUrl(request.getImageUrl());
         Product savedProduct = productRepository.save(product);
@@ -161,9 +164,6 @@ public class ProductService {
 
         productRepository.save(product); // save again with new fields
         return mapToProductDTO(savedProduct);
-
-
-
     }
 
 
