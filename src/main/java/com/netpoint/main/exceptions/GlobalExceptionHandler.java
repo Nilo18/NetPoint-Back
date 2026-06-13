@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 /*
@@ -129,18 +130,24 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(PlanLimitExceededException.class)
-    public ResponseEntity<Map<String, String>> handlePlanLimitExceeded(PlanLimitExceededException ex) {
+    public ResponseEntity<Map<String, String>> handlePaymentMethodNotFound(PlanLimitExceededException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", ex.getMessage()));
     }
 
     @ExceptionHandler(PaymentMethodNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handlePlanLimitExceeded(PaymentMethodNotFoundException ex) {
+    public ResponseEntity<Map<String, String>> handlePaymentMethodNotFound(PaymentMethodNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", ex.getMessage()));
     }
 
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleProductNotFound(ProductNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", ex.getMessage()));
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneric(Exception ex) {
-        log.info("Got generic error: " + ex.getMessage());
+        log.log(Level.SEVERE, "Got generic error: ", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", "Something went wrong"));
     }

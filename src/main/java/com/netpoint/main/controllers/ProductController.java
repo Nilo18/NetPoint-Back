@@ -107,7 +107,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    @PreAuthorize("hasAuthority('OWNER')")
+    @PreAuthorize("hasAnyAuthority('OWNER', 'ADMIN')")
     public ResponseEntity<ProductDTO> updateProduct(
             @AuthenticationPrincipal AuthenticatedUser user,
             @PathVariable Integer productId,
@@ -117,11 +117,10 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}")
-    @PreAuthorize("hasAuthority('OWNER')")
-    public ResponseEntity<Void> deleteProduct(
+    @PreAuthorize("hasAnyAuthority('OWNER', 'ADMIN')")
+    public ResponseEntity<GenericResponse> deleteProduct(
             @AuthenticationPrincipal AuthenticatedUser user,
             @PathVariable Integer productId) {
-        productService.deleteProduct(user.companyId().intValue(), productId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(productService.deleteProduct(user.companyId().intValue(), productId));
     }
 }

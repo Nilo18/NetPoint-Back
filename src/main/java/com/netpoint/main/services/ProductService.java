@@ -1,10 +1,8 @@
 package com.netpoint.main.services;
 
 import com.netpoint.main.dto.requests.*;
-import com.netpoint.main.exceptions.AttributeAlreadyExistsException;
-import com.netpoint.main.exceptions.AttributeCapacityReachedException;
-import com.netpoint.main.exceptions.AttributeNotFoundException;
-import com.netpoint.main.exceptions.CompanyNotFoundException;
+import com.netpoint.main.dto.responses.GenericResponse;
+import com.netpoint.main.exceptions.*;
 import com.netpoint.main.filters.DefaultProductAttribute;
 import com.netpoint.main.models.*;
 import com.netpoint.main.repositories.*;
@@ -15,9 +13,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.JsonNodeFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -159,6 +161,7 @@ public class ProductService {
                     .subtract(request.getWholesalePrice())
                     .divide(product.getPrice(), 4, RoundingMode.HALF_UP)
                     .multiply(BigDecimal.valueOf(100));
+            validateMarginPercent(margin);
             product.setMarginPercent(margin);
         }
 
@@ -185,13 +188,13 @@ public class ProductService {
     @Transactional
     public ProductDTO updateProduct(Integer companyId, Integer productId, UpdateProductRequest request) {
         Product product = productRepository.findByIdAndCompany_Id(productId, companyId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
         if (request.getName() != null) {
             product.setName(request.getName());
         }
-        if (request.getPrice() != null) {
-            product.setPrice(request.getPrice());
+        if (request.getRetailPrice() != null) {
+            product.setPrice(request.getRetailPrice());
         }
 
         Product updated = productRepository.save(product);
@@ -215,32 +218,35 @@ public class ProductService {
                     .subtract(product.getWholesalePrice())
                     .divide(product.getPrice(), 4, RoundingMode.HALF_UP)
                     .multiply(BigDecimal.valueOf(100));
+            validateMarginPercent(margin);
             product.setMarginPercent(margin);
         }
 
         productRepository.save(product);
         return mapToProductDTO(updated);
-
-
-
     }
 
     @Transactional
-    public void deleteProduct(Integer companyId, Integer productId) {
+    public GenericResponse deleteProduct(Integer companyId, Integer productId) {
         Product product = productRepository.findByIdAndCompany_Id(productId, companyId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
         productRepository.delete(product);
+        return new GenericResponse(200, "Deleted successfully");
     }
 
 
 
-    private void saveCustomAttributes(Product product, Integer companyId, Map<String, String> attributes) {
-        for (Map.Entry<String, String> entry : attributes.entrySet()) {
-            Integer attributeId = Integer.parseInt(entry.getKey());
+    private void saveCustomAttributes(Product product, Integer companyId, Map<String, JsonNode> attributes) {
+        for (Map.Entry<String, JsonNode> entry : attributes.entrySet()) {
+            log.info("PARSING entry.getKey() AS INT: " + entry.getKey());
+            String attributeName = entry.getKey();
 
             // shevamowmot attribute arsebobs da es companiis attributes
-            ProductAttribute attribute = productAttributeRepository.findByIdAndCompany_Id(attributeId, companyId)
-                    .orElseThrow(() -> new RuntimeException("Attribute not found: " + attributeId));
+            ProductAttribute attribute = productAttributeRepository.
+                    findByAttributeNameAndCompany_Id(attributeName, companyId).
+                    orElseThrow(() -> new AttributeNotFoundException(
+                            "Attribute with the given name was not found: " + attributeName
+                    ));
 
             // validacias vuketebt values sachiroebisamebr
             validateAttributeValue(attribute, entry.getValue());
@@ -248,34 +254,60 @@ public class ProductService {
             ProductAttributeValue value = new ProductAttributeValue();
             value.setProduct(product);
             value.setAttribute(attribute);
-            value.setValue(entry.getValue());
+            value.setValue(entry.getValue().asText());
 
             productAttributeValueRepository.save(value);
         }
     }
 
-    private void validateAttributeValue(ProductAttribute attribute, String value) {
+
+    private void validateMarginPercent(BigDecimal margin) {
+        if (margin.abs().compareTo(new BigDecimal("99999.99")) > 0) {
+            throw new BadRequestException(
+                    "Please check the retail and wholesale prices. The calculated margin is too large."
+            );
+        }
+    }
+
+    private void validateAttributeValue(ProductAttribute attribute, JsonNode value) {
+        if (value == null || value.isNull()) {
+            throw new RuntimeException("Value is required for attribute: " + attribute.getAttributeName());
+        }
+
+        log.info("THE ATTRIBUTE IS: " + attribute);
+        log.info("VALUE IS: " + value);
         switch (attribute.getAttributeType()) {
             case NUMBER:
-                try {
-                    Double.parseDouble(value);
-                } catch (NumberFormatException e) {
+                if (!value.isNumber()) {
                     throw new RuntimeException("Invalid number format for attribute: " + attribute.getAttributeName());
                 }
+                log.info("PARSED VALUE AS: " + value.asDecimal());
                 break;
             case BOOLEAN:
-                if (!value.equalsIgnoreCase("true") && !value.equalsIgnoreCase("false")) {
+                if (!value.isBoolean()) {
                     throw new RuntimeException("Invalid boolean value for attribute: " + attribute.getAttributeName());
                 }
                 break;
+            case DATE:
+                if (!value.isTextual()) {
+                    throw new RuntimeException("Invalid date value for attribute: " + attribute.getAttributeName());
+                }
+                try {
+                    LocalDate.parse(value.asText());
+                } catch (DateTimeParseException e) {
+                    throw new RuntimeException("Invalid date value for attribute: " + attribute.getAttributeName());
+                }
+                break;
             case TEXT:
-
+                if (!value.isTextual()) {
+                    throw new RuntimeException("Invalid text value for attribute: " + attribute.getAttributeName());
+                }
                 break;
         }
     }
 
     private ProductDTO mapToProductDTO(Product product) {
-        Map<String, String> customAttrs = new HashMap<>();
+        Map<String, JsonNode> customAttrs = new HashMap<>();
         String imageUrl = product.getImageUrl();
 
         List<ProductAttributeValue> values = productAttributeValueRepository.findByProduct_Id(product.getId());
@@ -283,7 +315,7 @@ public class ProductService {
         if (values != null) {
             for (ProductAttributeValue value : values) {
                 if (value.getAttribute() != null) {
-                    customAttrs.put(value.getAttribute().getAttributeName(), value.getValue());
+                    customAttrs.put(value.getAttribute().getAttributeName(), mapAttributeValueToJsonNode(value));
                 }
             }
         }
@@ -305,6 +337,21 @@ public class ProductService {
                 imageUrl
         );
     }
+
+    private JsonNode mapAttributeValueToJsonNode(ProductAttributeValue value) {
+        JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+
+        try {
+            return switch (value.getAttribute().getAttributeType()) {
+                case NUMBER -> nodeFactory.numberNode(new BigDecimal(value.getValue()));
+                case BOOLEAN -> nodeFactory.booleanNode(Boolean.parseBoolean(value.getValue()));
+                case DATE, TEXT -> nodeFactory.stringNode(value.getValue());
+            };
+        } catch (NumberFormatException e) {
+            return nodeFactory.stringNode(value.getValue());
+        }
+    }
+
     private ProductAttributeDTO mapToAttributeDTO(ProductAttribute attribute) {
         return new ProductAttributeDTO(attribute.getId(), attribute.getAttributeName(), attribute.getAttributeType(), attribute.isDefault());
     }

@@ -20,4 +20,6 @@ public interface ProductAttributeRepository extends JpaRepository<ProductAttribu
     // 2. ADD THIS EXACT METHOD FOR THE DELETE CHAIN
     @Transactional
     void deleteByCompany_Id(Integer companyId);
+
+    Optional<ProductAttribute> findByAttributeNameAndCompany_Id(String attributeName, Integer companyId);
 }

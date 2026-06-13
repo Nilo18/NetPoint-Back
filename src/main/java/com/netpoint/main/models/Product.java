@@ -41,7 +41,7 @@ public class Product {
     @Column(precision = 10, scale = 2)
     private BigDecimal wholesalePrice;
 
-    @Column(precision = 5, scale = 2)
+    @Column(precision = 7, scale = 2)
     private BigDecimal marginPercent;
 
     @Transient
