@@ -11,6 +11,8 @@ import com.netpoint.main.models.PaymentPlan;
 import com.netpoint.main.repositories.CompanyRepository;
 import com.netpoint.main.repositories.PaymentPlanRepository;
 import lombok.Data;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.netpoint.main.repositories.PaymentMethodRepository;
@@ -23,6 +25,7 @@ public class PaymentPlanService {
     private final CompanyRepository companyRepository;
     private final PaymentMethodRepository paymentMethodRepository;
 
+    @Cacheable(value = "paymentPlans", key = "#companyId")
     @Transactional(readOnly = true)
     public PaymentPlanDTO getPaymentPlan(Integer companyId) {
         Company company = companyRepository.findById(Long.valueOf(companyId))
@@ -43,6 +46,7 @@ public class PaymentPlanService {
         );
     }
 
+    @CacheEvict(value = "paymentPlans", key = "#companyId")
     @Transactional
 public GenericResponse changePlan(Integer companyId, String newPlanName) {
     Company company = companyRepository.findById(Long.valueOf(companyId))
@@ -63,6 +67,7 @@ public GenericResponse changePlan(Integer companyId, String newPlanName) {
     return new GenericResponse(200, "Plan changed to: " + newPlan.getPlanName());
 }
 
+    @CacheEvict(value = "paymentPlans", key = "#companyId")
     @Transactional
     public GenericResponse cancelSubscription(Integer companyId) {
         Company company = companyRepository.findById(Long.valueOf(companyId))

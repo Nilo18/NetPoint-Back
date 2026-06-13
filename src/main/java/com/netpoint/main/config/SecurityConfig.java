@@ -71,6 +71,8 @@ public class SecurityConfig {
 //                        .anyRequest().permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/settings/**").hasAuthority("OWNER")
+                        .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
+                        .requestMatchers("/actuator/**").hasAnyAuthority("ADMIN", "OWNER")
                         .anyRequest().authenticated()
 
                 )
