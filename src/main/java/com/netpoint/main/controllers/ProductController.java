@@ -91,7 +91,7 @@ public class ProductController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('OWNER')")
+//    @PreAuthorize("hasAuthority('OWNER')")
     public ResponseEntity<List<ProductDTO>> getAllProducts(@AuthenticationPrincipal AuthenticatedUser user) {
         List<ProductDTO> products = productService.getCompanyProducts(user.companyId().intValue());
         return ResponseEntity.ok(products);

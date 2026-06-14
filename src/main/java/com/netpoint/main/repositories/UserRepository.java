@@ -29,4 +29,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     void deleteByCompany_Id(Long companyId);
     long countByCompany_Id(Integer companyId);
     long countByCompany_IdAndRoleIgnoreCase(Integer companyId, String role);
+    Optional<User> findByIdAndCompanyId(Integer id, Integer companyId);
 }
