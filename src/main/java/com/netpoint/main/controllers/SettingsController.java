@@ -33,6 +33,7 @@ public class SettingsController {
     private final PlanEnforcementService planEnforcementService;
 
 
+    @PreAuthorize("hasAuthority('OWNER')")
     @GetMapping(path = "/company-users/{id}")
     public ResponseEntity<PageResponse<UserDTO>> getCompanyUsers(@PathVariable Long id,
     @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
