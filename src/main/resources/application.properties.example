@@ -38,7 +38,12 @@ spring.datasource.hikari.idle-timeout=300000
 spring.datasource.hikari.connection-timeout=30000
 spring.datasource.hikari.validation-timeout=5000
 
-# Week 11 — Actuator / monitoring
+
 management.endpoints.web.exposure.include=health
 management.endpoint.health.show-details=when-authorized
 management.endpoints.web.base-path=/actuator
+
+
+spring.messages.basename=messages
+spring.messages.encoding=UTF-8
+spring.messages.fallback-to-system-locale=false

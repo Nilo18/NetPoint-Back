@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="#{app.name}">NetPoint</title>
+</head>
+<body>
+<h1 th:text="#{app.welcome}">Welcome</h1>
+<p th:text="#{app.language}">Language</p>
+
+<nav>
+    <a th:href="@{/welcome(lang=en)}">English</a> |
+    <a th:href="@{/welcome(lang=ka)}">ქართული</a>
+</nav>
+</body>
+</html>
