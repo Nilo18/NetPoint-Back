@@ -19,12 +19,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -51,9 +50,9 @@ public class SettingsServiceTest {
                 "Bob", "bob@gmail.com", "cashier", "123456", 22);
 
         when(userRepository.existsByEmail("bob@gmail.com")).thenReturn(false);
-        when(companyRepository.findById(22L)).thenReturn(Optional.of(company));
-        when(passwordEncoder.encode("123456")).thenReturn("encoded123456");
+        when(companyRepository.findById(22)).thenReturn(Optional.of(company));
         Pageable pageable = PageRequest.of(0, 10);
+        when(userRepository.findByCompany_Id(22, pageable)).thenReturn(new PageImpl<>(java.util.List.of()));
         Page<UserDTO> response = settingsService.addCashier(request, pageable);
         assertNotNull(response);
         verify(userRepository).save(any(User.class));
@@ -62,8 +61,8 @@ public class SettingsServiceTest {
     @ParameterizedTest
     @MethodSource("invalidCashierProvider")
     public void shouldThrowOnInvalidCashier(CashierAdditionRequest request,
-                    @PageableDefault(page = 1, size = 10) Pageable pageable,
                     Class<? extends Exception> expectedException) {
+        Pageable pageable = PageRequest.of(1, 10);
         assertThrows(expectedException, () -> settingsService.addCashier(request, pageable));
     }
 

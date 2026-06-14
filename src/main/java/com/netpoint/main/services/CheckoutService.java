@@ -135,9 +135,6 @@ public class CheckoutService {
         saleRepository.save(sale);
         log.debug("THIS SHOULD NOT BE PRINTED");
 
-//        Company company = companyRepository.findById(Long.valueOf(companyId))
-//                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
-
         AuditLog auditLog = new AuditLog();
         auditLog.setCompany(user.getCompany());
         auditLog.setUser(user);

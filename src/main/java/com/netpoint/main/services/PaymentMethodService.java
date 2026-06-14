@@ -141,7 +141,7 @@ public class PaymentMethodService {
 
 
     private Company findCompany(Integer companyId) {
-        return companyRepository.findById(Long.valueOf(companyId))
+        return companyRepository.findById(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
     }
 

@@ -61,7 +61,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceProductLimit_starterUnderLimit_passes() {
-        when(companyRepository.findById(1L)).thenReturn(Optional.of(starterCompany));
+        when(companyRepository.findById(1)).thenReturn(Optional.of(starterCompany));
         when(productRepository.countByCompany_Id(1)).thenReturn(99L);
 
         assertDoesNotThrow(() -> planEnforcementService.enforceProductLimit(1));
@@ -69,7 +69,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceProductLimit_starterAtLimit_throws() {
-        when(companyRepository.findById(1L)).thenReturn(Optional.of(starterCompany));
+        when(companyRepository.findById(1)).thenReturn(Optional.of(starterCompany));
         when(productRepository.countByCompany_Id(1)).thenReturn(100L);
 
         assertThrows(PlanLimitExceededException.class,
@@ -78,7 +78,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceProductLimit_professional_alwaysPasses() {
-        when(companyRepository.findById(2L)).thenReturn(Optional.of(professionalCompany));
+        when(companyRepository.findById(2)).thenReturn(Optional.of(professionalCompany));
 
         assertDoesNotThrow(() -> planEnforcementService.enforceProductLimit(2));
         verifyNoInteractions(productRepository);
@@ -86,7 +86,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceProductLimit_businessPlus_alwaysPasses() {
-        when(companyRepository.findById(3L)).thenReturn(Optional.of(businessPlusCompany));
+        when(companyRepository.findById(3)).thenReturn(Optional.of(businessPlusCompany));
 
         assertDoesNotThrow(() -> planEnforcementService.enforceProductLimit(3));
         verifyNoInteractions(productRepository);
@@ -94,7 +94,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceProductLimit_companyNotFound_throws() {
-        when(companyRepository.findById(99L)).thenReturn(Optional.empty());
+        when(companyRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThrows(CompanyNotFoundException.class,
                 () -> planEnforcementService.enforceProductLimit(99));
@@ -104,7 +104,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceTeamMemberLimit_starterUnderTotalLimit_passes() {
-        when(companyRepository.findById(1L)).thenReturn(Optional.of(starterCompany));
+        when(companyRepository.findById(1)).thenReturn(Optional.of(starterCompany));
         when(userRepository.countByCompany_Id(1)).thenReturn(4L);
         when(userRepository.countByCompany_IdAndRoleIgnoreCase(1, "ADMIN")).thenReturn(1L);
 
@@ -113,7 +113,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceTeamMemberLimit_starterTotalLimitReached_throws() {
-        when(companyRepository.findById(1L)).thenReturn(Optional.of(starterCompany));
+        when(companyRepository.findById(1)).thenReturn(Optional.of(starterCompany));
         when(userRepository.countByCompany_Id(1)).thenReturn(5L);
 
         assertThrows(PlanLimitExceededException.class,
@@ -122,7 +122,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceTeamMemberLimit_starterAdminLimitReached_throws() {
-        when(companyRepository.findById(1L)).thenReturn(Optional.of(starterCompany));
+        when(companyRepository.findById(1)).thenReturn(Optional.of(starterCompany));
         when(userRepository.countByCompany_Id(1)).thenReturn(3L);
         when(userRepository.countByCompany_IdAndRoleIgnoreCase(1, "ADMIN")).thenReturn(2L);
 
@@ -132,7 +132,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceTeamMemberLimit_starterCashierLimitReached_throws() {
-        when(companyRepository.findById(1L)).thenReturn(Optional.of(starterCompany));
+        when(companyRepository.findById(1)).thenReturn(Optional.of(starterCompany));
         when(userRepository.countByCompany_Id(1)).thenReturn(4L);
         when(userRepository.countByCompany_IdAndRoleIgnoreCase(1, "CASHIER")).thenReturn(3L);
 
@@ -142,7 +142,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceTeamMemberLimit_starterCashierUnderLimit_passes() {
-        when(companyRepository.findById(1L)).thenReturn(Optional.of(starterCompany));
+        when(companyRepository.findById(1)).thenReturn(Optional.of(starterCompany));
         when(userRepository.countByCompany_Id(1)).thenReturn(3L);
         when(userRepository.countByCompany_IdAndRoleIgnoreCase(1, "CASHIER")).thenReturn(2L);
 
@@ -153,7 +153,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceTeamMemberLimit_professionalUnderLimit_passes() {
-        when(companyRepository.findById(2L)).thenReturn(Optional.of(professionalCompany));
+        when(companyRepository.findById(2)).thenReturn(Optional.of(professionalCompany));
         when(userRepository.countByCompany_Id(2)).thenReturn(9L);
 
         assertDoesNotThrow(() -> planEnforcementService.enforceTeamMemberLimit(2, "ADMIN"));
@@ -161,7 +161,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceTeamMemberLimit_professionalAtLimit_throws() {
-        when(companyRepository.findById(2L)).thenReturn(Optional.of(professionalCompany));
+        when(companyRepository.findById(2)).thenReturn(Optional.of(professionalCompany));
         when(userRepository.countByCompany_Id(2)).thenReturn(10L);
 
         assertThrows(PlanLimitExceededException.class,
@@ -172,7 +172,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceTeamMemberLimit_businessPlus_alwaysPasses() {
-        when(companyRepository.findById(3L)).thenReturn(Optional.of(businessPlusCompany));
+        when(companyRepository.findById(3)).thenReturn(Optional.of(businessPlusCompany));
 
         assertDoesNotThrow(() -> planEnforcementService.enforceTeamMemberLimit(3, "ADMIN"));
         verifyNoInteractions(userRepository);
@@ -182,7 +182,7 @@ class PlanEnforcementServiceTest {
 
     @Test
     void enforceTeamMemberLimit_companyNotFound_throws() {
-        when(companyRepository.findById(99L)).thenReturn(Optional.empty());
+        when(companyRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThrows(CompanyNotFoundException.class,
                 () -> planEnforcementService.enforceTeamMemberLimit(99, "ADMIN"));

@@ -19,14 +19,14 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByName(String name);
     Optional<User> findByNameOrEmail(String name, String email);
     // In UserRepository:
-    Page<User> findByCompany_Id(Long id, Pageable pageable);
+    Page<User> findByCompany_Id(Integer id, Pageable pageable);
     boolean existsByEmail(String email);
     boolean existsByEmailAndCompany_IdAndRole(String email, Integer companyId, String role);
     boolean existsByEmailAndCompany_Id(String email, Integer companyId);
     User findByCompany(Company company);
     @Query("select u from User u where u.company.id = :companyId and (lower(u.name) like lower(concat('%', :searchTerm, '%')) or lower(u.email) like lower(concat('%', :searchTerm, '%')))")
-    List<User> searchByNameOrEmailWithinCompany(@Param("searchTerm") String searchTerm, @Param("companyId") Long companyId);
-    void deleteByCompany_Id(Long companyId);
+    List<User> searchByNameOrEmailWithinCompany(@Param("searchTerm") String searchTerm, @Param("companyId") Integer companyId);
+    void deleteByCompany_Id(Integer companyId);
     long countByCompany_Id(Integer companyId);
     long countByCompany_IdAndRoleIgnoreCase(Integer companyId, String role);
     Optional<User> findByIdAndCompanyId(Integer id, Integer companyId);

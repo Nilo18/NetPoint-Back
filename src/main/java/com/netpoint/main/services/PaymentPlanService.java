@@ -2,7 +2,6 @@ package com.netpoint.main.services;
 
 import com.netpoint.main.dto.PaymentPlanDTO;
 import com.netpoint.main.dto.responses.GenericResponse;
-import com.netpoint.main.dto.responses.GenericResponse;
 import com.netpoint.main.exceptions.BadRequestException;
 import com.netpoint.main.exceptions.CompanyNotFoundException;
 import com.netpoint.main.exceptions.PaymentPlanNotFoundException;
@@ -28,7 +27,7 @@ public class PaymentPlanService {
     @Cacheable(value = "paymentPlans", key = "#companyId")
     @Transactional(readOnly = true)
     public PaymentPlanDTO getPaymentPlan(Integer companyId) {
-        Company company = companyRepository.findById(Long.valueOf(companyId))
+        Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         PaymentPlan paymentPlan = company.getPlan();
@@ -49,7 +48,7 @@ public class PaymentPlanService {
     @CacheEvict(value = "paymentPlans", key = "#companyId")
     @Transactional
 public GenericResponse changePlan(Integer companyId, String newPlanName) {
-    Company company = companyRepository.findById(Long.valueOf(companyId))
+    Company company = companyRepository.findById(companyId)
             .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
     PaymentPlan newPlan = paymentPlanRepository.findByPlanName(newPlanName)
@@ -70,7 +69,7 @@ public GenericResponse changePlan(Integer companyId, String newPlanName) {
     @CacheEvict(value = "paymentPlans", key = "#companyId")
     @Transactional
     public GenericResponse cancelSubscription(Integer companyId) {
-        Company company = companyRepository.findById(Long.valueOf(companyId))
+        Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         PaymentPlan starterPlan = paymentPlanRepository.findByPlanName("Starter Plan")

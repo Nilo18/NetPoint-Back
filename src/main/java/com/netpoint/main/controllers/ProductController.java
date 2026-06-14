@@ -33,14 +33,14 @@ public class ProductController {
             @AuthenticationPrincipal AuthenticatedUser user,
             @Valid @RequestBody CreateProductAttributeRequest request) {
 
-        ProductAttributeDTO attribute = productService.createAttribute(user.companyId().intValue(), request);
+        ProductAttributeDTO attribute = productService.createAttribute(user.companyId(), request);
         return ResponseEntity.status(HttpStatus.CREATED).body(attribute);
     }
 
     @GetMapping("/attributes")
     @PreAuthorize("hasAuthority('OWNER')")
     public ResponseEntity<List<ProductAttributeDTO>> getAttributes(@AuthenticationPrincipal AuthenticatedUser user) {
-        List<ProductAttributeDTO> attributes = productService.getCompanyAttributes(user.companyId().intValue());
+        List<ProductAttributeDTO> attributes = productService.getCompanyAttributes(user.companyId());
         return ResponseEntity.ok(attributes);
     }
 
@@ -48,7 +48,7 @@ public class ProductController {
     @PreAuthorize("hasAnyAuthority('OWNER', 'ADMIN')")
     public ResponseEntity<List<ProductAttributeDTO>> getArtificialAttributes(@AuthenticationPrincipal
                                                                              AuthenticatedUser user) {
-        return ResponseEntity.ok(productService.getArtificialProductAttributes(user.companyId().intValue()));
+        return ResponseEntity.ok(productService.getArtificialProductAttributes(user.companyId()));
     }
 
     @PutMapping("/attributes")
@@ -56,7 +56,7 @@ public class ProductController {
     public ResponseEntity<ProductAttributeDTO> updateAttribute(
             @AuthenticationPrincipal AuthenticatedUser user,
             @Valid @RequestBody ProductAttributeDTO request) {
-        ProductAttributeDTO attribute = productService.updateAttribute(user.companyId().intValue(), request);
+        ProductAttributeDTO attribute = productService.updateAttribute(user.companyId(), request);
         return ResponseEntity.ok(attribute);
     }
 
@@ -67,7 +67,7 @@ public class ProductController {
             @AuthenticationPrincipal AuthenticatedUser user) {
 
         // tipebs cvlis imat rasac databaza elis
-        Integer numericCompanyId = user.companyId().intValue();
+        Integer numericCompanyId = user.companyId();
 
 
         return ResponseEntity.ok(productService.deleteAttribute(numericCompanyId, id));
@@ -82,9 +82,9 @@ public class ProductController {
     public ResponseEntity<ProductDTO> createProduct(
             @AuthenticationPrincipal AuthenticatedUser user,
             @Valid @RequestBody CreateProductRequest request) {
-        planEnforcementService.enforceProductLimit(user.companyId().intValue());
+        planEnforcementService.enforceProductLimit(user.companyId());
         // iwers dabrunebul ProductDTOs servisidan
-        ProductDTO product = productService.createProduct(user.companyId().intValue(), request);
+        ProductDTO product = productService.createProduct(user.companyId(), request);
 
         //products awvdis null is magivrad
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
@@ -93,7 +93,7 @@ public class ProductController {
     @GetMapping
 //    @PreAuthorize("hasAuthority('OWNER')")
     public ResponseEntity<List<ProductDTO>> getAllProducts(@AuthenticationPrincipal AuthenticatedUser user) {
-        List<ProductDTO> products = productService.getCompanyProducts(user.companyId().intValue());
+        List<ProductDTO> products = productService.getCompanyProducts(user.companyId());
         return ResponseEntity.ok(products);
     }
 
@@ -102,7 +102,7 @@ public class ProductController {
     public ResponseEntity<ProductDTO> getProduct(
             @AuthenticationPrincipal AuthenticatedUser user,
             @PathVariable Integer productId) {
-        ProductDTO product = productService.getProductById(user.companyId().intValue(), productId);
+        ProductDTO product = productService.getProductById(user.companyId(), productId);
         return ResponseEntity.ok(product);
     }
 
@@ -112,7 +112,7 @@ public class ProductController {
             @AuthenticationPrincipal AuthenticatedUser user,
             @PathVariable Integer productId,
             @Valid @RequestBody UpdateProductRequest request) {
-        ProductDTO product = productService.updateProduct(user.companyId().intValue(), productId, request);
+        ProductDTO product = productService.updateProduct(user.companyId(), productId, request);
         return ResponseEntity.ok(product);
     }
 
@@ -121,6 +121,6 @@ public class ProductController {
     public ResponseEntity<GenericResponse> deleteProduct(
             @AuthenticationPrincipal AuthenticatedUser user,
             @PathVariable Integer productId) {
-        return ResponseEntity.ok(productService.deleteProduct(user.companyId().intValue(), productId));
+        return ResponseEntity.ok(productService.deleteProduct(user.companyId(), productId));
     }
 }

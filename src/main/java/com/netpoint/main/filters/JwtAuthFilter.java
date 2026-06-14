@@ -46,7 +46,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             // 5. Extract userId and Role from the JWT
             String userId = jwtService.extractUserId(token);
             String role = jwtService.extractRole(token);
-            Long companyId = Long.valueOf(jwtService.extractCompanyId(token));
+            Integer companyId = Integer.valueOf(jwtService.extractCompanyId(token));
 
             AuthenticatedUser principal = new AuthenticatedUser(userId, role, companyId);
 

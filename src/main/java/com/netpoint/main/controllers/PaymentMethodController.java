@@ -24,7 +24,7 @@ public class PaymentMethodController {
     public ResponseEntity<PaymentMethodResponse> getPaymentMethod(
             @AuthenticationPrincipal AuthenticatedUser user) {
         PaymentMethodResponse pm =
-                paymentMethodService.getPaymentMethod(user.companyId().intValue());
+                paymentMethodService.getPaymentMethod(user.companyId());
         return ResponseEntity.ok(pm);   // tu carielia, anu karta araaqvs
     }
 
@@ -34,7 +34,7 @@ public class PaymentMethodController {
             @AuthenticationPrincipal AuthenticatedUser user,
             @RequestBody AddPaymentMethodRequest request) {
         return ResponseEntity.ok(
-                paymentMethodService.addPaymentMethod(user.companyId().intValue(), request));
+                paymentMethodService.addPaymentMethod(user.companyId(), request));
     }
 
     @PutMapping
@@ -43,13 +43,13 @@ public class PaymentMethodController {
             @AuthenticationPrincipal AuthenticatedUser user,
             @RequestBody UpdatePaymentMethodRequest request) {
         return ResponseEntity.ok(
-                paymentMethodService.updatePaymentMethod(user.companyId().intValue(), request));
+                paymentMethodService.updatePaymentMethod(user.companyId(), request));
     }
 
     @DeleteMapping
     @PreAuthorize("hasAuthority('OWNER')")
     public ResponseEntity<GenericResponse> deletePaymentMethod(
             @AuthenticationPrincipal AuthenticatedUser user) {
-        return ResponseEntity.ok(paymentMethodService.deletePaymentMethod(user.companyId().intValue()));
+        return ResponseEntity.ok(paymentMethodService.deletePaymentMethod(user.companyId()));
     }
 }

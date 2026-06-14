@@ -35,7 +35,7 @@ public class SettingsController {
 
     @PreAuthorize("hasAuthority('OWNER')")
     @GetMapping(path = "/company-users/{id}")
-    public ResponseEntity<PageResponse<UserDTO>> getCompanyUsers(@PathVariable Long id,
+    public ResponseEntity<PageResponse<UserDTO>> getCompanyUsers(@PathVariable Integer id,
     @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(
                 PageResponse.from(settingsService.fetchCompanyUsers(id, PageRequest.of(page, size)))
@@ -123,7 +123,7 @@ public class SettingsController {
     @PreAuthorize("hasAuthority('OWNER')")
     public ResponseEntity<Void> deleteCompany(@PathVariable Integer companyId,
                                               @AuthenticationPrincipal AuthenticatedUser user) {
-        if (!user.companyId().equals(companyId.longValue())) {
+        if (!user.companyId().equals(companyId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 

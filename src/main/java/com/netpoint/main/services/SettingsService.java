@@ -41,7 +41,8 @@ public class SettingsService {
     private final ProductAttributeRepository productAttributeRepository;
     private final ProductAttributeValueRepository productAttributeValueRepository;
 
-    public Page<UserDTO> fetchCompanyUsers(Long id, Pageable pageable) {
+    public Page<UserDTO> fetchCompanyUsers(Integer id, Pageable pageable) {
+        log.info("LOOKING FOR COMPANY WITH ID: " + id);
         if (!companyRepository.existsById(id)) {
             throw new CompanyNotFoundException("Couldn't find company by id");
         }
@@ -70,7 +71,7 @@ public class SettingsService {
         // ANOTHER COMPANY DOESN'T ADD A CASHIER IN SOMEONE ELSE'S COMPANY
         // ****
 
-        Company company = this.companyRepository.findById(Long.valueOf(cashier.companyId()))
+        Company company = this.companyRepository.findById(cashier.companyId())
                 .orElseThrow(() -> new CompanyNotFoundException("Company with the given id was not found"));
 
         User user = new User();
@@ -84,7 +85,7 @@ public class SettingsService {
 
         this.userRepository.save(user);
 
-        return userRepository.findByCompany_Id(Long.valueOf(cashier.companyId()), pageable)
+        return userRepository.findByCompany_Id(cashier.companyId(), pageable)
                 .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole()));
     }
 
@@ -110,7 +111,7 @@ public class SettingsService {
         );
     }
 
-    public List<UserDTO> searchUser(String searchTerm, Long companyId) {
+    public List<UserDTO> searchUser(String searchTerm, Integer companyId) {
         log.info("Possible point before error.");
         companyRepository.findById(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
@@ -130,7 +131,10 @@ public class SettingsService {
     }
 
     public CompanyDTO getCompanyById(Integer id) {
-        Company company = companyRepository.findById(Long.valueOf(id))
+        log.info("LOOKING FOR COMPANY WITH ID: " + id);
+        log.info("existsById(" + id + ") = " + companyRepository.existsById(id));
+
+        Company company = companyRepository.findById(id)
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         return new CompanyDTO(
@@ -142,7 +146,7 @@ public class SettingsService {
     }
 
     public InfoChangeVerificationResponse verifyCompanyUpdateRequest(CompanyDTO suggested) {
-        Company company = companyRepository.findById(Long.valueOf(suggested.id()))
+        Company company = companyRepository.findById(suggested.id())
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         String otp = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
@@ -176,7 +180,7 @@ public class SettingsService {
         // ოტპ ვალიდურია და მაინც ინვალიდაციას უკეთებსბ
         otpStore.invalidate(suggested.verificationInfo().tempToken());
 
-        Company company = companyRepository.findById(Long.valueOf(suggested.newInfo().id()))
+        Company company = companyRepository.findById(suggested.newInfo().id())
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         company.setName(suggested.newInfo().name());
@@ -244,10 +248,10 @@ public class SettingsService {
         productRepository.deleteByCompany_Id(companyId);
 
 
-        userRepository.deleteByCompany_Id(companyId.longValue());
+        userRepository.deleteByCompany_Id(companyId);
 
         //bolos imena kompanias shlis
-        companyRepository.deleteById(companyId.longValue());
+        companyRepository.deleteById(companyId);
     }
 
     public UserDTO getUserAccountInfo(Integer userId) {

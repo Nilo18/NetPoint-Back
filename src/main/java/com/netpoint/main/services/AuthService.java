@@ -8,8 +8,10 @@ import com.netpoint.main.dto.requests.LoginRequest;
 import com.netpoint.main.exceptions.*;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.OtpEntry;
+import com.netpoint.main.models.PaymentPlan;
 import com.netpoint.main.models.User;
 import com.netpoint.main.repositories.CompanyRepository;
+import com.netpoint.main.repositories.PaymentPlanRepository;
 import com.netpoint.main.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -26,8 +28,11 @@ import java.util.ArrayList;
 @Log
 @AllArgsConstructor
 public class AuthService {
+    private static final String DEFAULT_PLAN_NAME = "Starter Plan";
+
     private UserRepository userRepository;
     private CompanyRepository companyRepository;
+    private PaymentPlanRepository paymentPlanRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final OtpStore otpStore;
@@ -97,11 +102,19 @@ public class AuthService {
             throw new EmailAlreadyExistsException(company.email());
         }
 
+        if (this.userRepository.existsByEmail(company.owner_email())) {
+            throw new EmailAlreadyExistsException("User with this email already exists");
+        }
+
+        PaymentPlan defaultPlan = paymentPlanRepository.findByPlanName(DEFAULT_PLAN_NAME)
+                .orElseThrow(() -> new PaymentPlanNotFoundException("Default plan not found"));
+
         Company newCompany = new Company();
         newCompany.setName(company.name());
         newCompany.setEmail(company.email());
         newCompany.setPassword(passwordEncoder.encode(company.password()));
         newCompany.setIndustry(company.industry());
+        newCompany.setPlan(defaultPlan);
 
         Company savedCompany = this.companyRepository.save(newCompany);
 

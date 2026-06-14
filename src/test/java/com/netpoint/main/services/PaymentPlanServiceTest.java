@@ -6,6 +6,7 @@ import com.netpoint.main.exceptions.PaymentPlanNotFoundException;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.PaymentPlan;
 import com.netpoint.main.repositories.CompanyRepository;
+import com.netpoint.main.repositories.PaymentMethodRepository;
 import com.netpoint.main.repositories.PaymentPlanRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,9 @@ class PaymentPlanServiceTest {
 
     @Mock
     private CompanyRepository companyRepository;
+
+    @Mock
+    private PaymentMethodRepository paymentMethodRepository;
 
     @InjectMocks
     private PaymentPlanService paymentPlanService;
@@ -70,7 +74,7 @@ class PaymentPlanServiceTest {
 
     @Test
     void getPaymentPlan_success() {
-        when(companyRepository.findById(1L)).thenReturn(Optional.of(company));
+        when(companyRepository.findById(1)).thenReturn(Optional.of(company));
 
         PaymentPlanDTO result = paymentPlanService.getPaymentPlan(1);
 
@@ -83,7 +87,7 @@ class PaymentPlanServiceTest {
 
     @Test
     void getPaymentPlan_companyNotFound_throws() {
-        when(companyRepository.findById(99L)).thenReturn(Optional.empty());
+        when(companyRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThrows(CompanyNotFoundException.class,
                 () -> paymentPlanService.getPaymentPlan(99));
@@ -92,7 +96,7 @@ class PaymentPlanServiceTest {
     @Test
     void getPaymentPlan_noPlanOnCompany_throws() {
         company.setPlan(null);
-        when(companyRepository.findById(1L)).thenReturn(Optional.of(company));
+        when(companyRepository.findById(1)).thenReturn(Optional.of(company));
 
         assertThrows(PaymentPlanNotFoundException.class,
                 () -> paymentPlanService.getPaymentPlan(1));
@@ -107,7 +111,8 @@ class PaymentPlanServiceTest {
         businessPlus.setPlanName("Business Plus Plan");
         businessPlus.setCostPerMonth(99.0);
 
-        when(companyRepository.findById(1L)).thenReturn(Optional.of(company));
+        when(companyRepository.findById(1)).thenReturn(Optional.of(company));
+        when(paymentMethodRepository.existsByCompanyAndStatus(company, "active")).thenReturn(true);
         when(paymentPlanRepository.findByPlanName("Business Plus Plan"))
                 .thenReturn(Optional.of(businessPlus));
 
@@ -119,7 +124,7 @@ class PaymentPlanServiceTest {
 
     @Test
     void changePlan_companyNotFound_throws() {
-        when(companyRepository.findById(99L)).thenReturn(Optional.empty());
+        when(companyRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThrows(CompanyNotFoundException.class,
                 () -> paymentPlanService.changePlan(99, "Business Plus Plan"));
@@ -129,7 +134,7 @@ class PaymentPlanServiceTest {
 
     @Test
     void changePlan_planNotFound_throws() {
-        when(companyRepository.findById(1L)).thenReturn(Optional.of(company));
+        when(companyRepository.findById(1)).thenReturn(Optional.of(company));
         when(paymentPlanRepository.findByPlanName("Nonexistent Plan"))
                 .thenReturn(Optional.empty());
 
@@ -143,7 +148,7 @@ class PaymentPlanServiceTest {
 
     @Test
     void cancelSubscription_success() {
-        when(companyRepository.findById(1L)).thenReturn(Optional.of(company));
+        when(companyRepository.findById(1)).thenReturn(Optional.of(company));
         when(paymentPlanRepository.findByPlanName("Starter Plan"))
                 .thenReturn(Optional.of(starterPlan));
 
@@ -155,7 +160,7 @@ class PaymentPlanServiceTest {
 
     @Test
     void cancelSubscription_companyNotFound_throws() {
-        when(companyRepository.findById(99L)).thenReturn(Optional.empty());
+        when(companyRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThrows(CompanyNotFoundException.class,
                 () -> paymentPlanService.cancelSubscription(99));
@@ -165,7 +170,7 @@ class PaymentPlanServiceTest {
 
     @Test
     void cancelSubscription_starterPlanMissingFromDB_throws() {
-        when(companyRepository.findById(1L)).thenReturn(Optional.of(company));
+        when(companyRepository.findById(1)).thenReturn(Optional.of(company));
         when(paymentPlanRepository.findByPlanName("Starter Plan"))
                 .thenReturn(Optional.empty());
 

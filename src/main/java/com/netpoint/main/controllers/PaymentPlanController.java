@@ -22,7 +22,7 @@ public class PaymentPlanController {
     @GetMapping
     @PreAuthorize("hasAuthority('OWNER')")
     public ResponseEntity<PaymentPlanDTO> getPaymentPlan(@AuthenticationPrincipal AuthenticatedUser user) {
-        Integer companyId = user.companyId().intValue();
+        Integer companyId = user.companyId();
         log.info("companyId IS: " + companyId);
         return ResponseEntity.ok(paymentPlanService.getPaymentPlan(companyId));
     }
@@ -32,7 +32,7 @@ public class PaymentPlanController {
     public ResponseEntity<GenericResponse> changePlan(
             @AuthenticationPrincipal AuthenticatedUser user,
             @RequestBody ChangePlanRequest request) {
-        Integer companyId = user.companyId().intValue();
+        Integer companyId = user.companyId();
         return ResponseEntity.ok(paymentPlanService.changePlan(companyId, request.getNewPlanName()));
     }
 
@@ -40,7 +40,7 @@ public class PaymentPlanController {
     @PreAuthorize("hasAuthority('OWNER')")
     public ResponseEntity<GenericResponse>
     cancelSubscription(@AuthenticationPrincipal AuthenticatedUser user) {
-        Integer companyId = user.companyId().intValue();
+        Integer companyId = user.companyId();
         return ResponseEntity.ok(paymentPlanService.cancelSubscription(companyId));
     }
 }

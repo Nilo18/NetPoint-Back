@@ -18,7 +18,7 @@ public class CompanyController {
 
     @GetMapping
     public ResponseEntity<CompanyDTO> getCompanyInfo(@AuthenticationPrincipal AuthenticatedUser user) {
-        Integer companyId = user.companyId().intValue();
+        Integer companyId = user.companyId();
         return ResponseEntity.ok(companyService.getCompanyInfo(companyId));
     }
 }

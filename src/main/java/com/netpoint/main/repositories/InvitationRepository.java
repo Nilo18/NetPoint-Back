@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface InvitationRepository extends JpaRepository<Invitation, Long> {
     Optional<Invitation> findByToken(String token);
-    Optional<Invitation> findByEmailAndCompanyId(String email, Long companyId);
+    Optional<Invitation> findByEmailAndCompanyId(String email, Integer companyId);
     boolean existsByToken(String token);
     boolean existsByEmailAndCompanyIdAndUsedFalse(String email, Integer companyId);
     boolean existsByEmailAndCompanyIdAndUsedFalseAndExpiresAtAfter(String email, Integer companyId, LocalDateTime now);

@@ -1,16 +1,20 @@
 package com.netpoint.main.services;
 
+import com.netpoint.main.dto.requests.CompanyRegistrationRequest;
 import com.netpoint.main.dto.requests.LoginRequest;
 import com.netpoint.main.dto.requests.VerifyOtpRequest;
 import com.netpoint.main.dto.responses.AuthResponse;
 import com.netpoint.main.exceptions.*;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.OtpEntry;
+import com.netpoint.main.models.PaymentPlan;
 import com.netpoint.main.models.User;
 import com.netpoint.main.repositories.CompanyRepository;
+import com.netpoint.main.repositories.PaymentPlanRepository;
 import com.netpoint.main.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -30,6 +34,7 @@ class AuthServiceTest {
 
     @Mock private UserRepository userRepository;
     @Mock private CompanyRepository companyRepository;
+    @Mock private PaymentPlanRepository paymentPlanRepository;
     @Mock private BCryptPasswordEncoder passwordEncoder;
     @Mock private JwtService jwtService;
     @Mock private OtpStore otpStore;
@@ -52,6 +57,45 @@ class AuthServiceTest {
         user.setName("Test User");
         user.setCompany(company);
         return user;
+    }
+
+    @Test
+    void signup_assignsStarterPlanBeforeSavingCompany() {
+        CompanyRegistrationRequest request = new CompanyRegistrationRequest(
+                "NetPoint",
+                "business@netpoint.com",
+                "password123",
+                "Retail",
+                "owner@netpoint.com",
+                "Owner User",
+                "ownerpass123",
+                "OWNER"
+        );
+
+        PaymentPlan starterPlan = new PaymentPlan();
+        starterPlan.setId(1);
+        starterPlan.setPlanName("Starter Plan");
+
+        when(companyRepository.existsByEmail("business@netpoint.com")).thenReturn(false);
+        when(paymentPlanRepository.findByPlanName("Starter Plan")).thenReturn(Optional.of(starterPlan));
+        when(passwordEncoder.encode(anyString())).thenAnswer(invocation -> "encoded-" + invocation.getArgument(0));
+        when(companyRepository.save(any(Company.class))).thenAnswer(invocation -> {
+            Company saved = invocation.getArgument(0);
+            saved.setId(24);
+            return saved;
+        });
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
+            User saved = invocation.getArgument(0);
+            saved.setId(7);
+            return saved;
+        });
+        when(jwtService.generateToken(any(), any(), any(), any(), any())).thenReturn("jwt-123");
+
+        authService.signup(request);
+
+        ArgumentCaptor<Company> companyCaptor = ArgumentCaptor.forClass(Company.class);
+        verify(companyRepository).save(companyCaptor.capture());
+        assertSame(starterPlan, companyCaptor.getValue().getPlan());
     }
 
 

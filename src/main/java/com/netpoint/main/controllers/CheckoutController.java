@@ -23,7 +23,7 @@ public class CheckoutController {
     public ResponseEntity<SaleResponse> checkout(@AuthenticationPrincipal AuthenticatedUser user,
                                                  @Valid @RequestBody CheckoutRequest request) {
         return ResponseEntity.ok(checkoutService.checkout(
-                user.companyId().intValue(), Integer.valueOf(user.userId()), request
+                user.companyId(), Integer.valueOf(user.userId()), request
         ));
     }
 }

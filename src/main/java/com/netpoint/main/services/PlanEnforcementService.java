@@ -28,7 +28,7 @@ public class PlanEnforcementService {
     private final UserRepository userRepository;
 
     public void enforceProductLimit(Integer companyId) {
-        Company company = companyRepository.findById(Long.valueOf(companyId))
+        Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company with the given id was not found"));
 
         String planName = company.getPlan().getPlanName();
@@ -45,7 +45,7 @@ public class PlanEnforcementService {
     }
 
     public void enforceTeamMemberLimit(Integer companyId, String role) {
-        Company company = companyRepository.findById(Long.valueOf(companyId))
+        Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company with the given id was not found"));
 
         String planName = company.getPlan().getPlanName();

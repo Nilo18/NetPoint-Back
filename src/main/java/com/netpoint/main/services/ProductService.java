@@ -54,7 +54,7 @@ public class ProductService {
             throw new AttributeCapacityReachedException("You can only have up to 10 attributes");
         }
 
-        Company company = companyRepository.findById(Long.valueOf(companyId))
+        Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         ProductAttribute attribute = new ProductAttribute();
@@ -138,7 +138,7 @@ public class ProductService {
 
     @Transactional
     public ProductDTO createProduct(Integer companyId, CreateProductRequest request) {
-        Company company = companyRepository.findById(Long.valueOf(companyId))
+        Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new RuntimeException("Company not found"));
 
         Product product = new Product();

@@ -38,7 +38,7 @@ public class InvitationService {
 
     // owneri idzaxebs amas
     public void inviteUser(String email, String role, Integer companyId) {
-        Company company = this.companyRepository.findById(Long.valueOf(companyId))
+        Company company = this.companyRepository.findById(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Suggested company was not found"));
 
         if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
@@ -111,7 +111,7 @@ public class InvitationService {
         }
 
         Company company = this.companyRepository
-                .findById(Long.valueOf(suggestedInvitation.getCompanyId()))
+                .findById(suggestedInvitation.getCompanyId())
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
         return company.getName();
     }
@@ -132,7 +132,7 @@ public class InvitationService {
         }
 
         log.info("Third attempt to catch StackOverflowError");
-        Company company = this.companyRepository.findById(Long.valueOf(invitation.getCompanyId()))
+        Company company = this.companyRepository.findById(invitation.getCompanyId())
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         // axal momxmarebels amatebs USER tables
