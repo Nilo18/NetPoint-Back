@@ -92,7 +92,16 @@ public class ProductController {
 
     @GetMapping
 //    @PreAuthorize("hasAuthority('OWNER')")
-    public ResponseEntity<List<ProductDTO>> getAllProducts(@AuthenticationPrincipal AuthenticatedUser user) {
+    public ResponseEntity<List<ProductDTO>> getAllProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "") String sortBy,
+            @RequestParam(defaultValue = "") String sortDirection,
+            @RequestParam(defaultValue = "") String filterOption,
+            @RequestParam(defaultValue = "") String filterFrom,
+            @RequestParam(defaultValue = "") String filterTo,
+            @AuthenticationPrincipal AuthenticatedUser user) {
         List<ProductDTO> products = productService.getCompanyProducts(user.companyId());
         return ResponseEntity.ok(products);
     }
