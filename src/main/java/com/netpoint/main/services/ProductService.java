@@ -2,6 +2,7 @@ package com.netpoint.main.services;
 
 import com.netpoint.main.dto.requests.*;
 import com.netpoint.main.dto.responses.GenericResponse;
+import com.netpoint.main.dto.responses.PageResponse;
 import com.netpoint.main.exceptions.*;
 import com.netpoint.main.filters.DefaultProductAttribute;
 import com.netpoint.main.models.*;
@@ -9,8 +10,14 @@ import com.netpoint.main.repositories.*;
 import com.netpoint.main.repositories.ProductAttributeRepository;
 import com.netpoint.main.repositories.ProductRepository;
 import com.netpoint.main.repositories.ProductAttributeValueRepository;
+import jakarta.persistence.criteria.Expression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.JsonNode;
@@ -169,13 +176,156 @@ public class ProductService {
         return mapToProductDTO(savedProduct);
     }
 
+    private Specification<Product> companyIs(Integer companyId) {
+        return (root, query, cb) ->
+                cb.equal(root.get("company").get("id"), companyId);
+    }
+
+    private Specification<Product> matchesSearch(String search) {
+        return (root, query, cb) -> {
+            if (search == null || search.isBlank()) {
+                return cb.conjunction();
+            }
+
+            return cb.like(
+                    cb.lower(root.get("name")),
+                    "%" + search.trim().toLowerCase() + "%"
+            );
+        };
+    }
+
+    private Specification<Product> profitabilityRange(
+            String fromValue,
+            String toValue
+    ) {
+        BigDecimal from = parseRangeValue(fromValue);
+        BigDecimal to = parseRangeValue(toValue);
+
+        if (from.compareTo(to) > 0) {
+            throw new BadRequestException("Filter from value cannot exceed to value");
+        }
+
+        return (root, query, cb) -> {
+            Expression<BigDecimal> profitability = cb.diff(
+                    root.<BigDecimal>get("price"),
+                    root.<BigDecimal>get("wholesalePrice")
+            );
+
+            return cb.between(profitability, from, to);
+        };
+    }
+
+    private Specification<Product> decimalRange(
+            String databaseField,
+            String fromValue,
+            String toValue
+    ) {
+        BigDecimal from = parseRangeValue(fromValue);
+        BigDecimal to = parseRangeValue(toValue);
+
+        if (from.compareTo(to) > 0) {
+            throw new BadRequestException("Filter from value cannot exceed to value");
+        }
+
+        return (root, query, cb) ->
+                cb.between(root.<BigDecimal>get(databaseField), from, to);
+    }
+
+    private Specification<Product> stockRange(String fromValue, String toValue) {
+        try {
+            int from = Integer.parseInt(fromValue);
+            int to = Integer.parseInt(toValue);
+
+            if (from < 0 || to < 0 || from > to) {
+                throw new BadRequestException("Invalid stock range");
+            }
+
+            return (root, query, cb) ->
+                    cb.between(root.<Integer>get("stock"), from, to);
+
+        } catch (NumberFormatException exception) {
+            throw new BadRequestException("Stock range must contain whole numbers");
+        }
+    }
+
+    private BigDecimal parseRangeValue(String value) {
+        try {
+            return new BigDecimal(value);
+        } catch (NumberFormatException exception) {
+            throw new BadRequestException("Filter values must be valid numbers");
+        }
+    }
+
+    private Specification<Product> toSpecification(String rawFilter) {
+        String[] parts = rawFilter.split(":", -1);
+
+        if (parts.length != 3) {
+            throw new BadRequestException(
+                    "Invalid filter format. Expected: field:from:to"
+            );
+        }
+
+        String field = parts[0].trim().toLowerCase();
+        String fromValue = parts[1].trim();
+        String toValue = parts[2].trim();
+
+        if (fromValue.isEmpty() || toValue.isEmpty()) {
+            throw new BadRequestException("Filter range requires both from and to values");
+        }
+
+        return switch (field) {
+            case "stock" -> stockRange(fromValue, toValue);
+            case "retailprice" -> decimalRange("price", fromValue, toValue);
+            case "wholesaleprice" -> decimalRange("wholesalePrice", fromValue, toValue);
+            case "profitability" -> profitabilityRange(fromValue, toValue);
+            default -> throw new BadRequestException("Unsupported filter field: " + parts[0]);
+        };
+    }
+
+    private Pageable createPageable(ProductQuery query) {
+        String property = switch (query.getSortBy()) {
+            case "" -> "id";
+            case "stock" -> "stock";
+            case "retailPrice" -> "price";
+            case "wholesalePrice" -> "wholesalePrice";
+            case "margin" -> "marginPercent";
+            case "profitability" -> throw new BadRequestException(
+                    "Profitability sorting is not implemented yet"
+            );
+            default -> throw new BadRequestException(
+                    "Unsupported sort field: " + query.getSortBy()
+            );
+        };
+
+        Sort.Direction direction = switch (query.getSortDirection().toLowerCase()) {
+            case "", "asc" -> Sort.Direction.ASC;
+            case "desc" -> Sort.Direction.DESC;
+            default -> throw new BadRequestException(
+                    "sortDirection must be asc or desc"
+            );
+        };
+
+        return PageRequest.of(
+                query.getPage(),
+                query.getSize(),
+                Sort.by(direction, property)
+        );
+    }
 
     @Transactional(readOnly = true)
-    public List<ProductDTO> getCompanyProducts(Integer companyId) {
-        return productRepository.findByCompany_Id(companyId)
-                .stream()
-                .map(this::mapToProductDTO)
-                .collect(Collectors.toList());
+    public Page<ProductDTO> getCompanyProducts(Integer companyId, ProductQuery query) {
+        Pageable pageable = createPageable(query);
+
+        Specification<Product> specification = Specification
+                .where(companyIs(companyId))
+                .and(matchesSearch(query.getSearch()));
+
+        for (String filter : query.getFilters()) {
+            specification = specification.and(toSpecification(filter));
+        }
+
+        return productRepository.findAll(specification, pageable)
+                .map(this::mapToProductDTO);
     }
 
     @Transactional(readOnly = true)
