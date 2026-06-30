@@ -14,5 +14,7 @@ public class ProductQuery {
     private String sortBy = "";
     private String sortDirection = "";
 
-    private List<String> filters = new ArrayList<>();
+    private String filterBy = "";
+    private String filterFrom = "";
+    private String filterTo = "";
 }

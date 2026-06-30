@@ -256,18 +256,14 @@ public class ProductService {
         }
     }
 
-    private Specification<Product> toSpecification(String rawFilter) {
-        String[] parts = rawFilter.split(":", -1);
+    private Specification<Product> toSpecification(String filterBy, String filterFrom, String filterTo) {
+        String field = filterBy == null ? "" : filterBy.trim().toLowerCase();
+        String fromValue = filterFrom == null ? "" : filterFrom.trim();
+        String toValue = filterTo == null ? "" : filterTo.trim();
 
-        if (parts.length != 3) {
-            throw new BadRequestException(
-                    "Invalid filter format. Expected: field:from:to"
-            );
+        if (field.isEmpty()) {
+            throw new BadRequestException("Filter field is required");
         }
-
-        String field = parts[0].trim().toLowerCase();
-        String fromValue = parts[1].trim();
-        String toValue = parts[2].trim();
 
         if (fromValue.isEmpty() || toValue.isEmpty()) {
             throw new BadRequestException("Filter range requires both from and to values");
@@ -278,10 +274,9 @@ public class ProductService {
             case "retailprice" -> decimalRange("price", fromValue, toValue);
             case "wholesaleprice" -> decimalRange("wholesalePrice", fromValue, toValue);
             case "profitability" -> profitabilityRange(fromValue, toValue);
-            default -> throw new BadRequestException("Unsupported filter field: " + parts[0]);
+            default -> throw new BadRequestException("Unsupported filter field: " + filterBy);
         };
     }
-
     private Pageable createPageable(ProductQuery query) {
         String property = switch (query.getSortBy()) {
             case "" -> "id";
@@ -320,8 +315,12 @@ public class ProductService {
                 .where(companyIs(companyId))
                 .and(matchesSearch(query.getSearch()));
 
-        for (String filter : query.getFilters()) {
-            specification = specification.and(toSpecification(filter));
+        if (query.getFilterBy() != null && !query.getFilterBy().isBlank()) {
+            specification = specification.and(toSpecification(
+                    query.getFilterBy(),
+                    query.getFilterFrom(),
+                    query.getFilterTo()
+            ));
         }
 
         return productRepository.findAll(specification, pageable)
