@@ -8,6 +8,7 @@ import com.netpoint.main.dto.requests.CompanyUpdateRequest;
 import com.netpoint.main.dto.responses.InfoChangeVerificationResponse;
 import com.netpoint.main.dto.responses.UserModificationResponse;
 import com.netpoint.main.exceptions.*;
+import com.netpoint.main.models.AuditLog;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.OtpEntry;
 import com.netpoint.main.models.ProductAttribute;
@@ -40,6 +41,7 @@ public class SettingsService {
     private final ProductRepository productRepository;
     private final ProductAttributeRepository productAttributeRepository;
     private final ProductAttributeValueRepository productAttributeValueRepository;
+    private final AuditLogService auditLogService;
 
     public Page<UserDTO> fetchCompanyUsers(Integer id, Pageable pageable) {
         log.info("LOOKING FOR COMPANY WITH ID: " + id);
@@ -51,7 +53,7 @@ public class SettingsService {
                 .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole()));
     }
 
-    public Page<UserDTO> addCashier(CashierAdditionRequest cashier, Pageable pageable) {
+    public Page<UserDTO> addCashier(Integer actorUserId, CashierAdditionRequest cashier, Pageable pageable) {
         String role = cashier.role().trim().toLowerCase();
 
         if (!role.equals("cashier")) {
@@ -85,11 +87,16 @@ public class SettingsService {
 
         this.userRepository.save(user);
 
+        User actor = userRepository.findById(actorUserId)
+                .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
+        auditLogService.log(company, actor, AuditLog.EventType.TEAM_MEMBER_ADDED,
+                "Added team member: " + cashier.email() + " (" + cashier.role() + ")");
+
         return userRepository.findByCompany_Id(cashier.companyId(), pageable)
                 .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole()));
     }
 
-    public UserModificationResponse deleteUser(Integer userId) {
+    public UserModificationResponse deleteUser(Integer actorUserId, Integer userId) {
         // თუ იუზერი არ არსებობს, exception
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Suggested user was not found"));
@@ -98,6 +105,15 @@ public class SettingsService {
         if (user.getRole().equals("OWNER")) {
             throw new InvalidRoleException("Cannot delete the owner account");
         }
+
+        User actor = userRepository.findById(actorUserId)
+                .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
+        Company company = user.getCompany();
+        String removedEmail = user.getEmail();
+        String removedRole = user.getRole();
+
+        auditLogService.log(company, actor, AuditLog.EventType.TEAM_MEMBER_REMOVED,
+                "Removed team member: " + removedEmail + " (" + removedRole + ")");
 
         this.userRepository.delete(user);
 
@@ -165,7 +181,7 @@ public class SettingsService {
         return new InfoChangeVerificationResponse(200, tempToken);
     }
 
-    public CompanyDTO updateCompanyBusinessInfo(CompanyUpdateRequest suggested) {
+    public CompanyDTO updateCompanyBusinessInfo(Integer actorUserId, CompanyUpdateRequest suggested) {
         OtpEntry otpEntry = otpStore.get(suggested.verificationInfo().tempToken());
 
         if (!otpEntry.getOtpCode().equals(suggested.verificationInfo().otpCode())) {
@@ -188,6 +204,12 @@ public class SettingsService {
         company.setIndustry(suggested.newInfo().industry());
 
         Company saved = companyRepository.save(company);
+
+        User actor = userRepository.findById(actorUserId)
+                .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
+        auditLogService.log(saved, actor, AuditLog.EventType.COMPANY_INFO_UPDATED,
+                "Company business info updated");
+
         return new CompanyDTO(saved.getId(), saved.getEmail(), saved.getName(), saved.getIndustry());
     }
     // accountis daapdeiteba
@@ -228,13 +250,25 @@ public class SettingsService {
         }
 
         User updated = userRepository.save(user);
+
+        auditLogService.log(updated.getCompany(), updated, AuditLog.EventType.ACCOUNT_INFO_UPDATED,
+                "Account info updated");
+
         return new UserDTO(updated.getId(), updated.getName(), updated.getEmail(), updated.getRole());
     }
 
 // kompaniis washla, es marto owners sheudzlia
 
     @Transactional
-    public void deleteCompany(Integer companyId) {
+    public void deleteCompany(Integer actorUserId, Integer companyId) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+        User actor = userRepository.findById(actorUserId)
+                .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
+
+        auditLogService.log(company, actor, AuditLog.EventType.COMPANY_DELETED,
+                "Company deleted: " + company.getName());
+
         // jer poulobs kompaniis produqtebis atributebs
         List<ProductAttribute> attributes = productAttributeRepository.findByCompany_Id(companyId);
 

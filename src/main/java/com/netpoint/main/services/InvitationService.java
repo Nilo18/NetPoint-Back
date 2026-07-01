@@ -2,6 +2,7 @@ package com.netpoint.main.services;
 
 import com.netpoint.main.dto.responses.AuthResponse;
 import com.netpoint.main.exceptions.*;
+import com.netpoint.main.models.AuditLog;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.Invitation;
 import com.netpoint.main.models.User;
@@ -32,12 +33,13 @@ public class InvitationService {
     private final CompanyRepository companyRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final AuditLogService auditLogService;
 
     @Value("${app.frontend-url}")
     private String frontendUrl;
 
     // owneri idzaxebs amas
-    public void inviteUser(String email, String role, Integer companyId) {
+    public void inviteUser(Integer actorUserId, String email, String role, Integer companyId) {
         Company company = this.companyRepository.findById(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Suggested company was not found"));
 
@@ -81,6 +83,11 @@ public class InvitationService {
 
         invitationRepository.save(invitation);
         sendInviteEmail(email, token, role);
+
+        User actor = userRepository.findById(actorUserId)
+                .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
+        auditLogService.log(company, actor, AuditLog.EventType.USER_INVITED,
+                "Invited user: " + email + " as " + role);
     }
 
     private void sendInviteEmail(String email, String token, String role) {

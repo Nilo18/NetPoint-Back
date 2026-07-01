@@ -7,10 +7,14 @@ import com.netpoint.main.dto.responses.PaymentMethodResponse;
 import com.netpoint.main.exceptions.BadRequestException;
 import com.netpoint.main.exceptions.CompanyNotFoundException;
 import com.netpoint.main.exceptions.PaymentMethodNotFoundException;
+import com.netpoint.main.exceptions.UserNotFoundException;
+import com.netpoint.main.models.AuditLog;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.PaymentMethod;
+import com.netpoint.main.models.User;
 import com.netpoint.main.repositories.CompanyRepository;
 import com.netpoint.main.repositories.PaymentMethodRepository;
+import com.netpoint.main.repositories.UserRepository;
 import com.netpoint.main.utils.CardValidationUtils;
 import lombok.Data;
 import lombok.extern.java.Log;
@@ -26,6 +30,8 @@ public class PaymentMethodService {
 
     private final PaymentMethodRepository paymentMethodRepository;
     private final CompanyRepository       companyRepository;
+    private final UserRepository          userRepository;
+    private final AuditLogService         auditLogService;
 
 
     //abrunebs payment methods
@@ -41,7 +47,7 @@ public class PaymentMethodService {
 
 
     @Transactional
-    public PaymentMethodResponse addPaymentMethod(Integer companyId,
+    public PaymentMethodResponse addPaymentMethod(Integer actorUserId, Integer companyId,
                                                   AddPaymentMethodRequest req) {
 
         Company company = findCompany(companyId);
@@ -75,13 +81,20 @@ public class PaymentMethodService {
         pm.setStatus("active");
         pm.setMock_payment_method_id(generateMockToken());
 
-        return toResponse(paymentMethodRepository.save(pm));
+        PaymentMethod saved = paymentMethodRepository.save(pm);
+
+        User actor = userRepository.findById(actorUserId)
+                .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
+        auditLogService.log(company, actor, AuditLog.EventType.PAYMENT_METHOD_ADDED,
+                "Payment method added: " + brand + " ****" + last4);
+
+        return toResponse(saved);
     }
 
 
 
     @Transactional
-    public PaymentMethodResponse updatePaymentMethod(Integer companyId,
+    public PaymentMethodResponse updatePaymentMethod(Integer actorUserId, Integer companyId,
                                                      UpdatePaymentMethodRequest req) {
         Company company = findCompany(companyId);
 
@@ -113,13 +126,20 @@ public class PaymentMethodService {
         pm.setCardExpYear(req.expYear());
         pm.setCardholderName(req.cardholderName());
 
-        return toResponse(paymentMethodRepository.save(pm));
+        PaymentMethod saved = paymentMethodRepository.save(pm);
+
+        User actor = userRepository.findById(actorUserId)
+                .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
+        auditLogService.log(company, actor, AuditLog.EventType.PAYMENT_METHOD_UPDATED,
+                "Payment method updated: " + brand + " ****" + newLast4);
+
+        return toResponse(saved);
     }
 
     // soft deletia es
 
     @Transactional
-    public GenericResponse deletePaymentMethod(Integer companyId) {
+    public GenericResponse deletePaymentMethod(Integer actorUserId, Integer companyId) {
         Company company = findCompany(companyId);
 
         // washlas blokavs tu pasianze arian
@@ -135,6 +155,12 @@ public class PaymentMethodService {
         pm.setStatus("removed");
         pm.setIsDefault(false);
         paymentMethodRepository.save(pm);
+
+        User actor = userRepository.findById(actorUserId)
+                .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
+        auditLogService.log(company, actor, AuditLog.EventType.PAYMENT_METHOD_REMOVED,
+                "Payment method removed: " + pm.getCardBrand() + " ****" + pm.getCardLast4());
+
         return new GenericResponse(200, "Payment method removed successfully");
     }
 

@@ -123,6 +123,7 @@ public class ProductController {
     public ResponseEntity<GenericResponse> deleteProduct(
             @AuthenticationPrincipal AuthenticatedUser user,
             @PathVariable Integer productId) {
-        return ResponseEntity.ok(productService.deleteProduct(user.companyId(), productId));
+        return ResponseEntity.ok(
+                productService.deleteProduct(Integer.parseInt(user.userId()), user.companyId(), productId));
     }
 }

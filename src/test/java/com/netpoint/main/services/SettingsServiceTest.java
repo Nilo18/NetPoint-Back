@@ -37,6 +37,7 @@ public class SettingsServiceTest {
     @Mock private UserRepository userRepository;
     @Mock private CompanyRepository companyRepository;
     @Mock private BCryptPasswordEncoder passwordEncoder;
+    @Mock private AuditLogService auditLogService;
     @InjectMocks private SettingsService settingsService;
 
     @Test
@@ -46,14 +47,17 @@ public class SettingsServiceTest {
         company.setName("Test Company");
         company.setEmail("test@company.com");
         company.setIndustry("Tech");
+        User actor = new User();
+        actor.setId(99);
         CashierAdditionRequest request = new CashierAdditionRequest(
                 "Bob", "bob@gmail.com", "cashier", "123456", 22);
 
         when(userRepository.existsByEmail("bob@gmail.com")).thenReturn(false);
         when(companyRepository.findById(22)).thenReturn(Optional.of(company));
+        when(userRepository.findById(99)).thenReturn(Optional.of(actor));
         Pageable pageable = PageRequest.of(0, 10);
         when(userRepository.findByCompany_Id(22, pageable)).thenReturn(new PageImpl<>(java.util.List.of()));
-        Page<UserDTO> response = settingsService.addCashier(request, pageable);
+        Page<UserDTO> response = settingsService.addCashier(99, request, pageable);
         assertNotNull(response);
         verify(userRepository).save(any(User.class));
     }
@@ -63,7 +67,7 @@ public class SettingsServiceTest {
     public void shouldThrowOnInvalidCashier(CashierAdditionRequest request,
                     Class<? extends Exception> expectedException) {
         Pageable pageable = PageRequest.of(1, 10);
-        assertThrows(expectedException, () -> settingsService.addCashier(request, pageable));
+        assertThrows(expectedException, () -> settingsService.addCashier(99, request, pageable));
     }
 
     static Stream<Arguments> invalidCashierProvider() {

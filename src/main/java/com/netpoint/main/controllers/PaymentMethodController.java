@@ -34,7 +34,7 @@ public class PaymentMethodController {
             @AuthenticationPrincipal AuthenticatedUser user,
             @RequestBody AddPaymentMethodRequest request) {
         return ResponseEntity.ok(
-                paymentMethodService.addPaymentMethod(user.companyId(), request));
+                paymentMethodService.addPaymentMethod(Integer.parseInt(user.userId()), user.companyId(), request));
     }
 
     @PutMapping
@@ -43,13 +43,14 @@ public class PaymentMethodController {
             @AuthenticationPrincipal AuthenticatedUser user,
             @RequestBody UpdatePaymentMethodRequest request) {
         return ResponseEntity.ok(
-                paymentMethodService.updatePaymentMethod(user.companyId(), request));
+                paymentMethodService.updatePaymentMethod(Integer.parseInt(user.userId()), user.companyId(), request));
     }
 
     @DeleteMapping
     @PreAuthorize("hasAuthority('OWNER')")
     public ResponseEntity<GenericResponse> deletePaymentMethod(
             @AuthenticationPrincipal AuthenticatedUser user) {
-        return ResponseEntity.ok(paymentMethodService.deletePaymentMethod(user.companyId()));
+        return ResponseEntity.ok(
+                paymentMethodService.deletePaymentMethod(Integer.parseInt(user.userId()), user.companyId()));
     }
 }

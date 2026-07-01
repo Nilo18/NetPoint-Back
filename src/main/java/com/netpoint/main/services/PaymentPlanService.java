@@ -5,10 +5,14 @@ import com.netpoint.main.dto.responses.GenericResponse;
 import com.netpoint.main.exceptions.BadRequestException;
 import com.netpoint.main.exceptions.CompanyNotFoundException;
 import com.netpoint.main.exceptions.PaymentPlanNotFoundException;
+import com.netpoint.main.exceptions.UserNotFoundException;
+import com.netpoint.main.models.AuditLog;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.PaymentPlan;
+import com.netpoint.main.models.User;
 import com.netpoint.main.repositories.CompanyRepository;
 import com.netpoint.main.repositories.PaymentPlanRepository;
+import com.netpoint.main.repositories.UserRepository;
 import lombok.Data;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,6 +27,8 @@ public class PaymentPlanService {
     private final PaymentPlanRepository paymentPlanRepository;
     private final CompanyRepository companyRepository;
     private final PaymentMethodRepository paymentMethodRepository;
+    private final UserRepository userRepository;
+    private final AuditLogService auditLogService;
 
     @Cacheable(value = "paymentPlans", key = "#companyId")
     @Transactional(readOnly = true)
@@ -47,7 +53,7 @@ public class PaymentPlanService {
 
     @CacheEvict(value = "paymentPlans", key = "#companyId")
     @Transactional
-public GenericResponse changePlan(Integer companyId, String newPlanName) {
+public GenericResponse changePlan(Integer actorUserId, Integer companyId, String newPlanName) {
     Company company = companyRepository.findById(companyId)
             .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
@@ -63,12 +69,18 @@ public GenericResponse changePlan(Integer companyId, String newPlanName) {
 
     company.setPlan(newPlan);
     companyRepository.save(company);
+
+    User actor = userRepository.findById(actorUserId)
+            .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
+    auditLogService.log(company, actor, AuditLog.EventType.PAYMENT_PLAN_CHANGED,
+            "Plan changed to: " + newPlan.getPlanName());
+
     return new GenericResponse(200, "Plan changed to: " + newPlan.getPlanName());
 }
 
     @CacheEvict(value = "paymentPlans", key = "#companyId")
     @Transactional
-    public GenericResponse cancelSubscription(Integer companyId) {
+    public GenericResponse cancelSubscription(Integer actorUserId, Integer companyId) {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
@@ -77,6 +89,12 @@ public GenericResponse changePlan(Integer companyId, String newPlanName) {
 
         company.setPlan(starterPlan);
         companyRepository.save(company);
+
+        User actor = userRepository.findById(actorUserId)
+                .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
+        auditLogService.log(company, actor, AuditLog.EventType.SUBSCRIPTION_CANCELLED,
+                "Subscription cancelled");
+
         return new GenericResponse(200, "Plan cancelled successfully.");
     }
 }

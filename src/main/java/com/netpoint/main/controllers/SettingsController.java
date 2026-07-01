@@ -44,15 +44,19 @@ public class SettingsController {
 
     @PostMapping(path = "/add-cashier")
     public ResponseEntity<PageResponse<UserDTO>> addCashier(
+            @AuthenticationPrincipal AuthenticatedUser user,
             @Valid @RequestBody CashierAdditionRequest cashier,
             @PageableDefault(page = 0, size = 10) Pageable pageable) {
         planEnforcementService.enforceTeamMemberLimit(cashier.companyId(), cashier.role());
-        return ResponseEntity.ok(PageResponse.from(this.settingsService.addCashier(cashier, pageable)));
+        return ResponseEntity.ok(PageResponse.from(
+                this.settingsService.addCashier(Integer.parseInt(user.userId()), cashier, pageable)));
     }
 
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity<UserModificationResponse> deleteUser(@PathVariable Integer userId) {
-        return ResponseEntity.ok(this.settingsService.deleteUser(userId));
+    public ResponseEntity<UserModificationResponse> deleteUser(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @PathVariable Integer userId) {
+        return ResponseEntity.ok(this.settingsService.deleteUser(Integer.parseInt(user.userId()), userId));
     }
 
     @PreAuthorize("hasAnyAuthority('OWNER')")
@@ -78,8 +82,10 @@ public class SettingsController {
     @PreAuthorize("hasAuthority('OWNER')")
     @PutMapping(path = "/company")
     public ResponseEntity<CompanyDTO> updateCompanyBusinessInfo(
+            @AuthenticationPrincipal AuthenticatedUser user,
             @RequestBody @Valid CompanyUpdateRequest suggested) {
-        return ResponseEntity.ok(this.settingsService.updateCompanyBusinessInfo(suggested));
+        return ResponseEntity.ok(
+                this.settingsService.updateCompanyBusinessInfo(Integer.parseInt(user.userId()), suggested));
     }
 
     @GetMapping("/account")
@@ -127,7 +133,7 @@ public class SettingsController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        settingsService.deleteCompany(companyId);
+        settingsService.deleteCompany(Integer.parseInt(user.userId()), companyId);
 
         return ResponseEntity.noContent().build();
     }

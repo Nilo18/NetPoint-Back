@@ -33,7 +33,8 @@ public class PaymentPlanController {
             @AuthenticationPrincipal AuthenticatedUser user,
             @RequestBody ChangePlanRequest request) {
         Integer companyId = user.companyId();
-        return ResponseEntity.ok(paymentPlanService.changePlan(companyId, request.getNewPlanName()));
+        return ResponseEntity.ok(
+                paymentPlanService.changePlan(Integer.parseInt(user.userId()), companyId, request.getNewPlanName()));
     }
 
     @DeleteMapping
@@ -41,6 +42,7 @@ public class PaymentPlanController {
     public ResponseEntity<GenericResponse>
     cancelSubscription(@AuthenticationPrincipal AuthenticatedUser user) {
         Integer companyId = user.companyId();
-        return ResponseEntity.ok(paymentPlanService.cancelSubscription(companyId));
+        return ResponseEntity.ok(
+                paymentPlanService.cancelSubscription(Integer.parseInt(user.userId()), companyId));
     }
 }

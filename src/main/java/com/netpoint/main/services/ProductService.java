@@ -44,6 +44,8 @@ public class ProductService {
     private final ProductAttributeRepository productAttributeRepository;
     private final ProductAttributeValueRepository productAttributeValueRepository;
     private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
+    private final AuditLogService auditLogService;
 
 
 
@@ -377,9 +379,15 @@ public class ProductService {
     }
 
     @Transactional
-    public GenericResponse deleteProduct(Integer companyId, Integer productId) {
+    public GenericResponse deleteProduct(Integer actorUserId, Integer companyId, Integer productId) {
         Product product = productRepository.findByIdAndCompany_Id(productId, companyId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        User actor = userRepository.findById(actorUserId)
+                .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
+        auditLogService.log(product.getCompany(), actor, AuditLog.EventType.PRODUCT_DELETED,
+                "Product deleted: " + product.getName());
+
         productRepository.delete(product);
         return new GenericResponse(200, "Deleted successfully");
     }

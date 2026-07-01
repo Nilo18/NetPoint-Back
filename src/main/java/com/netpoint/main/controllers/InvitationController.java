@@ -1,11 +1,13 @@
 package com.netpoint.main.controllers;
 
+import com.netpoint.main.dto.AuthenticatedUser;
 import com.netpoint.main.dto.responses.AuthResponse;
 import com.netpoint.main.dto.responses.InvitationControllerResponse;
 import com.netpoint.main.services.InvitationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.netpoint.main.dto.requests.InviteRequest;
 import com.netpoint.main.dto.requests.CompleteRegistrationRequest;
@@ -20,8 +22,11 @@ public class InvitationController {
     // mowveva igzavneba
     @PostMapping("/invite")
     // xo owneria magas naxulobs
-    public ResponseEntity<InvitationControllerResponse> invite(@RequestBody @Valid InviteRequest request) {
-        invitationService.inviteUser(request.email(), request.role(), request.companyId());
+    public ResponseEntity<InvitationControllerResponse> invite(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @RequestBody @Valid InviteRequest request) {
+        invitationService.inviteUser(
+                Integer.parseInt(user.userId()), request.email(), request.role(), request.companyId());
         return ResponseEntity.ok(new InvitationControllerResponse(200,"Invitation sent"));
     }
 

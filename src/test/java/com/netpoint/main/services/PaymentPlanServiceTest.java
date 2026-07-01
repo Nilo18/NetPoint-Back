@@ -5,9 +5,11 @@ import com.netpoint.main.exceptions.CompanyNotFoundException;
 import com.netpoint.main.exceptions.PaymentPlanNotFoundException;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.PaymentPlan;
+import com.netpoint.main.models.User;
 import com.netpoint.main.repositories.CompanyRepository;
 import com.netpoint.main.repositories.PaymentMethodRepository;
 import com.netpoint.main.repositories.PaymentPlanRepository;
+import com.netpoint.main.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,12 +35,19 @@ class PaymentPlanServiceTest {
     @Mock
     private PaymentMethodRepository paymentMethodRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private AuditLogService auditLogService;
+
     @InjectMocks
     private PaymentPlanService paymentPlanService;
 
     private Company company;
     private PaymentPlan starterPlan;
     private PaymentPlan professionalPlan;
+    private User actor;
 
     @BeforeEach
     void setUp() {
@@ -68,6 +77,9 @@ class PaymentPlanServiceTest {
         company = new Company();
         company.setId(1);
         company.setPlan(professionalPlan);
+
+        actor = new User();
+        actor.setId(10);
     }
 
     // getPaymentPlan
@@ -115,8 +127,9 @@ class PaymentPlanServiceTest {
         when(paymentMethodRepository.existsByCompanyAndStatus(company, "active")).thenReturn(true);
         when(paymentPlanRepository.findByPlanName("Business Plus Plan"))
                 .thenReturn(Optional.of(businessPlus));
+        when(userRepository.findById(10)).thenReturn(Optional.of(actor));
 
-        paymentPlanService.changePlan(1, "Business Plus Plan");
+        paymentPlanService.changePlan(10, 1, "Business Plus Plan");
 
         assertEquals("Business Plus Plan", company.getPlan().getPlanName());
         verify(companyRepository, times(1)).save(company);
@@ -127,7 +140,7 @@ class PaymentPlanServiceTest {
         when(companyRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThrows(CompanyNotFoundException.class,
-                () -> paymentPlanService.changePlan(99, "Business Plus Plan"));
+                () -> paymentPlanService.changePlan(10, 99, "Business Plus Plan"));
 
         verify(companyRepository, never()).save(any());
     }
@@ -139,7 +152,7 @@ class PaymentPlanServiceTest {
                 .thenReturn(Optional.empty());
 
         assertThrows(PaymentPlanNotFoundException.class,
-                () -> paymentPlanService.changePlan(1, "Nonexistent Plan"));
+                () -> paymentPlanService.changePlan(10, 1, "Nonexistent Plan"));
 
         verify(companyRepository, never()).save(any());
     }
@@ -151,8 +164,9 @@ class PaymentPlanServiceTest {
         when(companyRepository.findById(1)).thenReturn(Optional.of(company));
         when(paymentPlanRepository.findByPlanName("Starter Plan"))
                 .thenReturn(Optional.of(starterPlan));
+        when(userRepository.findById(10)).thenReturn(Optional.of(actor));
 
-        paymentPlanService.cancelSubscription(1);
+        paymentPlanService.cancelSubscription(10, 1);
 
         assertEquals("Starter Plan", company.getPlan().getPlanName());
         verify(companyRepository, times(1)).save(company);
@@ -163,7 +177,7 @@ class PaymentPlanServiceTest {
         when(companyRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThrows(CompanyNotFoundException.class,
-                () -> paymentPlanService.cancelSubscription(99));
+                () -> paymentPlanService.cancelSubscription(10, 99));
 
         verify(companyRepository, never()).save(any());
     }
@@ -175,7 +189,7 @@ class PaymentPlanServiceTest {
                 .thenReturn(Optional.empty());
 
         assertThrows(PaymentPlanNotFoundException.class,
-                () -> paymentPlanService.cancelSubscription(1));
+                () -> paymentPlanService.cancelSubscription(10, 1));
 
         verify(companyRepository, never()).save(any());
     }
