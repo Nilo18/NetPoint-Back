@@ -272,6 +272,7 @@ public class ProductService {
         return switch (field) {
             case "stock" -> stockRange(fromValue, toValue);
             case "retailprice" -> decimalRange("price", fromValue, toValue);
+            case "margin" -> decimalRange("marginPercent", fromValue, toValue);
             case "wholesaleprice" -> decimalRange("wholesalePrice", fromValue, toValue);
             case "profitability" -> profitabilityRange(fromValue, toValue);
             default -> throw new BadRequestException("Unsupported filter field: " + filterBy);
