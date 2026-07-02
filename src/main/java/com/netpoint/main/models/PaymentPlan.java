@@ -15,6 +15,7 @@ public class PaymentPlan {
     private String planName;
     private String planPurpose;
     private Double costPerMonth;
+    private Integer auditLogRetentionDays;
     // Tells JPA to create a separate table 'payment_plan_rules' automatically
     @ElementCollection
     @CollectionTable(name = "payment_plan_rules", joinColumns = @JoinColumn(name = "plan_id"))
