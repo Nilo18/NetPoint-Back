@@ -312,6 +312,10 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public Page<ProductDTO> getCompanyProducts(Integer companyId, ProductQuery query) {
+        if (query.getSize() > 100) {
+            throw new BadRequestException("Requested page size is too large.");
+        }
+
         Pageable pageable = createPageable(query);
 
         Specification<Product> specification = Specification
@@ -325,9 +329,31 @@ public class ProductService {
                     query.getFilterTo()
             ));
         }
+        long t0 = System.currentTimeMillis();
+        Page<Product> products = productRepository.findAll(specification, pageable);
+        long t1 = System.currentTimeMillis();
 
-        return productRepository.findAll(specification, pageable)
-                .map(this::mapToProductDTO);
+        List<Integer> productIds = products.getContent()
+                .stream()
+                .map(Product::getId)
+                .toList();
+
+        long t2 = System.currentTimeMillis();
+        if (productIds.isEmpty()) {
+            return products.map(product -> mapToProductDTO(product, List.of()));
+        }
+
+        Map<Integer, List<ProductAttributeValue>> valuesByProductId =
+                productAttributeValueRepository.findWithAttributeByProductIds(productIds)
+                        .stream()
+                        .collect(Collectors.groupingBy(v -> v.getProduct().getId()));
+        long t3 = System.currentTimeMillis();
+
+        Page<ProductDTO> result = products.map(product ->
+                mapToProductDTO(product, valuesByProductId.getOrDefault(product.getId(), List.of())));
+
+        log.info("products=" + (t1 - t0) + "ms, attrs=" + (t2 - t1) + "ms, mapping=" + (t3 - t2) + "ms");
+        return result;
     }
 
     @Transactional(readOnly = true)
@@ -464,26 +490,36 @@ public class ProductService {
         }
     }
 
-    private ProductDTO mapToProductDTO(Product product) {
+    private ProductDTO mapToProductDTO(
+            Product product,
+            List<ProductAttributeValue> values
+    ) {
+//        long start = System.currentTimeMillis();
+
         Map<String, JsonNode> customAttrs = new HashMap<>();
         String imageUrl = product.getImageUrl();
 
-        List<ProductAttributeValue> values = productAttributeValueRepository.findByProduct_Id(product.getId());
+//        long attrsStart = System.currentTimeMillis();
 
         if (values != null) {
             for (ProductAttributeValue value : values) {
                 if (value.getAttribute() != null) {
-                    customAttrs.put(value.getAttribute().getAttributeName(), mapAttributeValueToJsonNode(value));
+                    customAttrs.put(
+                            value.getAttribute().getAttributeName(),
+                            mapAttributeValueToJsonNode(value)
+                    );
                 }
             }
         }
+
+        long attrsEnd = System.currentTimeMillis();
 
         BigDecimal profitability = null;
         if (product.getPrice() != null && product.getWholesalePrice() != null) {
             profitability = product.getPrice().subtract(product.getWholesalePrice());
         }
 
-        return new ProductDTO(
+        ProductDTO dto = new ProductDTO(
                 product.getId(),
                 product.getName(),
                 product.getPrice(),
@@ -494,6 +530,21 @@ public class ProductService {
                 profitability,
                 imageUrl
         );
+
+//        long end = System.currentTimeMillis();
+
+//        log.info("map productId=" + product.getId() + "ms"
+//                + ", attrMapping=" + (attrsEnd - attrsStart) + "ms"
+//                + ", total=" + (end - start) + "ms");
+
+        return dto;
+    }
+
+    private ProductDTO mapToProductDTO(Product product) {
+        List<ProductAttributeValue> values =
+                productAttributeValueRepository.findByProduct_Id(product.getId());
+
+        return mapToProductDTO(product, values);
     }
 
     private JsonNode mapAttributeValueToJsonNode(ProductAttributeValue value) {
