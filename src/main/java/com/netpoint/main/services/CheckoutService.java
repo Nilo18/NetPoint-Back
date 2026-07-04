@@ -31,6 +31,8 @@ public class CheckoutService {
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final AuditLogService auditLogService;
+
 
     @Transactional
     public SaleResponse checkout(Integer companyId, Integer userId, CheckoutRequest request) {
@@ -120,6 +122,7 @@ public class CheckoutService {
         Sale sale = new Sale();
         sale.setCompany(user.getCompany());
         sale.setUser(user);
+        sale.setCashierNameSnapshot(user.getName());
         sale.setItems(saleItems);
         sale.setTotalRevenue(totalRevenue);
         sale.setTotalCost(totalCost);
@@ -135,13 +138,9 @@ public class CheckoutService {
         saleRepository.save(sale);
         log.debug("THIS SHOULD NOT BE PRINTED");
 
-        AuditLog auditLog = new AuditLog();
-        auditLog.setCompany(user.getCompany());
-        auditLog.setUser(user);
-        auditLog.setEventType(AuditLog.EventType.SALE_COMPLETED);
-        auditLog.setOccurredAt(current);
         log.debug("ATTEMPTING TO SAVE AUDIT LOG...");
-        auditLogRepository.save(auditLog);
+        auditLogService.log(user.getCompany(), user, AuditLog.EventType.SALE_COMPLETED,
+                "Sale completed: " + saleItems.size() + " item(s), total " + totalRevenue);
         log.debug("SAVED AUDIT LOG...");
 
         List<SaleItemDTO> restrictedSaleItems = saleItems.stream().map(

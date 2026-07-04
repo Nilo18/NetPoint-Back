@@ -56,7 +56,7 @@ public class SettingsController {
     public ResponseEntity<UserModificationResponse> deleteUser(
             @AuthenticationPrincipal AuthenticatedUser user,
             @PathVariable Integer userId) {
-        return ResponseEntity.ok(this.settingsService.deleteUser(Integer.parseInt(user.userId()), userId));
+        return ResponseEntity.ok(this.settingsService.deleteUser(userId, Integer.parseInt(user.userId())));
     }
 
     @PreAuthorize("hasAnyAuthority('OWNER')")

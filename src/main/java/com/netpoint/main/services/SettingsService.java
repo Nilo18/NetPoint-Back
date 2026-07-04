@@ -42,6 +42,8 @@ public class SettingsService {
     private final ProductAttributeRepository productAttributeRepository;
     private final ProductAttributeValueRepository productAttributeValueRepository;
     private final AuditLogService auditLogService;
+    private final AuditLogRepository auditLogRepository;
+    private final SaleRepository saleRepository;
 
     public Page<UserDTO> fetchCompanyUsers(Integer id, Pageable pageable) {
         log.info("LOOKING FOR COMPANY WITH ID: " + id);
@@ -96,35 +98,30 @@ public class SettingsService {
                 .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole()));
     }
 
-    public UserModificationResponse deleteUser(Integer actorUserId, Integer userId) {
-        // თუ იუზერი არ არსებობს, exception
+    @Transactional
+    public UserModificationResponse deleteUser(Integer userId, Integer actorUserId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Suggested user was not found"));
 
-        // Owner-ის წაშლა არ შეიძლება
         if (user.getRole().equals("OWNER")) {
             throw new InvalidRoleException("Cannot delete the owner account");
         }
 
-        User actor = userRepository.findById(actorUserId)
-                .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
+        User actor = userRepository.findById(actorUserId).orElse(null);
         Company company = user.getCompany();
         String removedEmail = user.getEmail();
-        String removedRole = user.getRole();
 
-        auditLogService.log(company, actor, AuditLog.EventType.TEAM_MEMBER_REMOVED,
-                "Removed team member: " + removedEmail + " (" + removedRole + ")");
+
+        auditLogRepository.detachUser(userId);
+        saleRepository.detachUser(userId);
 
         this.userRepository.delete(user);
 
+        auditLogService.log(company, actor, AuditLog.EventType.TEAM_MEMBER_REMOVED,
+                "Removed team member: " + removedEmail);
+
         log.info("User deleted: " + userId);
-        return new UserModificationResponse(
-                200,
-                new UserDTO(
-                        user.getId(), user.getName(),
-                        user.getEmail(), user.getRole()
-                )
-        );
+        return new UserModificationResponse(200, new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getRole()));
     }
 
     public List<UserDTO> searchUser(String searchTerm, Integer companyId) {
@@ -326,4 +323,6 @@ public class SettingsService {
         mailSender.send(message);
         return new InfoChangeVerificationResponse(200, tempToken);
     }
+
+
 }
