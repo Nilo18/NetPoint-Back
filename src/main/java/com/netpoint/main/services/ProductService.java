@@ -2,7 +2,6 @@ package com.netpoint.main.services;
 
 import com.netpoint.main.dto.requests.*;
 import com.netpoint.main.dto.responses.GenericResponse;
-import com.netpoint.main.dto.responses.PageResponse;
 import com.netpoint.main.exceptions.*;
 import com.netpoint.main.filters.DefaultProductAttribute;
 import com.netpoint.main.models.*;
@@ -46,6 +45,7 @@ public class ProductService {
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
     private final AuditLogService auditLogService;
+    private final ProductStatsRepository productStatsRepository;
 
 
 
@@ -354,6 +354,24 @@ public class ProductService {
 
         log.info("products=" + (t1 - t0) + "ms, attrs=" + (t2 - t1) + "ms, mapping=" + (t3 - t2) + "ms");
         return result;
+    }
+
+    public ProductStatsDTO getProductStats(Integer companyId, ProductStatsQuery query) {
+        Specification<Product> specification = Specification.where(companyIs(companyId))
+                .and(matchesSearch(query.getSearch()));
+
+        if (query.getFilterBy() != null && !query.getFilterBy().isBlank()) {
+            specification = specification.and(toSpecification(
+                    query.getFilterBy(),
+                    query.getFilterFrom(),
+                    query.getFilterTo()
+                )
+            );
+        }
+
+
+        List<Integer> productIds = productRepository.findIdsBySpecification(specification);
+        return productStatsRepository.getStats(companyId, productIds);
     }
 
     @Transactional(readOnly = true)

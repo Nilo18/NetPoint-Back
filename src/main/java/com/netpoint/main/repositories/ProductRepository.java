@@ -10,11 +10,19 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Integer>, JpaSpecificationExecutor<Product> {
+public interface ProductRepository extends
+    JpaRepository<Product, Integer>,
+    JpaSpecificationExecutor<Product>,
+    ProductRepositoryCustom {
     List<Product> findByCompany_Id(Integer companyId);
     long countByCompany_Id(Integer companyId);
     Optional<Product> findByIdAndCompany_Id(Integer id, Integer companyId);
     void deleteByIdAndCompany_Id(Integer id, Integer companyId);
     void deleteByCompany_Id(Integer companyId);
     Optional<List<Product>> findByIdInAndCompany_Id(List<Integer> ids, Integer companyId);
+    long countByCompany_IdAndIdInAndStockLessThan(
+            Integer companyId,
+            List<Integer> productIds,
+            Integer threshold
+    );
 }
