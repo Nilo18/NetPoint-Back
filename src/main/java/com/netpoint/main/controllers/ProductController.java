@@ -1,6 +1,7 @@
 package com.netpoint.main.controllers;
 
 import com.netpoint.main.dto.AuthenticatedUser;
+import com.netpoint.main.dto.ProductStatsDTO;
 import com.netpoint.main.dto.requests.*;
 import com.netpoint.main.dto.responses.*;
 import com.netpoint.main.dto.ProductAttributeDTO;
@@ -125,5 +126,15 @@ public class ProductController {
             @PathVariable Integer productId) {
         return ResponseEntity.ok(
                 productService.deleteProduct(Integer.parseInt(user.userId()), user.companyId(), productId));
+    }
+
+    @GetMapping("/stats")
+//    @PreAuthorize()
+    public ResponseEntity<ProductStatsDTO> getProductStats(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @ModelAttribute ProductStatsQuery query
+    ) {
+//        log.info("QUERY BEING SENT IS: " + query);
+        return ResponseEntity.ok(productService.getProductStats(user.companyId(), query));
     }
 }
