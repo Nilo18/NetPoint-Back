@@ -1,5 +1,6 @@
 package com.netpoint.main.repositories;
 
+import com.netpoint.main.dto.MonthlyFinancialsProjection;
 import com.netpoint.main.models.Sale;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,6 +56,19 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
     );
 
     @Query("""
+        select coalesce(sum(si.lineRevenue), 0)
+        from SaleItem si
+        where si.sale.company.id = :companyId
+          and si.sale.createdAt >= :fromDate
+          and si.sale.createdAt < :toDate
+    """)
+    BigDecimal sumTotalRevenueBetween(
+            @Param("companyId") Integer companyId,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("toDate") LocalDateTime toDate
+    );
+
+    @Query("""
         select coalesce(sum(si.lineProfit), 0)
         from SaleItem si
         where si.sale.company.id = :companyId
@@ -76,6 +90,38 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
     BigDecimal sumTotalProfitBetween(
             @Param("companyId") Integer companyId,
             @Param("productIds") List<Integer> productIds,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("toDate") LocalDateTime toDate
+    );
+
+    @Query("""
+        select coalesce(sum(si.lineProfit), 0)
+        from SaleItem si
+        where si.sale.company.id = :companyId
+          and si.sale.createdAt >= :fromDate
+          and si.sale.createdAt < :toDate
+    """)
+    BigDecimal sumTotalProfitBetween(
+            @Param("companyId") Integer companyId,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("toDate") LocalDateTime toDate
+    );
+
+    @Query(value = """
+        select
+            cast(extract(month from s.created_at) as int) as monthNumber,
+            coalesce(sum(si.line_revenue), 0) as revenue,
+            coalesce(sum(si.line_profit), 0) as profit
+        from sales s
+        join sale_items si on si.sale_id = s.id
+        where s.company_id = :companyId
+          and s.created_at >= :fromDate
+          and s.created_at < :toDate
+        group by cast(extract(month from s.created_at) as int)
+        order by monthNumber
+    """, nativeQuery = true)
+    List<MonthlyFinancialsProjection> findMonthlyFinancials(
+            @Param("companyId") Integer companyId,
             @Param("fromDate") LocalDateTime fromDate,
             @Param("toDate") LocalDateTime toDate
     );

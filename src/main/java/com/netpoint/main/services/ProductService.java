@@ -2,6 +2,7 @@ package com.netpoint.main.services;
 
 import com.netpoint.main.dto.requests.*;
 import com.netpoint.main.dto.responses.GenericResponse;
+import com.netpoint.main.dto.responses.ProductChartsResponse;
 import com.netpoint.main.exceptions.*;
 import com.netpoint.main.filters.DefaultProductAttribute;
 import com.netpoint.main.models.*;
@@ -25,7 +26,9 @@ import tools.jackson.databind.node.JsonNodeFactory;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -46,7 +49,8 @@ public class ProductService {
     private final UserRepository userRepository;
     private final AuditLogService auditLogService;
     private final ProductStatsRepository productStatsRepository;
-
+    private final SaleRepository saleRepository;
+    private final SaleItemRepository saleItemRepository;
 
 
     @Transactional
@@ -372,6 +376,67 @@ public class ProductService {
 
         List<Integer> productIds = productRepository.findIdsBySpecification(specification);
         return productStatsRepository.getStats(companyId, productIds);
+    }
+
+    public ProductChartsResponse getProductCharts(Integer companyId) {
+        if (!companyRepository.existsById(companyId)) {
+            throw new CompanyNotFoundException("Company not found");
+        }
+
+        LocalDate today = LocalDate.now();
+
+        LocalDate startOfThisYear = today.withDayOfYear(1);
+        LocalDate startOfNextMonth = today.withDayOfMonth(1).plusMonths(1);
+
+        List<MonthlyFinancialsProjection> rows = saleRepository.findMonthlyFinancials(
+                companyId,
+                startOfThisYear.atStartOfDay(),
+                startOfNextMonth.atStartOfDay()
+        );
+
+        Map<Integer, MonthlyFinancialsProjection> byMonth = rows.stream()
+                .collect(Collectors.toMap(
+                        MonthlyFinancialsProjection::getMonthNumber,
+                        row -> row
+                )
+        );
+
+        List<MonthlyFinancialsDTO> monthlyRevenues = new ArrayList<>();
+
+        for (LocalDate monthStart = startOfThisYear;
+             monthStart.isBefore(startOfNextMonth);
+             monthStart = monthStart.plusMonths(1))
+        {
+            int monthNumber = monthStart.getMonthValue();
+
+            String monthName = monthStart
+                    .getMonth()
+                    .getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+
+            MonthlyFinancialsProjection row = byMonth.get(monthNumber);
+
+
+
+            monthlyRevenues.add(new MonthlyFinancialsDTO(
+                    monthName,
+                    row == null ? BigDecimal.ZERO : row.getRevenue(),
+                    row == null? BigDecimal.ZERO : row.getProfit()
+            ));
+        }
+
+        List<TopProfitableItemProjection> topProfitableItemsProjection =
+                saleItemRepository.findTopSixItemsByProfit(companyId);
+
+        List<TopProfitableItemDTO> topProfitableItems = new ArrayList<>();
+
+        for (TopProfitableItemProjection product : topProfitableItemsProjection) {
+            topProfitableItems.add(new TopProfitableItemDTO(product.getProductName(), product.getTotalProfit()));
+        }
+
+        return new ProductChartsResponse(
+                monthlyRevenues,
+                topProfitableItems
+        );
     }
 
     @Transactional(readOnly = true)

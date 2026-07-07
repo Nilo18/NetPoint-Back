@@ -137,4 +137,11 @@ public class ProductController {
 //        log.info("QUERY BEING SENT IS: " + query);
         return ResponseEntity.ok(productService.getProductStats(user.companyId(), query));
     }
+
+    @GetMapping("/charts")
+    public ResponseEntity<ProductChartsResponse> getProductCharts(
+            @AuthenticationPrincipal AuthenticatedUser user
+    ) {
+            return ResponseEntity.ok(productService.getProductCharts(user.companyId()));
+    }
 }
