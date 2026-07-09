@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.JsonNodeFactory;
 
@@ -51,6 +52,7 @@ public class ProductService {
     private final ProductStatsRepository productStatsRepository;
     private final SaleRepository saleRepository;
     private final SaleItemRepository saleItemRepository;
+    private final SupabaseStorageService supabaseStorageService;
 
 
     @Transactional
@@ -148,6 +150,15 @@ public class ProductService {
         );
     }
 
+
+    public ProductDTO createProduct(Integer companyId, CreateProductRequest request, MultipartFile image) {
+        if (image != null && !image.isEmpty()) {
+            String imageUrl = supabaseStorageService.uploadProductImage(image);
+            request.setImageUrl(imageUrl);
+        }
+
+        return createProduct(companyId, request);
+    }
 
     @Transactional
     public ProductDTO createProduct(Integer companyId, CreateProductRequest request) {

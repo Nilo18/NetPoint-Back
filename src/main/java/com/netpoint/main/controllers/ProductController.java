@@ -1,5 +1,6 @@
 package com.netpoint.main.controllers;
 
+import tools.jackson.core.type.TypeReference;
 import com.netpoint.main.dto.AuthenticatedUser;
 import com.netpoint.main.dto.ProductStatsDTO;
 import com.netpoint.main.dto.requests.*;
@@ -12,11 +13,17 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
@@ -26,6 +33,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final PlanEnforcementService planEnforcementService;
+    private final ObjectMapper objectMapper;
 
 
     @PostMapping("/attributes")
@@ -78,14 +86,22 @@ public class ProductController {
     }
 
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyAuthority('OWNER', 'ADMIN')")
     public ResponseEntity<ProductDTO> createProduct(
             @AuthenticationPrincipal AuthenticatedUser user,
-            @Valid @RequestBody CreateProductRequest request) {
+            @Valid @ModelAttribute CreateProductRequest request,
+            @RequestPart(value = "image", required = false) MultipartFile image,
+            @RequestParam(value = "customAttributes", required = false) String customAttributesJson) {
+        if (customAttributesJson != null && !customAttributesJson.isBlank()) {
+            Map<String, JsonNode> customAttributes =
+                    objectMapper.readValue(customAttributesJson, new TypeReference<>() {});
+            request.setCustomAttributes(customAttributes);
+        }
+
         planEnforcementService.enforceProductLimit(user.companyId());
         // iwers dabrunebul ProductDTOs servisidan
-        ProductDTO product = productService.createProduct(user.companyId(), request);
+        ProductDTO product = productService.createProduct(user.companyId(), request, image);
 
         //products awvdis null is magivrad
         return ResponseEntity.status(HttpStatus.CREATED).body(product);

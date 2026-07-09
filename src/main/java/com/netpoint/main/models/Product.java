@@ -27,7 +27,7 @@ public class Product {
     @DefaultProductAttribute(name = "Name", type = ProductAttribute.AttributeType.TEXT)
     private String name;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     @DefaultProductAttribute(name = "Image", type = ProductAttribute.AttributeType.TEXT)
     private String imageUrl;
 
