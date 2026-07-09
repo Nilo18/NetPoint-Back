@@ -47,3 +47,7 @@ management.endpoints.web.base-path=/actuator
 spring.messages.basename=messages
 spring.messages.encoding=UTF-8
 spring.messages.fallback-to-system-locale=false
+
+supabase.url=REPLACE_ME
+supabase.service-role-key=REPLACE_ME
+supabase.storage.bucket=REPLACE_ME
