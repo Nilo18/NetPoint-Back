@@ -27,7 +27,6 @@ import tools.jackson.databind.node.JsonNodeFactory;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.time.format.TextStyle;
 import java.util.*;
@@ -150,21 +149,28 @@ public class ProductService {
         );
     }
 
-
-    public ProductDTO createProduct(Integer companyId, CreateProductRequest request, MultipartFile image) {
+    public void uploadImageToSupabase(ModifyProductRequest request, MultipartFile image) {
         if (image != null && !image.isEmpty()) {
             String imageUrl = supabaseStorageService.uploadProductImage(image);
             request.setImageUrl(imageUrl);
         }
-
-        return createProduct(companyId, request);
     }
 
-    @Transactional
-    public ProductDTO createProduct(Integer companyId, CreateProductRequest request) {
-        Company company = companyRepository.findById(companyId)
-                .orElseThrow(() -> new RuntimeException("Company not found"));
+//    public ProductDTO createProduct(Integer companyId, ModifyProductRequest request, MultipartFile image) {
+//        uploadImageToSupabase(request, image);
+//        return createProduct(companyId, request);
+//    }
 
+    @Transactional
+    public ProductDTO createProduct(Integer companyId, ModifyProductRequest request, MultipartFile image) {
+        if (productRepository.existsByNameIgnoreCaseAndCompany_Id(request.getName().trim(), companyId)) {
+            throw new ProductAlreadyExistsException("Product with this name already exists");
+        }
+
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+
+        uploadImageToSupabase(request, image);
         Product product = new Product();
         product.setName(request.getName());
         product.setPrice(request.getRetailPrice());
@@ -458,10 +464,16 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDTO updateProduct(Integer companyId, Integer productId, UpdateProductRequest request) {
+    public ProductDTO updateProduct(Integer companyId, Integer productId, ModifyProductRequest request,
+                                    MultipartFile image) {
+        if (productRepository.existsByNameIgnoreCaseAndCompany_IdAndIdNot(request.getName(), companyId, productId)) {
+            throw new ProductAlreadyExistsException("Product with this name already exists");
+        }
+
         Product product = productRepository.findByIdAndCompany_Id(productId, companyId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
+        uploadImageToSupabase(request, image);
         if (request.getName() != null) {
             product.setName(request.getName());
         }

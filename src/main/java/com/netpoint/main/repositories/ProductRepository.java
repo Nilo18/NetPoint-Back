@@ -25,4 +25,10 @@ public interface ProductRepository extends
             List<Integer> productIds,
             Integer threshold
     );
+    boolean existsByNameIgnoreCaseAndCompany_Id(String name, Integer companyId);
+    boolean existsByNameIgnoreCaseAndCompany_IdAndIdNot(
+            String name,
+            Integer companyId,
+            Integer productId
+    );
 }

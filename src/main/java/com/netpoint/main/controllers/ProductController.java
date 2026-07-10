@@ -90,9 +90,9 @@ public class ProductController {
     @PreAuthorize("hasAnyAuthority('OWNER', 'ADMIN')")
     public ResponseEntity<ProductDTO> createProduct(
             @AuthenticationPrincipal AuthenticatedUser user,
-            @Valid @ModelAttribute CreateProductRequest request,
+            @Valid @ModelAttribute ModifyProductRequest request,
             @RequestPart(value = "image", required = false) MultipartFile image,
-            @RequestParam(value = "customAttributes", required = false) String customAttributesJson) {
+            @RequestParam(value = "customAttributesJson", required = false) String customAttributesJson) {
         if (customAttributesJson != null && !customAttributesJson.isBlank()) {
             Map<String, JsonNode> customAttributes =
                     objectMapper.readValue(customAttributesJson, new TypeReference<>() {});
@@ -130,8 +130,16 @@ public class ProductController {
     public ResponseEntity<ProductDTO> updateProduct(
             @AuthenticationPrincipal AuthenticatedUser user,
             @PathVariable Integer productId,
-            @Valid @RequestBody UpdateProductRequest request) {
-        ProductDTO product = productService.updateProduct(user.companyId(), productId, request);
+            @Valid @ModelAttribute ModifyProductRequest request,
+            @RequestPart(value = "image", required = false) MultipartFile image,
+            @RequestParam(value = "customAttributesJson", required = false) String customAttributesJson) {
+        if (customAttributesJson != null && !customAttributesJson.isBlank()) {
+            Map<String, JsonNode> customAttributes =
+                    objectMapper.readValue(customAttributesJson, new TypeReference<>() {});
+            request.setCustomAttributes(customAttributes);
+        }
+
+        ProductDTO product = productService.updateProduct(user.companyId(), productId, request, image);
         return ResponseEntity.ok(product);
     }
 
