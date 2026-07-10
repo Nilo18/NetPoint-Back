@@ -21,6 +21,8 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; // aq finalebit gqonda eseni, maagram movashore tore ver vaketebdi
+    @Column(columnDefinition = "TEXT")
+    private String logo;
     private String name;
     private String email;
     private String password;

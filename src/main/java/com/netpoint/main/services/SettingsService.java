@@ -152,6 +152,7 @@ public class SettingsService {
 
         return new CompanyDTO(
                 company.getId(),
+                company.getLogo(),
                 company.getEmail(),
                 company.getName(),
                 company.getIndustry()
@@ -182,12 +183,10 @@ public class SettingsService {
         OtpEntry otpEntry = otpStore.get(suggested.verificationInfo().tempToken());
 
         if (!otpEntry.getOtpCode().equals(suggested.verificationInfo().otpCode())) {
-
             throw new InvalidOtpException("Invalid verification code.");
         }
 
         if (otpEntry.isExpired()) {
-
             throw new OtpExpiredException("Verification code expired.");
         }
         // ოტპ ვალიდურია და მაინც ინვალიდაციას უკეთებსბ
@@ -197,6 +196,7 @@ public class SettingsService {
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
         company.setName(suggested.newInfo().name());
+        company.setLogo(suggested.newInfo().logo());
         company.setEmail(suggested.newInfo().email());
         company.setIndustry(suggested.newInfo().industry());
 
@@ -207,7 +207,10 @@ public class SettingsService {
         auditLogService.log(saved, actor, AuditLog.EventType.COMPANY_INFO_UPDATED,
                 "Company business info updated");
 
-        return new CompanyDTO(saved.getId(), saved.getEmail(), saved.getName(), saved.getIndustry());
+        return new CompanyDTO(
+                saved.getId(), saved.getLogo(),
+                saved.getEmail(), saved.getName(), saved.getIndustry()
+        );
     }
     // accountis daapdeiteba
 
@@ -228,7 +231,7 @@ public class SettingsService {
         otpStore.invalidate(request.getVerificationInfo().tempToken());
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         if (request.getNewInfo().name() != null && !request.getNewInfo().name().isBlank()) {
             user.setName(request.getNewInfo().name());

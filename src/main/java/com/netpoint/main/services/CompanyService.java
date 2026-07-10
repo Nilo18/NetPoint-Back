@@ -18,6 +18,7 @@ public class CompanyService {
 
         return new CompanyDTO(
                 company.getId(),
+                company.getLogo(),
                 company.getEmail(),
                 company.getName(),
                 company.getIndustry()

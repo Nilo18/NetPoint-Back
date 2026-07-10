@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public record CompanyDTO(
         Integer id,
+        String logo,
         @NotBlank
         @Email
         String email,
