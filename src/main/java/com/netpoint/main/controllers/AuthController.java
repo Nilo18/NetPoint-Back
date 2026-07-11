@@ -10,11 +10,13 @@ import com.netpoint.main.models.User;
 import com.netpoint.main.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.netpoint.main.dto.responses.AuthResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(path="/auth")
@@ -43,9 +45,13 @@ public class AuthController {
         return ResponseEntity.ok(this.authService.login(request));
     }
 
-    @PostMapping(path="/signup")
-    public ResponseEntity<CompanySignupResponse> signup(@Valid @RequestBody CompanyRegistrationRequest company) {
-        CompanySignupResponse created = this.authService.signup(company);
+    @PostMapping(path = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CompanySignupResponse> signup(
+            @RequestPart("data") @Valid CompanyRegistrationRequest company,
+            @RequestPart(value = "logo", required = false) MultipartFile logo,
+            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage
+    ) {
+        CompanySignupResponse created = this.authService.signup(company, logo, profileImage);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 

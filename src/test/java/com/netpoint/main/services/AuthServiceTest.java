@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -40,7 +41,8 @@ class AuthServiceTest {
     @Mock private OtpStore otpStore;
     @Mock private EmailService emailService;
     @Mock private AuthenticationManager authenticationManager;
-
+    MultipartFile logo = null;
+    MultipartFile profileImage = null;
     @InjectMocks
     private AuthService authService;
 
@@ -91,7 +93,7 @@ class AuthServiceTest {
         });
         when(jwtService.generateToken(any(), any(), any(), any(), any())).thenReturn("jwt-123");
 
-        authService.signup(request);
+        authService.signup(request, logo, profileImage);
 
         ArgumentCaptor<Company> companyCaptor = ArgumentCaptor.forClass(Company.class);
         verify(companyRepository).save(companyCaptor.capture());

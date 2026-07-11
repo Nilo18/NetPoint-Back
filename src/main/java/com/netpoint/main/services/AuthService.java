@@ -19,6 +19,7 @@ import lombok.extern.java.Log;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class AuthService {
     private final OtpStore otpStore;
     private final EmailService emailService;
     private final AuthenticationManager authenticationManager;
-
+    private final SupabaseStorageService supabaseStorageService;
     // პირველი ნაბიჯია რა საიტზე შესვლის, ქეშიერზე ამოწმებს პაროლს/ლოგინს და თუ სწორია გამოყოფს JWT-ს
     //ადმინზე/მფლობელზე ჯერ ამოწმებს ლოგინ/პაროლს, ქმნის ოტპს, გზავნის ოტპს და აბრუნებს დროებით ტოკენს(tempToken)
     public AuthResponse login(LoginRequest request) {
@@ -96,8 +97,7 @@ public class AuthService {
         return new AuthResponse("authenticated", jwt);
     }
 
-    @Transactional
-    public CompanySignupResponse signup(CompanyRegistrationRequest company) {
+    public CompanySignupResponse signup(CompanyRegistrationRequest company, MultipartFile logo, MultipartFile profileImage) {
         if (this.companyRepository.existsByEmail(company.email())) {
             throw new EmailAlreadyExistsException(company.email());
         }
@@ -116,9 +116,11 @@ public class AuthService {
         newCompany.setIndustry(company.industry());
         newCompany.setPlan(defaultPlan);
 
+        if (logo != null && !logo.isEmpty()) {
+            newCompany.setLogo(supabaseStorageService.uploadImage(logo, "logos"));
+        }
+
         Company savedCompany = this.companyRepository.save(newCompany);
-
-
 
         User user = new User();
         user.setCompany(savedCompany);
@@ -126,10 +128,12 @@ public class AuthService {
         user.setEmail(company.owner_email());
         user.setPassword(passwordEncoder.encode(company.owner_password()));
         user.setRole(company.role());
-//        user.setPin(company.phone_number());  // assuming pin field holds phone number
+
+        if (profileImage != null && !profileImage.isEmpty()) {
+            user.setProfileImage(supabaseStorageService.uploadImage(profileImage, "profiles"));
+        }
 
         User savedUser = this.userRepository.save(user);
-
 
         String accessToken = this.jwtService.generateToken(
                 savedUser.getId().toString(), String.valueOf(user.getCompany().getId()),

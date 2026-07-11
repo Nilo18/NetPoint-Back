@@ -34,4 +34,7 @@ public class User {
     private String password;
 
     private String role;
+
+    @Column(columnDefinition = "TEXT")
+    private String profileImage;
 }

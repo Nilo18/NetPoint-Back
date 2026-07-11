@@ -24,14 +24,13 @@ public class SupabaseStorageService {
 
     @Value("${supabase.storage.bucket}")
     private String bucket;
-
-    public String uploadProductImage(MultipartFile image) {
+    public String uploadImage(MultipartFile image, String folder) {
         try {
             String originalName = image.getOriginalFilename() == null
                     ? "image"
                     : image.getOriginalFilename().replaceAll("[^a-zA-Z0-9._-]", "_");
 
-            String path = "products/" + UUID.randomUUID() + "-" + originalName;
+            String path = folder + "/" + UUID.randomUUID() + "-" + originalName;
 
             String uploadUrl = supabaseUrl
                     + "/storage/v1/object/"
@@ -65,7 +64,12 @@ public class SupabaseStorageService {
                     + path;
 
         } catch (Exception e) {
-            throw new RuntimeException("Could not upload product image", e);
+            throw new RuntimeException("Could not upload image", e);
         }
     }
+
+    public String uploadProductImage(MultipartFile image) {
+        return uploadImage(image, "products");
+    }
+
 }
