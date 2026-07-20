@@ -149,11 +149,14 @@ public class ProductService {
         );
     }
 
-    public void uploadImageToSupabase(ModifyProductRequest request, MultipartFile image) {
-        if (image != null && !image.isEmpty()) {
-            String imageUrl = supabaseStorageService.uploadProductImage(image);
-            request.setImageUrl(imageUrl);
+    public void uploadImageToSupabase(Product product, MultipartFile image) {
+        if (image == null || image.isEmpty()) {
+            product.setImageUrl(null);
+            return;
         }
+
+        String imageUrl = supabaseStorageService.uploadProductImage(image);
+        product.setImageUrl(imageUrl);
     }
 
 //    public ProductDTO createProduct(Integer companyId, ModifyProductRequest request, MultipartFile image) {
@@ -170,12 +173,12 @@ public class ProductService {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
-        uploadImageToSupabase(request, image);
         Product product = new Product();
+        uploadImageToSupabase(product, image);
         product.setName(request.getName());
         product.setPrice(request.getRetailPrice());
         product.setCompany(company);
-        product.setImageUrl(request.getImageUrl());
+//        product.setImageUrl(request.getImageUrl());
         Product savedProduct = productRepository.save(product);
 
         if (request.getCustomAttributes() != null && !request.getCustomAttributes().isEmpty()) {
@@ -473,7 +476,7 @@ public class ProductService {
         Product product = productRepository.findByIdAndCompany_Id(productId, companyId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
-        uploadImageToSupabase(request, image);
+        uploadImageToSupabase(product, image);
         if (request.getName() != null) {
             product.setName(request.getName());
         }

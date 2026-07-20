@@ -3,6 +3,7 @@ package com.netpoint.main.services;
 import com.netpoint.main.dto.CompanyDTO;
 import com.netpoint.main.dto.UserDTO;
 import com.netpoint.main.dto.requests.CashierAdditionRequest;
+import com.netpoint.main.dto.requests.ModifyProductRequest;
 import com.netpoint.main.repositories.*;
 import com.netpoint.main.dto.requests.CompanyUpdateRequest;
 import com.netpoint.main.dto.responses.InfoChangeVerificationResponse;
@@ -25,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.netpoint.main.dto.requests.UpdateAccountRequest;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.SecureRandom;
 import java.util.List;
@@ -44,6 +46,7 @@ public class SettingsService {
     private final AuditLogService auditLogService;
     private final AuditLogRepository auditLogRepository;
     private final SaleRepository saleRepository;
+    private final SupabaseStorageService supabaseStorageService;
 
     public Page<UserDTO> fetchCompanyUsers(Integer id, Pageable pageable) {
         log.info("LOOKING FOR COMPANY WITH ID: " + id);
@@ -159,9 +162,24 @@ public class SettingsService {
         );
     }
 
+    public void uploadImageToSupabase(Company company, MultipartFile image) {
+        if (!companyRepository.existsById(company.getId())) {
+            throw new CompanyNotFoundException("Company not found");
+        }
+
+        if (image == null || image.isEmpty()) {
+            company.setLogo(null);
+            return;
+        }
+
+        String logoUrl = supabaseStorageService.uploadCompanyImage(image);
+        company.setLogo(logoUrl);
+    }
+
     public InfoChangeVerificationResponse verifyCompanyUpdateRequest(CompanyDTO suggested) {
-        Company company = companyRepository.findById(suggested.id())
-                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+        if (!companyRepository.existsById(suggested.id())) {
+            throw new CompanyNotFoundException("Company not found");
+        }
 
         String otp = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
 
@@ -179,7 +197,8 @@ public class SettingsService {
         return new InfoChangeVerificationResponse(200, tempToken);
     }
 
-    public CompanyDTO updateCompanyBusinessInfo(Integer actorUserId, CompanyUpdateRequest suggested) {
+    public CompanyDTO updateCompanyBusinessInfo(Integer actorUserId, CompanyUpdateRequest suggested,
+                                                MultipartFile logo) {
         OtpEntry otpEntry = otpStore.get(suggested.verificationInfo().tempToken());
 
         if (!otpEntry.getOtpCode().equals(suggested.verificationInfo().otpCode())) {
@@ -192,13 +211,14 @@ public class SettingsService {
         // ოტპ ვალიდურია და მაინც ინვალიდაციას უკეთებსბ
         otpStore.invalidate(suggested.verificationInfo().tempToken());
 
-        Company company = companyRepository.findById(suggested.newInfo().id())
+        Company company = companyRepository.findById(suggested.id())
                 .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
-        company.setName(suggested.newInfo().name());
-        company.setLogo(suggested.newInfo().logo());
-        company.setEmail(suggested.newInfo().email());
-        company.setIndustry(suggested.newInfo().industry());
+        company.setName(suggested.name());
+//        company.setLogo(suggested.logo());
+        uploadImageToSupabase(company, logo);
+        company.setEmail(suggested.email());
+        company.setIndustry(suggested.industry());
 
         Company saved = companyRepository.save(company);
 

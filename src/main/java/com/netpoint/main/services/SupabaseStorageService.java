@@ -71,5 +71,5 @@ public class SupabaseStorageService {
     public String uploadProductImage(MultipartFile image) {
         return uploadImage(image, "products");
     }
-
+    public String uploadCompanyImage(MultipartFile image) { return uploadImage(image, "logos"); }
 }
