@@ -55,7 +55,7 @@ public class SettingsService {
         }
 
         return userRepository.findByCompany_Id(id, pageable)  // <-- changed
-                .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole()));
+                .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole(), u.getProfileImage()));
     }
 
     public Page<UserDTO> addCashier(Integer actorUserId, CashierAdditionRequest cashier, Pageable pageable) {
@@ -98,7 +98,7 @@ public class SettingsService {
                 "Added team member: " + cashier.email() + " (" + cashier.role() + ")");
 
         return userRepository.findByCompany_Id(cashier.companyId(), pageable)
-                .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole()));
+                .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole(), u.getProfileImage()));
     }
 
     @Transactional
@@ -124,7 +124,11 @@ public class SettingsService {
                 "Removed team member: " + removedEmail);
 
         log.info("User deleted: " + userId);
-        return new UserModificationResponse(200, new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getRole()));
+        return new UserModificationResponse(200,
+                new UserDTO(
+                        user.getId(), user.getName(),
+                        user.getEmail(), user.getRole(), user.getProfileImage())
+        );
     }
 
     public List<UserDTO> searchUser(String searchTerm, Integer companyId) {
@@ -142,7 +146,7 @@ public class SettingsService {
         if (users.isEmpty()) throw new UserNotFoundException("No users found: " + searchTerm);
 
         return users.stream()
-                .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole()))
+                .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole(), u.getProfileImage()))
                 .toList();
     }
 
@@ -162,18 +166,55 @@ public class SettingsService {
         );
     }
 
-    public void uploadImageToSupabase(Company company, MultipartFile image) {
+    public void uploadImageToSupabase(Company company, MultipartFile image, boolean removeLogo) {
         if (!companyRepository.existsById(company.getId())) {
             throw new CompanyNotFoundException("Company not found");
         }
 
-        if (image == null || image.isEmpty()) {
+        String oldLogoUrl = company.getLogo();
+
+        if (image != null && !image.isEmpty()) {
+            String newLogoUrl = supabaseStorageService.uploadCompanyImage(image);
+            company.setLogo(newLogoUrl);
+
+            if (oldLogoUrl != null && !oldLogoUrl.equals(newLogoUrl)) {
+                supabaseStorageService.deleteImage(oldLogoUrl);
+            }
+        } else if (removeLogo) {
             company.setLogo(null);
-            return;
+
+            if (oldLogoUrl != null) {
+                supabaseStorageService.deleteImage(oldLogoUrl);
+            }
+        }
+    }
+
+    public void uploadUserProfileImageToSupabase(User user, MultipartFile image, boolean removeImage) {
+        if (!userRepository.existsById(user.getId())) {
+            throw new UserNotFoundException("User not found");
         }
 
-        String logoUrl = supabaseStorageService.uploadCompanyImage(image);
-        company.setLogo(logoUrl);
+        String oldImageUrl = user.getProfileImage();
+
+        if (image != null && !image.isEmpty()) {
+            // Upload first so the old image remains available if upload fails.
+            String newImageUrl =
+                    supabaseStorageService.uploadUserProfileImage(image);
+
+            user.setProfileImage(newImageUrl);
+
+            if (oldImageUrl != null &&
+                    !oldImageUrl.equals(newImageUrl)) {
+                supabaseStorageService.deleteImage(oldImageUrl);
+            }
+
+        } else if (removeImage) {
+            user.setProfileImage(null);
+
+            if (oldImageUrl != null) {
+                supabaseStorageService.deleteImage(oldImageUrl);
+            }
+        }
     }
 
     public InfoChangeVerificationResponse verifyCompanyUpdateRequest(CompanyDTO suggested) {
@@ -216,7 +257,7 @@ public class SettingsService {
 
         company.setName(suggested.name());
 //        company.setLogo(suggested.logo());
-        uploadImageToSupabase(company, logo);
+        uploadImageToSupabase(company, logo, suggested.removeLogo());
         company.setEmail(suggested.email());
         company.setIndustry(suggested.industry());
 
@@ -235,16 +276,14 @@ public class SettingsService {
     // accountis daapdeiteba
 
     @Transactional
-    public UserDTO updateAccount(Integer userId, UpdateAccountRequest request) {
+    public UserDTO updateAccount(Integer userId, UpdateAccountRequest request, MultipartFile image) {
         OtpEntry otpEntry = otpStore.get(request.getVerificationInfo().tempToken());
 
         if (!otpEntry.getOtpCode().equals(request.getVerificationInfo().otpCode())) {
-
             throw new InvalidOtpException("Invalid verification code.");
         }
 
         if (otpEntry.isExpired()) {
-
             throw new OtpExpiredException("Verification code expired.");
         }
         // ოტპ ვალიდურია და მაინც ინვალიდაციას უკეთებსბ
@@ -269,12 +308,17 @@ public class SettingsService {
             user.setPassword(passwordEncoder.encode(request.getNewInfo().newPassword()));
         }
 
+//        if (image != null && !image.isEmpty()) {
+        uploadUserProfileImageToSupabase(user, image, request.isRemoveImage());
+//        }
+
         User updated = userRepository.save(user);
 
         auditLogService.log(updated.getCompany(), updated, AuditLog.EventType.ACCOUNT_INFO_UPDATED,
                 "Account info updated");
 
-        return new UserDTO(updated.getId(), updated.getName(), updated.getEmail(), updated.getRole());
+        return new UserDTO(updated.getId(), updated.getName(), updated.getEmail(),
+                updated.getRole(), updated.getProfileImage());
     }
 
 // kompaniis washla, es marto owners sheudzlia
@@ -316,7 +360,8 @@ public class SettingsService {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getRole()
+                user.getRole(),
+                user.getProfileImage()
         );
     }
 

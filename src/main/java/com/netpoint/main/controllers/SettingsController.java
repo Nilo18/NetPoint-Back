@@ -113,16 +113,17 @@ public class SettingsController {
         return ResponseEntity.ok(this.settingsService.verifyUserInfoUpdateRequest(suggested));
     }
 
-    @PutMapping("/account")
+    @PutMapping(value = "/account", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserDTO> updateAccount(
             @AuthenticationPrincipal AuthenticatedUser user, // Changed type to AuthenticatedUser
-            @Valid @RequestBody UpdateAccountRequest request) {
+            @Valid @RequestPart(value = "request") UpdateAccountRequest request,
+            @RequestPart(value = "image", required = false) MultipartFile profileImage) {
 
         // Parse the String userId into an Integer for your service
         Integer numericUserId = Integer.parseInt(user.userId());
 
-        UserDTO updated = settingsService.updateAccount(numericUserId, request);
+        UserDTO updated = settingsService.updateAccount(numericUserId, request, profileImage);
         return ResponseEntity.ok(updated);
     }
 

@@ -17,5 +17,6 @@ public record CompanyUpdateRequest(
         String email,
         @NotBlank
         String industry,
-        @Valid VerifyOtpRequest verificationInfo
+        @Valid VerifyOtpRequest verificationInfo,
+        boolean removeLogo
 ) {}

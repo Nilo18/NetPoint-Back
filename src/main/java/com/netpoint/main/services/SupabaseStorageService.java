@@ -68,8 +68,76 @@ public class SupabaseStorageService {
         }
     }
 
+    public void deleteImage(String publicUrl) {
+        if (publicUrl == null || publicUrl.isBlank()) {
+            return;
+        }
+
+        String publicUrlPrefix =
+                supabaseUrl
+                        + "/storage/v1/object/public/"
+                        + bucket
+                        + "/";
+
+        if (!publicUrl.startsWith(publicUrlPrefix)) {
+            throw new IllegalArgumentException(
+                    "Invalid Supabase image URL: " + publicUrl
+            );
+        }
+
+        String objectPath =
+                publicUrl.substring(publicUrlPrefix.length());
+
+        String deleteUrl =
+                supabaseUrl
+                        + "/storage/v1/object/"
+                        + bucket
+                        + "/"
+                        + objectPath;
+
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(deleteUrl))
+                    .header(
+                            "Authorization",
+                            "Bearer " + serviceRoleKey
+                    )
+                    .header("apikey", serviceRoleKey)
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(
+                    request,
+                    HttpResponse.BodyHandlers.ofString()
+            );
+
+            if (response.statusCode() < 200 ||
+                    response.statusCode() >= 300) {
+                throw new RuntimeException(
+                        "Supabase deletion failed. Status: "
+                                + response.statusCode()
+                                + ", response: "
+                                + response.body()
+                );
+            }
+        } catch (InterruptedException exception) {
+            Thread.currentThread().interrupt();
+
+            throw new RuntimeException(
+                    "Image deletion was interrupted",
+                    exception
+            );
+        } catch (Exception exception) {
+            throw new RuntimeException(
+                    "Could not delete image from Supabase",
+                    exception
+            );
+        }
+    }
+
     public String uploadProductImage(MultipartFile image) {
         return uploadImage(image, "products");
     }
     public String uploadCompanyImage(MultipartFile image) { return uploadImage(image, "logos"); }
+    public String uploadUserProfileImage(MultipartFile image) { return uploadImage(image, "profiles"); }
 }

@@ -159,7 +159,7 @@ public class InvitationService {
         invitationRepository.delete(invitation);
         String jwt = jwtService.generateToken(
                 String.valueOf(user.getId()), String.valueOf(user.getCompany().getId()),
-                user.getEmail(), user.getName(), user.getRole()
+                user.getEmail(), user.getName(), user.getRole(), user.getProfileImage()
         );
         return new AuthResponse("Valid", jwt);
     }

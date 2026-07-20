@@ -20,6 +20,7 @@ public class UpdateAccountRequest {
 //    @Size(min = 8, message = "Password must be at least 8 characters")
 //    private String newPassword;
     @Valid VerifyOtpRequest verificationInfo;
+    private boolean removeImage;
 //    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
 //    private String name;
 //

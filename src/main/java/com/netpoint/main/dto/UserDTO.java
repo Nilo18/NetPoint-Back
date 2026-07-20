@@ -15,6 +15,7 @@ public record UserDTO(
         @Email(message = "Invalid email format")
         String email,
 
-        String role
+        String role,
+        String profileImage
 ) {
 }

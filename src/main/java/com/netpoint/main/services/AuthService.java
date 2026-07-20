@@ -92,12 +92,16 @@ public class AuthService {
         //ჯვტს გადასცემს იუზერს სწორი როლით
         String jwt = jwtService.generateToken(
                 entry.getUserId(), String.valueOf(user.getCompany().getId()),
-                user.getName(), user.getEmail(), user.getRole()
+                user.getName(), user.getEmail(), user.getRole(), user.getProfileImage()
         );
         return new AuthResponse("authenticated", jwt);
     }
 
-    public CompanySignupResponse signup(CompanyRegistrationRequest company, MultipartFile logo, MultipartFile profileImage) {
+    public CompanySignupResponse signup(
+            CompanyRegistrationRequest company,
+            MultipartFile logo,
+            MultipartFile profileImage
+    ) {
         if (this.companyRepository.existsByEmail(company.email())) {
             throw new EmailAlreadyExistsException(company.email());
         }
@@ -137,7 +141,7 @@ public class AuthService {
 
         String accessToken = this.jwtService.generateToken(
                 savedUser.getId().toString(), String.valueOf(user.getCompany().getId()),
-                savedUser.getName(), savedCompany.getEmail(), savedUser.getRole()
+                savedUser.getName(), savedCompany.getEmail(), savedUser.getRole(), savedUser.getProfileImage()
         );
 
         return new CompanySignupResponse(200, accessToken);
