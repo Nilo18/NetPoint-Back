@@ -523,6 +523,7 @@ public class ProductService {
         auditLogService.log(product.getCompany(), actor, AuditLog.EventType.PRODUCT_DELETED,
                 "Product deleted: " + product.getName());
 
+        saleItemRepository.detachProduct(productId);
         productRepository.delete(product);
         return new GenericResponse(200, "Deleted successfully");
     }

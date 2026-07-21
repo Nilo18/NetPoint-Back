@@ -5,6 +5,7 @@ import com.netpoint.main.models.Sale;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -126,6 +127,7 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
             @Param("toDate") LocalDateTime toDate
     );
 
+    @Modifying
     @Query("UPDATE Sale s SET s.user = null WHERE s.user.id = :userId")
     void detachUser(@Param("userId") Integer userId);
 

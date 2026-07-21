@@ -4,6 +4,7 @@ import com.netpoint.main.dto.TopProfitableItemProjection;
 import com.netpoint.main.dto.TopSellingItemProjection;
 import com.netpoint.main.models.SaleItem;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -45,4 +46,8 @@ public interface SaleItemRepository extends JpaRepository<SaleItem, Integer> {
     List<TopProfitableItemProjection> findTopSixItemsByProfit(
             @Param("companyId") Integer companyId
     );
+
+    @Modifying
+    @Query("UPDATE SaleItem si SET si.product = null WHERE si.product.id = :productId")
+    void detachProduct(@Param("productId") Integer productId);
 }
