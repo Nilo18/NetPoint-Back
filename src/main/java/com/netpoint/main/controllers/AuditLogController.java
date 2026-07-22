@@ -2,6 +2,7 @@ package com.netpoint.main.controllers;
 
 import com.netpoint.main.dto.AuthenticatedUser;
 import com.netpoint.main.dto.AuditLogDTO;
+import com.netpoint.main.dto.requests.AuditLogQuery;
 import com.netpoint.main.dto.responses.PageResponse;
 import com.netpoint.main.services.AuditLogService;
 import lombok.RequiredArgsConstructor;
@@ -13,25 +14,25 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/settings")
+@RequestMapping("/api/audit-logs")
 @RequiredArgsConstructor
 public class AuditLogController {
 
     private final AuditLogService auditLogService;
 
-    @PreAuthorize("hasAuthority('OWNER')")
-    @GetMapping("/audit-logs/{companyId}")
+    @PreAuthorize("hasAnyAuthority('OWNER', 'ADMIN')")
+    @GetMapping
     public ResponseEntity<PageResponse<AuditLogDTO>> getCompanyAuditLogs(
-            @PathVariable Integer companyId,
             @AuthenticationPrincipal AuthenticatedUser user,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        if (!user.companyId().equals(companyId)) {
+            @ModelAttribute AuditLogQuery query) {
+        if (!user.companyId().equals(user.companyId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         return ResponseEntity.ok(
-                PageResponse.from(auditLogService.getCompanyAuditLogs(companyId, PageRequest.of(page, size)))
+                PageResponse.from(auditLogService.getCompanyAuditLogs(
+                        user.companyId(), query)
+                )
         );
     }
 }

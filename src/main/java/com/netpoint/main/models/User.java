@@ -9,6 +9,7 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Range;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -37,4 +38,17 @@ public class User {
 
     @Column(columnDefinition = "TEXT")
     private String profileImage;
+
+    public enum Role {
+        OWNER,
+        ADMIN,
+        CASHIER;
+
+        public static boolean contains(String test) {
+            if (test == null) return false;
+
+            return Arrays.stream(Role.values())
+                    .anyMatch(role -> role.name().equalsIgnoreCase(test));
+        }
+    }
 }

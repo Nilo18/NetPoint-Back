@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Data
 @Entity
@@ -53,6 +54,13 @@ public class AuditLog {
         PAYMENT_PLAN_CHANGED,
         SUBSCRIPTION_CANCELLED,
         ACCOUNT_INFO_UPDATED,
-        COMPANY_INFO_UPDATED
+        COMPANY_INFO_UPDATED;
+
+        public static boolean contains(String test) {
+            if (test == null) return false;
+
+            return Arrays.stream(EventType.values())
+                    .anyMatch(event -> event.name().equalsIgnoreCase(test));
+        }
     }
 }
