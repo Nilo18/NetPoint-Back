@@ -3,6 +3,8 @@ package com.netpoint.main.controllers;
 import com.netpoint.main.dto.AuthenticatedUser;
 import com.netpoint.main.dto.AuditLogDTO;
 import com.netpoint.main.dto.requests.AuditLogQuery;
+import com.netpoint.main.dto.requests.AuditLogStatsQuery;
+import com.netpoint.main.dto.responses.AuditLogStatsResponse;
 import com.netpoint.main.dto.responses.PageResponse;
 import com.netpoint.main.services.AuditLogService;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +36,13 @@ public class AuditLogController {
                         user.companyId(), query)
                 )
         );
+    }
+
+    @PreAuthorize("hasAnyAuthority('OWNER', 'ADMIN')")
+    @GetMapping("/stats")
+    public ResponseEntity<AuditLogStatsResponse> getAuditLogStats(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @ModelAttribute AuditLogStatsQuery query) {
+        return ResponseEntity.ok(auditLogService.getCompanyAuditLogStats(user.companyId(), query));
     }
 }
