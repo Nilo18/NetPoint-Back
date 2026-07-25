@@ -28,17 +28,19 @@ public class Product {
     private String name;
 
     @Column(columnDefinition = "TEXT")
-    @DefaultProductAttribute(name = "Image", type = ProductAttribute.AttributeType.TEXT)
+    @DefaultProductAttribute(name = "Product Image (Optional)", type = ProductAttribute.AttributeType.TEXT)
     private String imageUrl;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    @DefaultProductAttribute(name = "Price", type = ProductAttribute.AttributeType.TEXT)
+    @DefaultProductAttribute(name = "Retail Price", type = ProductAttribute.AttributeType.TEXT)
     private BigDecimal price;
 
     @Column(nullable = false)
+    @DefaultProductAttribute(name = "Stock Quantity", type = ProductAttribute.AttributeType.TEXT)
     private Integer stock = 0;
 
     @Column(precision = 10, scale = 2)
+    @DefaultProductAttribute(name = "Wholesale Price", type = ProductAttribute.AttributeType.TEXT)
     private BigDecimal wholesalePrice;
 
     @Column(precision = 7, scale = 2)
