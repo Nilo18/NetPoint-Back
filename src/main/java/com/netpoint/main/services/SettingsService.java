@@ -342,14 +342,11 @@ public class SettingsService {
 
         //  attributebs, produqtebs da momxmareblebs shlis
 
+        auditLogRepository.deleteByCompany_Id(companyId);
         productAttributeRepository.deleteByCompany_Id(companyId);
         productRepository.deleteByCompany_Id(companyId);
-
-
         userRepository.deleteByCompany_Id(companyId);
-
-        //bolos imena kompanias shlis
-        companyRepository.deleteById(companyId);
+        companyRepository.delete(company);
     }
 
     public UserDTO getUserAccountInfo(Integer userId) {

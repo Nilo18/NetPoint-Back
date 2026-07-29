@@ -43,6 +43,7 @@ public class AuditLog {
     public enum EventType {
         SALE_COMPLETED,
         PRODUCT_ADDED,
+        PRODUCT_UPDATED,
         PRODUCT_DELETED,
         USER_INVITED,
         TEAM_MEMBER_ADDED,

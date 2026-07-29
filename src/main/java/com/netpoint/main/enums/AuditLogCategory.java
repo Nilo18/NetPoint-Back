@@ -13,7 +13,7 @@ public enum AuditLogCategory {
     public static AuditLogCategory from(AuditLog.EventType eventType) {
         return switch (eventType) {
             case SALE_COMPLETED -> SALES;
-            case PRODUCT_ADDED, PRODUCT_DELETED -> PRODUCT_CHANGES;
+            case PRODUCT_ADDED, PRODUCT_UPDATED, PRODUCT_DELETED -> PRODUCT_CHANGES;
             case USER_INVITED, TEAM_MEMBER_ADDED, TEAM_MEMBER_REMOVED -> TEAM_CHANGES;
             case COMPANY_DELETED, COMPANY_INFO_UPDATED -> COMPANY_CHANGES;
             case PAYMENT_METHOD_ADDED, PAYMENT_METHOD_UPDATED, PAYMENT_METHOD_REMOVED,

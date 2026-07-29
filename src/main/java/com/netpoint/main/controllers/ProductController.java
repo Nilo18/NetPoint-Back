@@ -47,7 +47,7 @@ public class ProductController {
     }
 
     @GetMapping("/attributes")
-    @PreAuthorize("hasAuthority('OWNER')")
+//    @PreAuthorize("hasAuthority('OWNER')")
     public ResponseEntity<List<ProductAttributeDTO>> getAttributes(@AuthenticationPrincipal AuthenticatedUser user) {
         List<ProductAttributeDTO> attributes = productService.getCompanyAttributes(user.companyId());
         return ResponseEntity.ok(attributes);
@@ -101,7 +101,9 @@ public class ProductController {
 
         planEnforcementService.enforceProductLimit(user.companyId());
         // iwers dabrunebul ProductDTOs servisidan
-        ProductDTO product = productService.createProduct(user.companyId(), request, image);
+        ProductDTO product = productService.createProduct(
+                Integer.valueOf(user.userId()), user.companyId(), request, image
+        );
 
         //products awvdis null is magivrad
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
@@ -117,7 +119,7 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    @PreAuthorize("hasAuthority('OWNER')")
+//    @PreAuthorize("hasAuthority('OWNER')")
     public ResponseEntity<ProductDTO> getProduct(
             @AuthenticationPrincipal AuthenticatedUser user,
             @PathVariable Integer productId) {
@@ -139,7 +141,9 @@ public class ProductController {
             request.setCustomAttributes(customAttributes);
         }
 
-        ProductDTO product = productService.updateProduct(user.companyId(), productId, request, image);
+        ProductDTO product = productService.updateProduct(
+                Integer.valueOf(user.userId()), user.companyId(), productId, request, image
+        );
         return ResponseEntity.ok(product);
     }
 

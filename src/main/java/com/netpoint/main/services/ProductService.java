@@ -151,7 +151,6 @@ public class ProductService {
 
     public void uploadImageToSupabase(Product product, MultipartFile image) {
         if (image == null || image.isEmpty()) {
-            product.setImageUrl(null);
             return;
         }
 
@@ -165,7 +164,8 @@ public class ProductService {
 //    }
 
     @Transactional
-    public ProductDTO createProduct(Integer companyId, ModifyProductRequest request, MultipartFile image) {
+    public ProductDTO createProduct(Integer userId, Integer companyId, ModifyProductRequest request,
+                                    MultipartFile image) {
         if (productRepository.existsByNameIgnoreCaseAndCompany_Id(request.getName().trim(), companyId)) {
             throw new ProductAlreadyExistsException("Product with this name already exists");
         }
@@ -199,6 +199,12 @@ public class ProductService {
         }
 
         productRepository.save(product); // save again with new fields
+
+        User user = userRepository.findByIdAndCompany_Id(userId, companyId)
+                .orElseThrow(() -> new UserNotFoundException("Company owner not found"));
+        auditLogService.log(company, user, AuditLog.EventType.PRODUCT_ADDED,
+                "Product added: " + request.getName());
+
         return mapToProductDTO(savedProduct);
     }
 
@@ -462,12 +468,13 @@ public class ProductService {
     @Transactional(readOnly = true)
     public ProductDTO getProductById(Integer companyId, Integer productId) {
         Product product = productRepository.findByIdAndCompany_Id(productId, companyId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
         return mapToProductDTO(product);
     }
 
     @Transactional
-    public ProductDTO updateProduct(Integer companyId, Integer productId, ModifyProductRequest request,
+    public ProductDTO updateProduct(Integer userId, Integer companyId,
+                                    Integer productId, ModifyProductRequest request,
                                     MultipartFile image) {
         if (productRepository.existsByNameIgnoreCaseAndCompany_IdAndIdNot(request.getName(), companyId, productId)) {
             throw new ProductAlreadyExistsException("Product with this name already exists");
@@ -510,6 +517,13 @@ public class ProductService {
         }
 
         productRepository.save(product);
+        User actor = userRepository.findByIdAndCompany_Id(userId, product.getCompany().getId())
+                .orElseThrow(() -> new UserNotFoundException("Acting user not found"));
+
+        auditLogService.log(product.getCompany(), actor,
+                AuditLog.EventType.PRODUCT_UPDATED, "Product updated: " + request.getName()
+        );
+
         return mapToProductDTO(updated);
     }
 

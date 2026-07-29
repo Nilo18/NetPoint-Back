@@ -30,4 +30,5 @@ public interface AuditLogRepository extends JpaRepository<AuditLog, Long>, JpaSp
     group by a.eventType
     """)
     List<EventTypeCountProjection> countByEventType(@Param("companyId") Integer companyId);
+    void deleteByCompany_Id(Integer companyId);
 }

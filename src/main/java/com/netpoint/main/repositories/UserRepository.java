@@ -20,6 +20,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByNameOrEmail(String name, String email);
     // In UserRepository:
     Page<User> findByCompany_Id(Integer id, Pageable pageable);
+    Optional<User> findByIdAndCompany_Id(Integer id, Integer companyId);
     boolean existsByEmail(String email);
     boolean existsByEmailAndCompany_IdAndRole(String email, Integer companyId, String role);
     boolean existsByEmailAndCompany_Id(String email, Integer companyId);
@@ -30,4 +31,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     long countByCompany_Id(Integer companyId);
     long countByCompany_IdAndRoleIgnoreCase(Integer companyId, String role);
     Optional<User> findByIdAndCompanyId(Integer id, Integer companyId);
+    @Query("SELECT u FROM User u WHERE u.company.id = :companyId AND u.role = 'OWNER'")
+    Optional<User> findCompanyOwner(@Param("companyId") Integer companyId);
+    Optional<User> findByRoleAndCompany_Id(String role, Integer companyId);
 }
