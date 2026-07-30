@@ -224,7 +224,7 @@ public class SettingsService {
 
         String otp = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
 
-        String tempToken = otpStore.save(suggested.id().toString(), suggested.email(), otp);
+        String tempToken = otpStore.save(suggested.id().toString(), otp);
 
         SimpleMailMessage message = new SimpleMailMessage();
 
@@ -375,7 +375,7 @@ public class SettingsService {
 
         String otp = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
 
-        String tempToken = otpStore.save(suggested.id().toString(), suggested.email(), otp);
+        String tempToken = otpStore.save(suggested.id().toString(), otp);
 
         SimpleMailMessage message = new SimpleMailMessage();
 

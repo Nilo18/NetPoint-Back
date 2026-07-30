@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
-
-
     private JavaMailSender mailSender;
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
@@ -20,6 +18,18 @@ public class EmailService {
         message.setFrom("netpoint19923@gmail.com");
         message.setTo(userEmail);
         message.setSubject("Your NetPoint Security Code");
+        message.setText("Hello! Your verification code is: " + otpCode +
+                "\n\nIt will expire in 5 minutes.");
+
+        mailSender.send(message);
+    }
+
+    public void sendOtpEmail(String userEmail, String otpCode, String subject) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom("netpoint19923@gmail.com");
+        message.setTo(userEmail);
+        message.setSubject(subject);
         message.setText("Hello! Your verification code is: " + otpCode +
                 "\n\nIt will expire in 5 minutes.");
 

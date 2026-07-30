@@ -15,6 +15,10 @@ public record CompanyRegistrationRequest(
         @NotBlank @Size(min = 8) String owner_password,
 //        @NotBlank @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be exactly 10 digits")
 //        String phone_number,
-        @NotBlank String role
+        @NotBlank String role,
+        @NotBlank String companyOtpCode,
+        @NotBlank String companyTempToken,
+        @NotBlank String userOtpCode,
+        @NotBlank String userTempToken
      ) {
 }

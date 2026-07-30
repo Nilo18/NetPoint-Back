@@ -1,10 +1,12 @@
 package com.netpoint.main.services;
 
 import com.netpoint.main.dto.requests.CompanyRegistrationRequest;
+import com.netpoint.main.dto.requests.SignupFirstStageRequest;
 import com.netpoint.main.dto.requests.VerifyOtpRequest;
 import com.netpoint.main.dto.responses.AuthResponse;
 import com.netpoint.main.dto.responses.CompanySignupResponse;
 import com.netpoint.main.dto.requests.LoginRequest;
+import com.netpoint.main.dto.responses.SignupAuthResponse;
 import com.netpoint.main.exceptions.*;
 import com.netpoint.main.models.Company;
 import com.netpoint.main.models.OtpEntry;
@@ -61,7 +63,7 @@ public class AuthService {
         // agenerirebs 6 cifra kods
         String otp = String.valueOf(new SecureRandom().nextInt(900000) + 100000);
 
-        String tempToken = otpStore.save(user.getId().toString(), user.getEmail(), otp);
+        String tempToken = otpStore.save(user.getId().toString(), otp);
 
         //gzavnis ukve imeilze
         emailService.sendOtpEmail(user.getEmail(), otp);
@@ -73,7 +75,7 @@ public class AuthService {
     //უკვე მეორე ნაბიჯია, ვერიფიკაციას უკეთებს ოტპს და გასცემს ჯვტს თუ წარმატებულად დამთავრდა
     public AuthResponse verifyOtp(VerifyOtpRequest request) {
         OtpEntry entry = otpStore.get(request.tempToken());
-      //თუ ოტპ არასწორია იმწამსვე უარყოფს და შლის
+        //თუ ოტპ არასწორია იმწამსვე უარყოფს და შლის
         if (!entry.getOtpCode().equals(request.otpCode())) {
             otpStore.invalidate(request.tempToken());
             throw new InvalidOtpException("Invalid verification code.");
@@ -97,13 +99,34 @@ public class AuthService {
         return new AuthResponse("authenticated", jwt);
     }
 
+    public SignupAuthResponse verifySignupOtp(SignupFirstStageRequest request) {
+        if (this.companyRepository.existsByEmail(request.companyEmail())) {
+            throw new EmailAlreadyExistsException("Company with this email already exists");
+        }
+
+        if (this.userRepository.existsByEmail(request.userEmail())) {
+            throw new EmailAlreadyExistsException("User with this email already exists");
+        }
+
+        String companyTempToken = otpStore.generateAndSend(
+                request.companyEmail(), "Your NetPoint Company Verification Code"
+        );
+        String userTempToken = otpStore.generateAndSend(
+                request.userEmail(), "Your NetPoint User Verification Code"
+        );
+        return new SignupAuthResponse("2fa_required", companyTempToken, userTempToken);
+    }
+
+    @Transactional
     public CompanySignupResponse signup(
             CompanyRegistrationRequest company,
             MultipartFile logo,
             MultipartFile profileImage
     ) {
+        otpStore.validate(company.companyOtpCode(), company.companyTempToken());
+        otpStore.validate(company.userOtpCode(), company.userTempToken());
         if (this.companyRepository.existsByEmail(company.email())) {
-            throw new EmailAlreadyExistsException(company.email());
+            throw new EmailAlreadyExistsException("Company with this email already exists");
         }
 
         if (this.userRepository.existsByEmail(company.owner_email())) {

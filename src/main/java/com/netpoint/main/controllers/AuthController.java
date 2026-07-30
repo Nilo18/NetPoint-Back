@@ -1,11 +1,9 @@
 package com.netpoint.main.controllers;
 
 import com.netpoint.main.dto.UserDTO;
-import com.netpoint.main.dto.requests.CompanyRegistrationRequest;
-import com.netpoint.main.dto.requests.UpdateAccountRequest;
-import com.netpoint.main.dto.requests.VerifyOtpRequest;
+import com.netpoint.main.dto.requests.*;
 import com.netpoint.main.dto.responses.CompanySignupResponse;
-import com.netpoint.main.dto.requests.LoginRequest;
+import com.netpoint.main.dto.responses.SignupAuthResponse;
 import com.netpoint.main.models.User;
 import com.netpoint.main.services.AuthService;
 import jakarta.validation.Valid;
@@ -43,6 +41,12 @@ public class AuthController {
     @PostMapping(path="/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(this.authService.login(request));
+    }
+
+    @PostMapping(path = "/signup/verify")
+    public ResponseEntity<SignupAuthResponse> verifySignupRequest(
+            @Valid @RequestBody SignupFirstStageRequest request) {
+        return ResponseEntity.ok(authService.verifySignupOtp(request));
     }
 
     @PostMapping(path = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
