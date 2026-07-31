@@ -1,5 +1,6 @@
 package com.netpoint.main.dto;
 
+import com.netpoint.main.models.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -16,6 +17,7 @@ public record UserDTO(
         String email,
 
         String role,
+        User.AccountStatus status,
         String profileImage
 ) {
 }

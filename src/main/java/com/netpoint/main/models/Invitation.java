@@ -20,7 +20,13 @@ public class Invitation {
 
     private String email;
     private String token;
-    private Integer companyId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id", nullable = false)
+    private User sender;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
     private String role;
     private LocalDateTime expiresAt;
     private boolean used;

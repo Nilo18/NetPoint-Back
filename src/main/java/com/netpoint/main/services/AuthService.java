@@ -49,6 +49,10 @@ public class AuthService {
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
+        if (user.getStatus() == User.AccountStatus.PENDING_APPROVAL) {
+            throw new BadRequestException("Your account has to be approved");
+        }
+
         log.info("Comparing: " + user.getRole() + " to requested role: " + request.role());
         if (!user.getRole().equals(request.role())) {
             throw new InvalidRoleException("Invalid role");
@@ -126,11 +130,15 @@ public class AuthService {
         otpStore.validate(company.companyOtpCode(), company.companyTempToken());
         otpStore.validate(company.userOtpCode(), company.userTempToken());
         if (this.companyRepository.existsByEmail(company.email())) {
-            throw new EmailAlreadyExistsException("Company with this email already exists");
+            throw new EmailAlreadyExistsException(
+                    "Registration cannot be completed with the provided information"
+            );
         }
 
         if (this.userRepository.existsByEmail(company.owner_email())) {
-            throw new EmailAlreadyExistsException("User with this email already exists");
+            throw new EmailAlreadyExistsException(
+                    "Registration cannot be completed with the provided information"
+            );
         }
 
         PaymentPlan defaultPlan = paymentPlanRepository.findByPlanName(DEFAULT_PLAN_NAME)
@@ -155,6 +163,7 @@ public class AuthService {
         user.setEmail(company.owner_email());
         user.setPassword(passwordEncoder.encode(company.owner_password()));
         user.setRole(company.role());
+        user.setStatus(User.AccountStatus.ACTIVE);
 
         if (profileImage != null && !profileImage.isEmpty()) {
             user.setProfileImage(supabaseStorageService.uploadImage(profileImage, "profiles"));

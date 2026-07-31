@@ -9,8 +9,8 @@ public record InviteRequest(
         @Email
         String email,
         @NotBlank
-        String role,
-        @NotNull
-        Integer companyId
+        String role
+//        @NotNull
+//        Integer companyId
     ) {
 }

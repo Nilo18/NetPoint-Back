@@ -13,25 +13,29 @@ public class EmailService {
     }
 
     public void sendOtpEmail(String userEmail, String otpCode) {
-        SimpleMailMessage message = new SimpleMailMessage();
+        sendMessage(
+                "netpoint19923@gmail.com", userEmail, "Your NetPoint Security Code",
+                "Hello! Your verification code is: " + otpCode +
+                        "\n\nIt will expire in 5 minutes."
+        );
 
-        message.setFrom("netpoint19923@gmail.com");
-        message.setTo(userEmail);
-        message.setSubject("Your NetPoint Security Code");
-        message.setText("Hello! Your verification code is: " + otpCode +
-                "\n\nIt will expire in 5 minutes.");
-
-        mailSender.send(message);
     }
 
     public void sendOtpEmail(String userEmail, String otpCode, String subject) {
+        sendMessage(
+                "netpoint19923@gmail.com", userEmail, subject,
+                "Hello! Your verification code is: " + otpCode +
+                "\n\nIt will expire in 5 minutes."
+        );
+    }
+
+    public void sendMessage(String from, String to, String subject, String msg) {
         SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setFrom("netpoint19923@gmail.com");
-        message.setTo(userEmail);
+        message.setFrom(from);
+        message.setTo(to);
         message.setSubject(subject);
-        message.setText("Hello! Your verification code is: " + otpCode +
-                "\n\nIt will expire in 5 minutes.");
+        message.setText(msg);
 
         mailSender.send(message);
     }

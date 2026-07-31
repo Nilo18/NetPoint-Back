@@ -55,7 +55,9 @@ public class SettingsService {
         }
 
         return userRepository.findByCompany_Id(id, pageable)  // <-- changed
-                .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole(), u.getProfileImage()));
+                .map(u ->
+                        new UserDTO(u.getId(), u.getName(), u.getEmail(),
+                        u.getRole(), u.getStatus(), u.getProfileImage()));
     }
 
     public Page<UserDTO> addCashier(Integer actorUserId, CashierAdditionRequest cashier, Pageable pageable) {
@@ -98,7 +100,8 @@ public class SettingsService {
                 "Added team member: " + cashier.email() + " (" + cashier.role() + ")");
 
         return userRepository.findByCompany_Id(cashier.companyId(), pageable)
-                .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole(), u.getProfileImage()));
+                .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(),
+                        u.getRole(), u.getStatus(), u.getProfileImage()));
     }
 
     @Transactional
@@ -127,7 +130,8 @@ public class SettingsService {
         return new UserModificationResponse(200,
                 new UserDTO(
                         user.getId(), user.getName(),
-                        user.getEmail(), user.getRole(), user.getProfileImage())
+                        user.getEmail(), user.getRole(),
+                        user.getStatus(), user.getProfileImage())
         );
     }
 
@@ -146,7 +150,8 @@ public class SettingsService {
         if (users.isEmpty()) throw new UserNotFoundException("No users found: " + searchTerm);
 
         return users.stream()
-                .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(), u.getRole(), u.getProfileImage()))
+                .map(u -> new UserDTO(u.getId(), u.getName(), u.getEmail(),
+                        u.getRole(), u.getStatus(), u.getProfileImage()))
                 .toList();
     }
 
@@ -318,7 +323,7 @@ public class SettingsService {
                 "Account info updated");
 
         return new UserDTO(updated.getId(), updated.getName(), updated.getEmail(),
-                updated.getRole(), updated.getProfileImage());
+                updated.getRole(), updated.getStatus(), updated.getProfileImage());
     }
 
 // kompaniis washla, es marto owners sheudzlia
@@ -358,6 +363,7 @@ public class SettingsService {
                 user.getName(),
                 user.getEmail(),
                 user.getRole(),
+                user.getStatus(),
                 user.getProfileImage()
         );
     }

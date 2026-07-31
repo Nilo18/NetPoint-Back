@@ -36,6 +36,9 @@ public class User {
 
     private String role;
 
+    @Enumerated(EnumType.STRING)
+    private AccountStatus status;
+
     @Column(columnDefinition = "TEXT")
     private String profileImage;
 
@@ -50,5 +53,10 @@ public class User {
             return Arrays.stream(Role.values())
                     .anyMatch(role -> role.name().equalsIgnoreCase(test));
         }
+    }
+
+    public enum AccountStatus {
+        ACTIVE,
+        PENDING_APPROVAL
     }
 }

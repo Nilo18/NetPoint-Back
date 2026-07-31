@@ -18,6 +18,7 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getProfileImage());
+        return new UserDTO(user.getId(), user.getName(), user.getEmail(),
+                user.getRole(), user.getStatus(), user.getProfileImage());
     }
 }
