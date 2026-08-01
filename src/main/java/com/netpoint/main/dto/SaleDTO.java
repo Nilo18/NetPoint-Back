@@ -2,6 +2,7 @@ package com.netpoint.main.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record SaleDTO(
         Integer id,
@@ -10,5 +11,6 @@ public record SaleDTO(
         BigDecimal totalRevenue,
         BigDecimal totalCost,
         BigDecimal totalProfit,
-        int itemCount
+        BigDecimal marginPercent,
+        List<SaleItemDTO> saleItems
 ) {}

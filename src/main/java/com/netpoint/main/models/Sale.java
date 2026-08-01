@@ -36,6 +36,8 @@ public class Sale {
     private BigDecimal totalCost;
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal totalProfit;
+    @Column(nullable = false, precision = 7, scale = 4)
+    private BigDecimal marginPercent;
     @Column(nullable = false)
     private LocalDateTime createdAt;
 }

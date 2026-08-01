@@ -5,6 +5,7 @@ import com.netpoint.main.models.Sale;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface SaleRepository extends JpaRepository<Sale, Integer> {
+public interface SaleRepository extends JpaRepository<Sale, Integer>, JpaSpecificationExecutor<Sale> {
     List<Sale> findAllByCompany_Id(Integer companyId);
     @Query("""
         select coalesce(sum(si.lineRevenue), 0)

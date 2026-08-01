@@ -113,6 +113,10 @@ public class AuditLogService {
     }
 
     public Page<AuditLogDTO> getCompanyAuditLogs(Integer companyId, AuditLogQuery query) {
+        if (query.getSize() > 100) {
+            throw new BadRequestException("Requested page size is too large.");
+        }
+
         if (!companyRepository.existsById(companyId)) {
             throw new CompanyNotFoundException("Company not found");
         }

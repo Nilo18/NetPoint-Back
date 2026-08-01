@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,6 +128,15 @@ public class CheckoutService {
         sale.setTotalRevenue(totalRevenue);
         sale.setTotalCost(totalCost);
         sale.setTotalProfit(totalProfit);
+        BigDecimal marginPercent =
+                totalRevenue.signum() == 0
+                        ? BigDecimal.ZERO
+                        : totalProfit
+                        .divide(totalRevenue, 6, RoundingMode.HALF_UP)
+                        .multiply(BigDecimal.valueOf(100))
+                        .setScale(4, RoundingMode.HALF_UP);
+
+        sale.setMarginPercent(marginPercent);
         LocalDateTime current = LocalDateTime.now();
         sale.setCreatedAt(current);
 

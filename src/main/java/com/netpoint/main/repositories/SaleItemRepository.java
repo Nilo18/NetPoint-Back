@@ -50,4 +50,6 @@ public interface SaleItemRepository extends JpaRepository<SaleItem, Integer> {
     @Modifying
     @Query("UPDATE SaleItem si SET si.product = null WHERE si.product.id = :productId")
     void detachProduct(@Param("productId") Integer productId);
+    List<SaleItem> findBySale_IdIn(List<Integer> saleIds);
+    List<SaleItem> findBySale_Id(Integer saleId);
 }

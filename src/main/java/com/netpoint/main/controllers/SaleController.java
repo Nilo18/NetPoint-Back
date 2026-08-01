@@ -2,6 +2,7 @@ package com.netpoint.main.controllers;
 
 import com.netpoint.main.dto.AuthenticatedUser;
 import com.netpoint.main.dto.SaleDTO;
+import com.netpoint.main.dto.requests.SalesQuery;
 import com.netpoint.main.dto.responses.PageResponse;
 import com.netpoint.main.services.SaleService;
 import lombok.RequiredArgsConstructor;
@@ -13,26 +14,20 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/settings/sales")
+@RequestMapping("/api/sales")
 @RequiredArgsConstructor
 public class SaleController {
 
     private final SaleService saleService;
 
-    @PreAuthorize("hasAuthority('OWNER')")
-    @GetMapping("/{companyId}")
+    @PreAuthorize("hasAnyAuthority('OWNER', 'ADMIN')")
+    @GetMapping
     public ResponseEntity<PageResponse<SaleDTO>> getCompanySales(
-            @PathVariable Integer companyId,
             @AuthenticationPrincipal AuthenticatedUser user,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-
-        if (!user.companyId().equals(companyId)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+            @ModelAttribute SalesQuery query) {
 
         return ResponseEntity.ok(
-                PageResponse.from(saleService.getCompanySales(companyId, PageRequest.of(page, size)))
+                PageResponse.from(saleService.getCompanySales(user.companyId(), query))
         );
     }
 }
