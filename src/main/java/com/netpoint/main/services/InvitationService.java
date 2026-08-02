@@ -13,8 +13,6 @@ import com.netpoint.main.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +27,6 @@ import java.util.UUID;
 public class InvitationService {
 
     private final InvitationRepository invitationRepository;
-    private final JavaMailSender mailSender;
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
     private final JwtService jwtService;
@@ -95,25 +92,12 @@ public class InvitationService {
         invitation.setUsed(false);
 
         invitationRepository.save(invitation);
-        sendInviteEmail(email, token, role);
+
+        String link = frontendUrl + "/setup-account?token=" + token;
+        emailService.sendInviteEmail(email, company.getName(), role, link);
 
         auditLogService.log(company, actor, AuditLog.EventType.USER_INVITED,
                 "Invited user: " + email + " as " + role);
-    }
-
-    private void sendInviteEmail(String email, String token, String role) {
-        String link = frontendUrl + "/setup-account?token=" + token;
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("You have been invited");
-        message.setText(
-                "You have been invited as " + role + ".\n\n" +
-                        "Click the link below to set up your account (valid 48 hours):\n" +
-                        link
-        );
-
-        mailSender.send(message);
     }
 
     public String validateInvitation(String token) {
@@ -164,7 +148,7 @@ public class InvitationService {
         // axal momxmarebels amatebs USER tables
 
         User user = new User();
-//        log.info("user values before using setters: " + user);
+
         user.setEmail(invitation.getEmail());
         user.setPassword(passwordEncoder.encode(password));
         user.setName(fullName);
@@ -181,15 +165,10 @@ public class InvitationService {
         User sender = userRepository.findById(invitation.getSender().getId())
                 .orElseThrow(() -> new UserNotFoundException("Actor user was not found"));
 
-        emailService.sendMessage(
+        emailService.sendHtmlMessage(
                 "netpoint19923@gmail.com", sender.getEmail(),
                 "NetPoint User Invitation",
-                user.getEmail() +
-                """
-                 has accepted your invite and is waiting to
-                be accepted as a fully fledged member. If this is the email you wished to invite,
-                you can accept them, if it is not, you can reject them and their account will be deleted.
-                """
+                "<p>" + user.getEmail() + " has accepted your invite...</p>"
         );
 
         return new GenericResponse(
