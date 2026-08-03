@@ -3,11 +3,15 @@ package com.netpoint.main.services;
 import com.netpoint.main.dto.SaleDTO;
 import com.netpoint.main.dto.SaleItemDTO;
 import com.netpoint.main.dto.requests.SalesQuery;
+import com.netpoint.main.dto.requests.SalesStatsQuery;
+import com.netpoint.main.dto.responses.SalesStatsResponse;
 import com.netpoint.main.exceptions.BadRequestException;
 import com.netpoint.main.models.Sale;
 import com.netpoint.main.models.SaleItem;
 import com.netpoint.main.repositories.SaleItemRepository;
 import com.netpoint.main.repositories.SaleRepository;
+import com.netpoint.main.repositories.SaleRepositoryCustom;
+import com.netpoint.main.repositories.SalesStatsRepository;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
@@ -34,6 +38,8 @@ public class SaleService {
 
     private final SaleRepository saleRepository;
     private final SaleItemRepository saleItemRepository;
+    private final SaleRepositoryCustom saleRepositoryCustom;
+    private final SalesStatsRepository salesStatsRepository;
 
     public Specification<Sale> companyIs(Integer companyId) {
         return (root, query, criteriaBuilder) -> {
@@ -119,7 +125,7 @@ public class SaleService {
 
     public Specification<Sale> filter(String filterBy, String filterFrom, String filterTo) {
         return switch (filterBy.toLowerCase()) {
-            case "totalrevenue", "totalcost", "totalprofit", "marginpercent" ->
+            case "", "totalrevenue", "totalcost", "totalprofit", "marginpercent" ->
                     decimalRange(filterBy, filterFrom, filterTo);
             case "date" -> dateRange(filterFrom, filterTo);
             default -> throw new BadRequestException("Unsupported filter field: " + filterBy);
@@ -137,8 +143,8 @@ public class SaleService {
         };
 
         Sort.Direction direction = switch (query.getSortDirection().toLowerCase()) {
-            case "", "asc" -> Sort.Direction.ASC;
-            case "desc" -> Sort.Direction.DESC;
+            case "asc" -> Sort.Direction.ASC;
+            case "", "desc" -> Sort.Direction.DESC;
             default -> throw new BadRequestException("Unsupported sort direction: " + query.getSortDirection());
         };
 
@@ -184,6 +190,21 @@ public class SaleService {
                         sale.getMarginPercent(),
                         itemsBySaleId.getOrDefault(sale.getId(), List.of())
                 ));
+    }
+
+    public SalesStatsResponse getCompanySalesStats(Integer companyId, SalesStatsQuery query) {
+        Specification<Sale> specification = Specification.where(companyIs(companyId))
+                .and(matchesSearch(query.getSearch()));
+
+        if (query.getFilterFrom() != null && !query.getFilterBy().isBlank()) {
+            specification = specification.and(
+                    filter(query.getFilterBy(), query.getFilterFrom(), query.getFilterTo())
+            );
+        }
+
+        List<Integer> saleIds = saleRepositoryCustom.findIdsBySpecification(specification);
+
+        return salesStatsRepository.getSalesStats(companyId, saleIds);
     }
 
     private SaleDTO toDTO(Sale sale) {

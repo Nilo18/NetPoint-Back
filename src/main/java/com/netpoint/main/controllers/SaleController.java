@@ -3,7 +3,9 @@ package com.netpoint.main.controllers;
 import com.netpoint.main.dto.AuthenticatedUser;
 import com.netpoint.main.dto.SaleDTO;
 import com.netpoint.main.dto.requests.SalesQuery;
+import com.netpoint.main.dto.requests.SalesStatsQuery;
 import com.netpoint.main.dto.responses.PageResponse;
+import com.netpoint.main.dto.responses.SalesStatsResponse;
 import com.netpoint.main.services.SaleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +30,17 @@ public class SaleController {
 
         return ResponseEntity.ok(
                 PageResponse.from(saleService.getCompanySales(user.companyId(), query))
+        );
+    }
+
+    @PreAuthorize("hasAnyAuthority('OWNER', 'ADMIN')")
+    @GetMapping("/stats")
+    public ResponseEntity<SalesStatsResponse> getCompanySalesStats(
+            @AuthenticationPrincipal AuthenticatedUser user,
+            @ModelAttribute SalesStatsQuery query
+    ) {
+        return ResponseEntity.ok(
+                saleService.getCompanySalesStats(user.companyId(), query)
         );
     }
 }

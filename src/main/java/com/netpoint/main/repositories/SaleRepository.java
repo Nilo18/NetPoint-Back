@@ -133,4 +133,33 @@ public interface SaleRepository extends JpaRepository<Sale, Integer>, JpaSpecifi
     void detachUser(@Param("userId") Integer userId);
 
     Page<Sale> findByCompany_IdOrderByCreatedAtDesc(Integer companyId, Pageable pageable);
+    @Query(value = """
+    select coalesce(sum(s.totalCost), 0)
+    from Sale s
+    where s.company.id = :companyId
+    and s.id in :saleIds
+    """)
+    BigDecimal sumTotalCost(@Param("companyId") Integer companyId, @Param("saleIds") List<Integer> saleIds);
+
+    @Query("""
+    select coalesce(sum(s.totalRevenue), 0)
+    from Sale s
+    where s.company.id = :companyId
+      and s.id in :saleIds
+    """)
+    BigDecimal sumTotalRevenue(
+            @Param("companyId") Integer companyId,
+            @Param("saleIds") List<Integer> saleIds
+    );
+
+    @Query("""
+    select coalesce(sum(s.totalProfit), 0)
+    from Sale s
+    where s.company.id = :companyId
+      and s.id in :saleIds
+    """)
+    BigDecimal sumTotalProfit(
+            @Param("companyId") Integer companyId,
+            @Param("saleIds") List<Integer> saleIds
+    );
 }
