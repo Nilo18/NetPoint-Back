@@ -55,11 +55,18 @@ public class EmailService {
     }
 
     private String loadTemplate(String classpathLocation) {
-        try {
-            ClassPathResource resource = new ClassPathResource(classpathLocation);
-            return new String(Files.readAllBytes(resource.getFile().toPath()), StandardCharsets.UTF_8);
+        ClassPathResource resource = new ClassPathResource(classpathLocation);
+
+        try (var inputStream = resource.getInputStream()) {
+            return new String(
+                    inputStream.readAllBytes(),
+                    StandardCharsets.UTF_8
+            );
         } catch (IOException e) {
-            throw new IllegalStateException("Could not load email template: " + classpathLocation, e);
+            throw new IllegalStateException(
+                    "Could not load email template: " + classpathLocation,
+                    e
+            );
         }
     }
 
