@@ -2,6 +2,7 @@ package com.netpoint.main.config;
 
 import com.netpoint.main.filters.JwtAuthFilter;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +28,8 @@ import java.util.List;
 public class SecurityConfig {
     //ეს მოკლედ ყველა მოთხოვნას აჩერებსავით, რომ ტოკენის ვალიდურობა შეამოწმოს
     private final JwtAuthFilter jwtAuthFilter;
+    @Value("${app.frontend-production-url}")
+    private String frontendUrl;
 
     public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
@@ -92,7 +95,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Your Angular URL
+        configuration.setAllowedOrigins(List.of("http://localhost:4200", frontendUrl));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
