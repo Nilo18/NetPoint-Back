@@ -64,7 +64,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/error", "/error/**").permitAll()
                         .requestMatchers("/css/**", "/images/**", "/*.html").permitAll()
-                                .requestMatchers("/welcome", "/api/demo/**").permitAll()
+                                .requestMatchers( "/", "/welcome", "/api/demo/**").permitAll()
                                 // Use hasAnyAuthority because your DB stores "ADMIN" instead of "ROLE_ADMIN"
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "OWNER")
 
