@@ -29,6 +29,7 @@ public class PaymentPlanService {
     private final PaymentMethodRepository paymentMethodRepository;
     private final UserRepository userRepository;
     private final AuditLogService auditLogService;
+    private final PlanEnforcementService planEnforcementService; // <-- Inject PlanEnforcementService
 
     @Cacheable(value = "paymentPlans", key = "#companyId")
     @Transactional(readOnly = true)
@@ -53,30 +54,33 @@ public class PaymentPlanService {
 
     @CacheEvict(value = "paymentPlans", key = "#companyId")
     @Transactional
-public GenericResponse changePlan(Integer actorUserId, Integer companyId, String newPlanName) {
-    Company company = companyRepository.findById(companyId)
-            .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+    public GenericResponse changePlan(Integer actorUserId, Integer companyId, String newPlanName) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
-    PaymentPlan newPlan = paymentPlanRepository.findByPlanName(newPlanName)
-            .orElseThrow(() -> new PaymentPlanNotFoundException("Plan not found: " + newPlanName));
+        PaymentPlan newPlan = paymentPlanRepository.findByPlanName(newPlanName)
+                .orElseThrow(() -> new PaymentPlanNotFoundException("Plan not found: " + newPlanName));
 
-    // Block upgrade to paid plan if no active payment method exists
-    if (newPlan.getCostPerMonth() > 0
-            && !paymentMethodRepository.existsByCompanyAndStatus(company, "active")) {
-        throw new BadRequestException(
-                "Add a payment method before upgrading to a paid plan.");
+        // Enforce the new plan's limits to prevent bypassing constraints
+        planEnforcementService.verifyPlanLimitsCompliant(companyId, newPlan);
+
+        // Block upgrade to paid plan if no active payment method exists
+        if (newPlan.getCostPerMonth() > 0
+                && !paymentMethodRepository.existsByCompanyAndStatus(company, "active")) {
+            throw new BadRequestException(
+                    "Add a payment method before upgrading to a paid plan.");
+        }
+
+        company.setPlan(newPlan);
+        companyRepository.save(company);
+
+        User actor = userRepository.findById(actorUserId)
+                .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
+        auditLogService.log(company, actor, AuditLog.EventType.PAYMENT_PLAN_CHANGED,
+                "Plan changed to: " + newPlan.getPlanName());
+
+        return new GenericResponse(200, "Plan changed to: " + newPlan.getPlanName());
     }
-
-    company.setPlan(newPlan);
-    companyRepository.save(company);
-
-    User actor = userRepository.findById(actorUserId)
-            .orElseThrow(() -> new UserNotFoundException("Acting user was not found"));
-    auditLogService.log(company, actor, AuditLog.EventType.PAYMENT_PLAN_CHANGED,
-            "Plan changed to: " + newPlan.getPlanName());
-
-    return new GenericResponse(200, "Plan changed to: " + newPlan.getPlanName());
-}
 
     @CacheEvict(value = "paymentPlans", key = "#companyId")
     @Transactional
@@ -86,6 +90,9 @@ public GenericResponse changePlan(Integer actorUserId, Integer companyId, String
 
         PaymentPlan starterPlan = paymentPlanRepository.findByPlanName("Starter Plan")
                 .orElseThrow(() -> new PaymentPlanNotFoundException("Default plan not found"));
+
+        // Enforce Starter Plan limits before canceling subscription
+        planEnforcementService.verifyPlanLimitsCompliant(companyId, starterPlan);
 
         company.setPlan(starterPlan);
         companyRepository.save(company);

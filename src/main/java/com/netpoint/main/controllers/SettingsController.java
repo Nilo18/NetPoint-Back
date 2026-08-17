@@ -104,7 +104,7 @@ public class SettingsController {
         return ResponseEntity.ok(this.settingsService.getUserAccountInfo(Integer.valueOf(user.userId())));
     }
 
-    // ========== ACCOUNT UPDATE ==========
+
 
     @PostMapping("/account/verify")
     @PreAuthorize("isAuthenticated()")
@@ -116,18 +116,17 @@ public class SettingsController {
     @PutMapping(value = "/account", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserDTO> updateAccount(
-            @AuthenticationPrincipal AuthenticatedUser user, // Changed type to AuthenticatedUser
+            @AuthenticationPrincipal AuthenticatedUser user,
             @Valid @RequestPart(value = "request") UpdateAccountRequest request,
             @RequestPart(value = "image", required = false) MultipartFile profileImage) {
 
-        // Parse the String userId into an Integer for your service
         Integer numericUserId = Integer.parseInt(user.userId());
 
         UserDTO updated = settingsService.updateAccount(numericUserId, request, profileImage);
         return ResponseEntity.ok(updated);
     }
 
-// ========== DELETE COMPANY ==========
+
 
     @DeleteMapping("/company/{companyId}")
     @PreAuthorize("hasAuthority('OWNER')")
