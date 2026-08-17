@@ -34,7 +34,7 @@ public class InvitationService {
     private final AuditLogService auditLogService;
     private final EmailService emailService;
 
-    @Value("${app.frontend-url}")
+    @Value("${app.frontend-production-url}")
     private String frontendUrl;
 
     // owneri idzaxebs amas
