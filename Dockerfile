@@ -9,4 +9,4 @@ FROM eclipse-temurin:25-jre-jammy
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 # Tells Spring Boot to scan the root folder for the application.properties file cleanly
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.config.location=optional:file:./"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--spring.config.additional-location=optional:file:/etc/secrets/"]
